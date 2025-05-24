@@ -1,0 +1,2617 @@
+{
+  "items": [
+    {
+      "name": "Leather",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_NRanger_A_01.PNG",
+      "description": "The breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Light Armor",
+      "armor": {
+        "ac": "11 + Dex"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Padded",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Peasant_A_01.PNG",
+      "description": "Padded armor consists of quilted layers of cloth and batting.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Light Armor",
+      "armor": {
+        "ac": "11 + Dex"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Studded Leather",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_NRanger_A_02.PNG",
+      "description": "Made from tough but flexible leather, studded leather is reinforced with close-set rivets or spikes",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Light Armor",
+      "armor": {
+        "ac": "12 + Dex"
+      },
+      "cost": 4500
+    },
+    {
+      "name": "Breastplate",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Footman_A_01.PNG",
+      "description": "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "14 + Dex"
+      },
+      "cost": 40000
+    },
+    {
+      "name": "Chain Shirt",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_NWarrior_A_01.PNG",
+      "description": "Made of interlocking metal rings, a chain shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer's upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "13 + Dex"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Half Plate",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Footman_B_01.PNG",
+      "description": "Half plate consists of shaped metal plates that cover most of the wearer's body. It does not include leg protection beyond simple greaves that are attached with leather straps.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "15 + Dex"
+      },
+      "cost": 75000
+    },
+    {
+      "name": "Hide",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Peasant_B_01.PNG",
+      "description": "This crude armor consists of thick furs and pelts. It is commonly worn by barbarian tribes, evil humanoids, and other folk who lack access to the tools and materials needed to create better armor.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "12 + Dex"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Scale mail",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_DK_A_01.PNG",
+      "description": "This armor consists of a coat and leggings (and perhaps a separate skirt) of leather covered with overlapping pieces of metal, much like the scales of a fish. The suit includes gauntlets.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "14 + Dex"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Chain Mail",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Crusader_A_01.PNG",
+      "description": "Made of interlocking metal rings, chain mail includes a layer of quilted fabric worn underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Heavy Armor",
+      "armor": {
+        "ac": "16"
+      },
+      "cost": 7500
+    },
+    {
+      "name": "Plate",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Crusader_A_03.PNG",
+      "description": "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor. Buckles and straps distribute the weight over the body.",
+      "category": "ARMOR",
+      "rarity": "RARE",
+      "classification": "Heavy Armor",
+      "armor": {
+        "ac": "18"
+      },
+      "cost": 150000
+    },
+    {
+      "name": "Ring Mail",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_DK_B_01.PNG",
+      "description": "This armor is leather armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring mail is inferior to chain mail, and it's usually worn only by those who can't afford better armor.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Heavy Armor",
+      "armor": {
+        "ac": "14"
+      },
+      "cost": 3000
+    },
+    {
+      "name": "Splint",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_DK_A_03.PNG",
+      "description": "This armor is made of narrow vertical strips of metal riveted to a backing of leather that is worn over cloth padding. Flexible chain mail protects the joints.",
+      "category": "ARMOR",
+      "rarity": "UNCOMMON",
+      "classification": "Heavy Armor",
+      "armor": {
+        "ac": "17"
+      },
+      "cost": 20000
+    },
+    {
+      "name": "Shield",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Shield_Newbie_A_01.PNG",
+      "description": "A shield is made from wood or metal and is carried in one hand. Wielding a shield increases your Armor Class by 2. You can benefit from only one shield at a time.",
+      "category": "ARMOR",
+      "rarity": "COMMON",
+      "classification": "Shield",
+      "armor": {
+        "ac": "+2"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Club",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "properties": ["light"]
+      },
+      "cost": 10
+    },
+    {
+      "name": "Dagger",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Dagger_Newbie_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "piercing",
+        "properties": ["finesse", "light", "thrown (range 20/60)"]
+      },
+      "cost": 200
+    },
+    {
+      "name": "Greatclub",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_B_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "bludgeoning",
+        "properties": ["two-handed"]
+      },
+      "cost": 20
+    },
+    {
+      "name": "Handaxe",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Axe1H_Newbie_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "slashing",
+        "properties": ["light", "thrown (range 20/60)"]
+      },
+      "cost": 500
+    },
+    {
+      "name": "Javelin",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Spear_Generic_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "properties": ["thrown (range 30/120)"]
+      },
+      "cost": 50
+    },
+    {
+      "name": "Light Hammer",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Hammer2H_DK_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "properties": ["light", "thrown (range 20/60)"]
+      },
+      "cost": 20
+    },
+    {
+      "name": "Mace",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_C_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "bludgeoning",
+        "properties": []
+      },
+      "cost": 500
+    },
+    {
+      "name": "Quarterstaff",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Generic_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "bludgeoning",
+        "properties": ["versatile (1d8)"]
+      },
+      "cost": 20
+    },
+    {
+      "name": "Sickle",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Dagger_Newbie_B_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "slashing",
+        "properties": ["light"]
+      },
+      "cost": 100
+    },
+    {
+      "name": "Spear",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Spear_Generic_B_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Melee Weapon",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "properties": ["thrown (range 20/60)", "versatile (1d8)"]
+      },
+      "cost": 100
+    },
+    {
+      "name": "Light Crossbow",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Bow_Newbie_A_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Ranged Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 80/320)", "loading", "two-handed"]
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Dart",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Dagger_Newbie_C_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Ranged Weapons",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "piercing",
+        "properties": ["finesse", "thrown (range 20/60)"]
+      },
+      "cost": 5
+    },
+    {
+      "name": "Shortbow",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Bow_Newbie_B_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Ranged Weapons",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 80/320)", "two-handed"]
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Sling",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Bow_Newbie_C_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Simple Ranged Weapons",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "properties": ["ammunition (range 30/120)"]
+      },
+      "cost": 10
+    },
+    {
+      "name": "Battleaxe",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Axe1H_Newbie_B_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "slashing",
+        "properties": ["versatile (1d10)"]
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Flail",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_D_01.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "bludgeoning",
+        "properties": []
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Glaive",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Spear_Generic_A_03.PNG",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d10",
+        "damage_type": "slashing",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      "cost": 2000
+    },
+    {
+      "name": "Backpack",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_10.PNG",
+      "description": "Capacity: 1 cubic foot/30 pounds of gear. You can also strap items, such as a bedroll or a coil of rope, to the outside of a backpack.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 cubic foot/30 pounds",
+        "usage": "storage"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Acid (vial)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_lesser_toxic.PNG",
+      "description": "As an action, you can splash the contents of this vial onto a creature within 5 feet of you or throw the vial up to 20 feet, shattering it on impact. In either case, make a ranged attack against a creature or object, treating the acid as an improvised weapon. On a hit, the target takes 2d6 acid damage.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "damage": "2d6",
+        "damage_type": "acid",
+        "range": "20 feet",
+        "usage": "combat"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Alchemist's Fire (flask)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_GreaT_Nhance_Fire.PNG",
+      "description": "This sticky, adhesive fluid ignites when exposed to air. As an action, you can throw this flask up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object, treating the alchemist's fire as an improvised weapon. On a hit, the target takes 1d4 fire damage at the start of each of its turns. A creature can end this damage by using its action to make a DC 10 Dexterity check to extinguish the flames.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "damage": "1d4",
+        "damage_type": "fire",
+        "range": "20 feet",
+        "duration": "until extinguished",
+        "save_dc": 10,
+        "usage": "combat"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Antitoxin (vial)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_herbal.PNG",
+      "description": "A creature that drinks this vial of liquid gains advantage on saving throws against poison for 1 hour. It confers no benefit to undead or constructs.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "effect": "advantage on poison saves",
+        "duration": "1 hour",
+        "usage": "consumable"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Arcane Focus, Crystal",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_01.PNG",
+      "description": "An arcane focus is a special item–an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item–designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["sorcerer", "warlock", "wizard"],
+        "usage": "spellcasting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Ball Bearings (bag of 1000)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "As an action, you can spill these tiny metal balls from their pouch to cover a level, square area that is 10 feet on a side. A creature moving across the covered area must succeed on a DC 10 Dexterity saving throw or fall prone. A creature moving through the area at half speed doesn't need to make the save.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "area": "10-foot square",
+        "save_dc": 10,
+        "effect": "prone",
+        "usage": "trap"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Barrel",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_00.PNG",
+      "description": "Capacity: 40 gallons liquid, 4 cubic feet solid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "40 gallons liquid, 4 cubic feet solid",
+        "usage": "storage"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Basket",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_01.PNG",
+      "description": "Capacity: 2 cubic feet/40 pounds of gear",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "2 cubic feet/40 pounds",
+        "usage": "storage"
+      },
+      "cost": 40
+    },
+    {
+      "name": "Bedroll",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_08.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "camping"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Bell",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_03.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "utility"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Blanket",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_08.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "camping"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Block and Tackle",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_04.PNG",
+      "description": "A set of pulleys with a cable threaded through them and a hook to attach to objects, a block and tackle allows you to hoist up to four times the weight you can normally lift.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "effect": "4x lifting capacity",
+        "usage": "utility"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Book",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_00.PNG",
+      "description": "A book might contain poetry, historical accounts, information pertaining to a particular field of lore, diagrams and notes on gnomish contraptions, or just about anything else that can be represented using text or pictures.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "knowledge"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Bottle, Glass",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "Capacity: 1.5 pints of liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1.5 pints",
+        "usage": "storage"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Bucket",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_02.PNG",
+      "description": "Capacity: 3 gallons liquid, 1/2 cubic foot solid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "3 gallons liquid, 1/2 cubic foot solid",
+        "usage": "storage"
+      },
+      "cost": 5
+    },
+    {
+      "name": "Caltrops (bag of 20)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "As an action, you can spread a bag of caltrops to cover a square area that is 5 feet on a side. Any creature that enters the area must succeed on a DC 15 Dexterity saving throw or stop moving this turn and take 1 piercing damage. Taking this damage reduces the creature's walking speed by 10 feet until the creature regains at least 1 hit point. A creature moving through the area at half speed doesn't need to make the save.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "area": "5-foot square",
+        "damage": "1 piercing",
+        "save_dc": 15,
+        "effect": "reduce speed by 10 feet",
+        "usage": "trap"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Candle",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_03.PNG",
+      "description": "For 1 hour, a candle sheds bright light in a 5-foot radius and dim light for an additional 5 feet.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "light": {
+          "bright": "5 feet",
+          "dim": "5 feet"
+        },
+        "duration": "1 hour",
+        "usage": "lighting"
+      },
+      "cost": 1
+    },
+    {
+      "name": "Case, Crossbow Bolt",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Bow_NArcher_A_02.PNG",
+      "description": "This wooden case can hold up to twenty crossbow bolts.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "20 bolts",
+        "usage": "storage"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Case, Map or Scroll",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_01.PNG",
+      "description": "This cylindrical leather case can hold up to ten rolled-up sheets of paper or five rolled-up sheets of parchment.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "10 sheets of paper or 5 sheets of parchment",
+        "usage": "storage"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Chain (10 feet)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Ore_iron.PNG",
+      "description": "A chain has 10 hit points. It can be burst with a successful DC 20 Strength check.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "length": "10 feet",
+        "hp": 10,
+        "break_dc": 20,
+        "usage": "utility"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Chalk (1 piece)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Stone_small.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "writing"
+      },
+      "cost": 1
+    },
+    {
+      "name": "Chest",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_03.PNG",
+      "description": "Capacity: 12 cubic feet/300 pounds of gear",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "12 cubic feet/300 pounds",
+        "usage": "storage"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Climber's Kit",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_01.PNG",
+      "description": "A climber's kit includes special pitons, boot tips, gloves, and a harness. You can use the climber's kit as an action to anchor yourself; when you do, you can't fall more than 25 feet from the point where you anchored yourself, and you can't climb more than 25 feet away from that point without undoing the anchor.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["pitons", "boot tips", "gloves", "harness"],
+        "effect": "25-foot fall protection",
+        "usage": "climbing"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Clothes, Common",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_00.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "clothing"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Clothes, Costume",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "clothing"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Clothes, Fine",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_00.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "clothing"
+      },
+      "cost": 1500
+    },
+    {
+      "name": "Clothes, Traveler's",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "clothing"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Component Pouch",
+      "image": "",
+      "description": "A component pouch is a small, watertight leather belt pouch that has compartments to hold all the material components and other special items you need to cast your spells, except for those components that have a specific cost (as indicated in a spell's description).",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "spellcasting",
+        "contents": "spell components"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Crowbar",
+      "image": "",
+      "description": "Using a crowbar grants advantage to Strength checks where the crowbar's leverage can be applied.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "effect": "advantage on Strength checks",
+        "usage": "utility"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Druidic Focus, Sprig of Mistletoe",
+      "image": "",
+      "description": "A druidic focus might be a sprig of mistletoe or holly, a wand or scepter made of yew or another special wood, a staff drawn whole out of a living tree, or a totem object incorporating feathers, fur, bones, and teeth from sacred animals. A druid can use such an object as a spellcasting focus.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["druid"],
+        "usage": "spellcasting"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Druidic Focus, Totem",
+      "image": "",
+      "description": "A druidic focus might be a sprig of mistletoe or holly, a wand or scepter made of yew or another special wood, a staff drawn whole out of a living tree, or a totem object incorporating feathers, fur, bones, and teeth from sacred animals. A druid can use such an object as a spellcasting focus.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["druid"],
+        "usage": "spellcasting"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Druidic Focus, Wooden Staff",
+      "image": "staff",
+      "description": "A druidic focus might be a sprig of mistletoe or holly, a wand or scepter made of yew or another special wood, a staff drawn whole out of a living tree, or a totem object incorporating feathers, fur, bones, and teeth from sacred animals. A druid can use such an object as a spellcasting focus.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["druid"],
+        "usage": "spellcasting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Druidic Focus, Yew Wand",
+      "image": "wand",
+      "description": "A druidic focus might be a sprig of mistletoe or holly, a wand or scepter made of yew or another special wood, a staff drawn whole out of a living tree, or a totem object incorporating feathers, fur, bones, and teeth from sacred animals. A druid can use such an object as a spellcasting focus.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["druid"],
+        "usage": "spellcasting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Fishing Tackle",
+      "image": "",
+      "description": "This kit includes a wooden rod, silken line, corkwood bobbers, steel hooks, lead sinkers, velvet lures, and narrow netting.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["wooden rod", "silken line", "corkwood bobbers", "steel hooks", "lead sinkers", "velvet lures", "narrow netting"],
+        "usage": "fishing"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Flask",
+      "image": "",
+      "description": "Capacity: 1 pint liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 pint",
+        "usage": "storage"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Tankard",
+      "image": "",
+      "description": "Capacity: 1 pint liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 pint",
+        "usage": "storage"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Grappling Hook",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "climbing"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Hammer",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "tool"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Hammer, Sledge",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "tool"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Healer's Kit",
+      "image": "",
+      "description": "This kit is a leather pouch containing bandages, salves, and splints. The kit has ten uses. As an action, you can expend one use of the kit to stabilize a creature that has 0 hit points, without needing to make a Wisdom (Medicine) check.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["bandages", "salves", "splints"],
+        "uses": 10,
+        "effect": "stabilize creature at 0 HP",
+        "usage": "healing"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Holy Symbol, Amulet",
+      "image": "",
+      "description": "A holy symbol is a representation of a god or pantheon. It might be an amulet depicting a symbol representing a deity, the same symbol carefully engraved or inlaid as an emblem on a shield, or a tiny box holding a fragment of a sacred relic. Appendix PH-B \"Fantasy-Historical Pantheons\" lists the symbols commonly associated with many gods in the multiverse. A cleric or paladin can use a holy symbol as a spellcasting focus. To use the symbol in this way, the caster must hold it in hand, wear it visibly, or bear it on a shield.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["cleric", "paladin"],
+        "usage": "spellcasting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Holy Symbol, Emblem",
+      "image": "",
+      "description": "A holy symbol is a representation of a god or pantheon. It might be an amulet depicting a symbol representing a deity, the same symbol carefully engraved or inlaid as an emblem on a shield, or a tiny box holding a fragment of a sacred relic. Appendix PH-B \"Fantasy-Historical Pantheons\" lists the symbols commonly associated with many gods in the multiverse. A cleric or paladin can use a holy symbol as a spellcasting focus. To use the symbol in this way, the caster must hold it in hand, wear it visibly, or bear it on a shield.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["cleric", "paladin"],
+        "usage": "spellcasting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Holy Symbol, Reliquary",
+      "image": "",
+      "description": "A holy symbol is a representation of a god or pantheon. It might be an amulet depicting a symbol representing a deity, the same symbol carefully engraved or inlaid as an emblem on a shield, or a tiny box holding a fragment of a sacred relic. Appendix PH-B \"Fantasy-Historical Pantheons\" lists the symbols commonly associated with many gods in the multiverse. A cleric or paladin can use a holy symbol as a spellcasting focus. To use the symbol in this way, the caster must hold it in hand, wear it visibly, or bear it on a shield.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "type": "spellcasting_focus",
+        "classes": ["cleric", "paladin"],
+        "usage": "spellcasting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Holy Water (flask)",
+      "image": "",
+      "description": "As an action, you can splash the contents of this flask onto a creature within 5 feet of you or throw it up to 20 feet, shattering it on impact. In either case, make a ranged attack against a target creature, treating the holy water as an improvised weapon. If the target is a fiend or undead, it takes 2d6 radiant damage. A cleric or paladin may create holy water by performing a special ritual. The ritual takes 1 hour to perform, uses 25 gp worth of powdered silver, and requires the caster to expend a 1st-level spell slot.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "damage": "2d6",
+        "damage_type": "radiant",
+        "range": "20 feet",
+        "targets": ["fiend", "undead"],
+        "usage": "combat"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Hourglass",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "timekeeping"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Hunting Trap",
+      "image": "",
+      "description": "When you use your action to set it, this trap forms a saw-toothed steel ring that snaps shut when a creature steps on a pressure plate in the center. The trap is affixed by a heavy chain to an immobile object, such as a tree or a spike driven into the ground. A creature that steps on the plate must succeed on a DC 13 Dexterity saving throw or take 1d4 piercing damage and stop moving. Thereafter, until the creature breaks free of the trap, its movement is limited by the length of the chain (typically 3 feet long). A creature can use its action to make a DC 13 Strength check, freeing itself or another creature within its reach on a success. Each failed check deals 1 piercing damage to the trapped creature.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "damage": "1d4 piercing",
+        "save_dc": 13,
+        "effect": "restrained",
+        "chain_length": "3 feet",
+        "usage": "trap"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Ink (1 ounce bottle)",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "writing"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Ink Pen",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "writing"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Jug",
+      "image": "mug",
+      "description": "Capacity: 1 gallon liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 gallon",
+        "usage": "storage"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Pitcher",
+      "image": "mug",
+      "description": "Capacity: 1 gallon liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 gallon",
+        "usage": "storage"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Lamp",
+      "image": "",
+      "description": "A lamp casts bright light in a 15-foot radius and dim light for an additional 30 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "light": {
+          "bright": "15 feet",
+          "dim": "30 feet"
+        },
+        "duration": "6 hours",
+        "fuel": "1 pint oil",
+        "usage": "lighting"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Lantern, Bullseye",
+      "image": "lantern",
+      "description": "A bullseye lantern casts bright light in a 60-foot cone and dim light for an additional 60 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "light": {
+          "bright": "60-foot cone",
+          "dim": "60 feet"
+        },
+        "duration": "6 hours",
+        "fuel": "1 pint oil",
+        "usage": "lighting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Lantern, Hooded",
+      "image": "lantern",
+      "description": "A hooded lantern casts bright light in a 30-foot radius and dim light for an additional 30 feet. Once lit, it burns for 6 hours on a flask (1 pint) of oil. As an action, you can lower the hood, reducing the light to dim light in a 5-foot radius.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "light": {
+          "bright": "30 feet",
+          "dim": "30 feet",
+          "hooded": "5 feet dim"
+        },
+        "duration": "6 hours",
+        "fuel": "1 pint oil",
+        "usage": "lighting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Lock",
+      "image": "",
+      "description": "A key is provided with the lock. Without the key, a creature proficient with thieves' tools can pick this lock with a successful DC 15 Dexterity check. Your GM may decide that better locks are available for higher prices.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "pick_dc": 15,
+        "usage": "security"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Magnifying Glass",
+      "image": "",
+      "description": "This lens allows a closer look at small objects. It is also useful as a substitute for flint and steel when starting fires. Lighting a fire with a magnifying glass requires light as bright as sunlight to focus, tinder to ignite, and about 5 minutes for the fire to ignite. A magnifying glass grants advantage on any ability check made to appraise or inspect an item that is small or highly detailed.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "effect": "advantage on appraise/inspect checks",
+        "usage": "utility"
+      },
+      "cost": 10000
+    },
+    {
+      "name": "Manacles",
+      "image": "manacles",
+      "description": "These metal restraints can bind a Small or Medium creature. Escaping the manacles requires a successful DC 20 Dexterity check. Breaking them requires a successful DC 20 Strength check. Each set of manacles comes with one key. Without the key, a creature proficient with thieves' tools can pick the manacles' lock with a successful DC 15 Dexterity check. Manacles have 15 hit points.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "escape_dc": 20,
+        "break_dc": 20,
+        "pick_dc": 15,
+        "hp": 15,
+        "size": ["Small", "Medium"],
+        "usage": "restraint"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Mess Kit",
+      "image": "",
+      "description": "This tin box contains a cup and simple cutlery. The box clamps together, and one side can be used as a cooking pan and the other as a plate or shallow bowl.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["cup", "cutlery", "cooking pan", "plate/bowl"],
+        "usage": "cooking"
+      },
+      "cost": 20
+    },
+    {
+      "name": "Mirror, Steel",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "utility"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Oil (flask)",
+      "image": "",
+      "description": "Oil usually comes in a clay flask that holds 1 pint. As an action, you can splash the oil in this flask onto a creature within 5 feet of you or throw it up to 20 feet, shattering it on impact. Make a ranged attack against a target creature or object, treating the oil as an improvised weapon. On a hit, the target is covered in oil. If the target takes any fire damage before the oil dries (after 1 minute), the target takes an additional 5 fire damage from the burning oil. You can also pour a flask of oil on the ground to cover a 5-foot-square area, provided that the surface is level. If lit, the oil burns for 2 rounds and deals 5 fire damage to any creature that enters the area or ends its turn in the area. A creature can take this damage only once per turn.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 pint",
+        "damage": "5 fire",
+        "range": "20 feet",
+        "area": "5-foot square",
+        "duration": "2 rounds",
+        "usage": "combat"
+      },
+      "cost": 10
+    },
+    {
+      "name": "Paper (one sheet)",
+      "image": "paper",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "writing"
+      },
+      "cost": 20
+    },
+    {
+      "name": "Parchment (one sheet)",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "writing"
+      },
+      "cost": 10
+    },
+    {
+      "name": "Perfume (vial)",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "cosmetic"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Pick, Miner's",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "mining"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Piton",
+      "image": "",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "climbing"
+      },
+      "cost": 5
+    },
+    {
+      "name": "Poison, Basic (vial)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_lesser_toxic.PNG",
+      "description": "You can use the poison in this vial to coat one slashing or piercing weapon or up to three pieces of ammunition. Applying the poison takes an action. A creature hit by the poisoned weapon or ammunition must make a DC 10 Constitution saving throw or take 1d4 poison damage. Once applied, the poison retains potency for 1 minute before drying.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "damage": "1d4",
+        "damage_type": "poison",
+        "save_dc": 10,
+        "duration": "1 minute",
+        "usage": "combat"
+      },
+      "cost": 10000
+    },
+    {
+      "name": "Pole (10-foot)",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_A_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "length": "10 feet",
+        "usage": "utility"
+      },
+      "cost": 5
+    },
+    {
+      "name": "Pot, Iron",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_00.PNG",
+      "description": "Capacity: 1 gallon liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 gallon",
+        "usage": "cooking"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Pouch",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_10.PNG",
+      "description": "Capacity: 1/5 cubic foot/6 pounds of gear. A cloth or leather pouch can hold up to 20 sling bullets or 50 blowgun needles, among other things. A compartmentalized pouch for holding spell components is called a component pouch (described earlier in this section).",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1/5 cubic foot/6 pounds",
+        "usage": "storage"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Quiver",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Quiver_Newbie_A_01.PNG",
+      "description": "A quiver can hold up to 20 arrows.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "20 arrows",
+        "usage": "storage"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Ram, Portable",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_B_01.PNG",
+      "description": "You can use a portable ram to break down doors. When doing so, you gain a +4 bonus on the Strength check. One other character can help you use the ram, giving you advantage on this check.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "bonus": "+4",
+        "effect": "advantage with help",
+        "usage": "utility"
+      },
+      "cost": 400
+    },
+    {
+      "name": "Rations (1 day)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Food_00.PNG",
+      "description": "Rations consist of dry foods suitable for extended travel, including jerky, dried fruit, hardtack, and nuts.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["jerky", "dried fruit", "hardtack", "nuts"],
+        "usage": "food"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Robes",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Peasant_A_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "clothing"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Rope, Hempen (50 feet)",
+      "image": "rope",
+      "description": "Rope, whether made of hemp or silk, has 2 hit points and can be burst with a DC 17 Strength check.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "length": "50 feet",
+        "hp": 2,
+        "break_dc": 17,
+        "usage": "utility"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Rope, Silk (50 feet)",
+      "image": "rope",
+      "description": "Rope, whether made of hemp or silk, has 2 hit points and can be burst with a DC 17 Strength check.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "length": "50 feet",
+        "hp": 2,
+        "break_dc": 17,
+        "usage": "utility"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Sack",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_10.PNG",
+      "description": "Capacity: 1 cubic foot/30 pounds of gear",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "1 cubic foot/30 pounds",
+        "usage": "storage"
+      },
+      "cost": 1
+    },
+    {
+      "name": "Scale, Merchant's",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_01.PNG",
+      "description": "A scale includes a small balance, pans, and a suitable assortment of weights up to 2 pounds. With it, you can measure the exact weight of small objects, such as raw precious metals or trade goods, to help determine their worth.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "max_weight": "2 pounds",
+        "usage": "measurement"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Sealing Wax",
+      "image": "candle",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "sealing"
+      },
+      "cost": 40
+    },
+    {
+      "name": "Shovel",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Staff_Newbie_C_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "digging"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Signal Whistle",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_03.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "signaling"
+      },
+      "cost": 5
+    },
+    {
+      "name": "Signet Ring",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "identification"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Soap",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "hygiene"
+      },
+      "cost": 2
+    },
+    {
+      "name": "Spellbook",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_00.PNG",
+      "description": "Essential for wizards, a spellbook is a leather-bound tome with 100 blank vellum pages suitable for recording spells.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "pages": 100,
+        "usage": "spellcasting"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Spikes, Iron (10)",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Weapons/T_Inv_Dagger_Newbie_A_01.PNG",
+      "description": "",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "quantity": 10,
+        "usage": "climbing"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Spyglass",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "Objects viewed through a spyglass are magnified to twice their size.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "RARE",
+      "gear": {
+        "magnification": "2x",
+        "usage": "observation"
+      },
+      "cost": 100000
+    },
+    {
+      "name": "Tent, two-person",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_ChesT_Nhance_08.PNG",
+      "description": "A simple and portable canvas shelter suitable for 2 persons",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "2 persons",
+        "usage": "shelter"
+      },
+      "cost": 200
+    },
+    {
+      "name": "Tinderbox",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_03.PNG",
+      "description": "This small container holds flint, fire steel, and tinder (usually dry cloth soaked in light oil) used to kindle a fire. Using it to light a torch–or anything else with abundant, exposed fuel–takes an action. Lighting any other fire takes 1 minute.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "contents": ["flint", "fire steel", "tinder"],
+        "usage": "fire starting"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Torch",
+      "image": "torch",
+      "description": "A torch burns for 1 hour, providing bright light in a 20-foot radius and dim light for an additional 20 feet. If you make a melee attack with a burning torch and hit, it deals 1 fire damage.",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "light": {
+          "bright": "20 feet",
+          "dim": "20 feet"
+        },
+        "duration": "1 hour",
+        "damage": "1 fire",
+        "usage": "lighting"
+      },
+      "cost": 1
+    },
+    {
+      "name": "Vial",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "Capacity: 4 ounces of liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "4 ounces",
+        "usage": "storage"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Waterskin",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "Capacity: 4 pints of liquid",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "capacity": "4 pints",
+        "usage": "storage"
+      },
+      "cost": 20
+    },
+    {
+      "name": "Whetstone",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_01.PNG",
+      "description": "A sharpening stone used to sharpen knives and other cutting tools",
+      "category": "ADVENTURING_GEAR",
+      "rarity": "COMMON",
+      "gear": {
+        "usage": "maintenance"
+      },
+      "cost": 1
+    },
+    {
+      "name": "Calligrapher's supplies",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_00.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "calligraphy",
+        "usage": "crafting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Carpenter's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_00.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "carpentry",
+        "usage": "crafting"
+      },
+      "cost": 800
+    },
+    {
+      "name": "Cartographer's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_01.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "cartography",
+        "usage": "crafting"
+      },
+      "cost": 1500
+    },
+    {
+      "name": "Cobbler's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_00.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "cobbling",
+        "usage": "crafting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Cook's utensils",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_MeaT_Nhance_00.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "cooking",
+        "usage": "crafting"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Glassblower's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "glassblowing",
+        "usage": "crafting"
+      },
+      "cost": 3000
+    },
+    {
+      "name": "Jeweler's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Ore_gold.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "jewelry",
+        "usage": "crafting"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Leatherworker's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Leather_01.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "leatherworking",
+        "usage": "crafting"
+      },
+      "cost": 500
+    },
+    {
+      "name": "Mason's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Stone_brick.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "masonry",
+        "usage": "crafting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Painter's supplies",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_02.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "painting",
+        "usage": "crafting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Potter's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Stone_carved.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "pottery",
+        "usage": "crafting"
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Smith's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Ore_iron.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "smithing",
+        "usage": "crafting"
+      },
+      "cost": 2000
+    },
+    {
+      "name": "Tinker's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_01.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "tinkering",
+        "usage": "crafting"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Weaver's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_03.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "weaving",
+        "usage": "crafting"
+      },
+      "cost": 10
+    },
+    {
+      "name": "Woodcarver's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Wood_01.PNG",
+      "description": "These special tools include the items needed to pursue a craft or trade. Proficiency with a set of artisan's tools lets you add your proficiency bonus to any ability checks you make using the tools in your craft. Each type of artisan's tools requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "artisan_tools",
+        "proficiency": "woodcarving",
+        "usage": "crafting"
+      },
+      "cost": 100
+    },
+    {
+      "name": "Dice set",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "If you are proficient with a gaming set, you can add your proficiency bonus to ability checks you make to play a game with that set. Each type of gaming set requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "gaming_set",
+        "proficiency": "dice",
+        "usage": "entertainment"
+      },
+      "cost": 10
+    },
+    {
+      "name": "Playing card set",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_03.PNG",
+      "description": "If you are proficient with a gaming set, you can add your proficiency bonus to ability checks you make to play a game with that set. Each type of gaming set requires a separate proficiency.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "gaming_set",
+        "proficiency": "cards",
+        "usage": "entertainment"
+      },
+      "cost": 50
+    },
+    {
+      "name": "Navigator's tools",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Scroll_02.PNG",
+      "description": "This set of instruments is used for navigation at sea. Proficiency with navigator's tools lets you chart a ship's course and follow navigation charts. In addition, these tools allow you to add your proficiency bonus to any ability check you make to avoid getting lost at sea.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "specialty_tools",
+        "proficiency": "navigation",
+        "usage": "navigation"
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Poisoner's kit",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_toxic.PNG",
+      "description": "A poisoner's kit includes the vials, chemicals, and other equipment necessary for the creation of poisons. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to craft or use poisons.",
+      "category": "TOOLS",
+      "rarity": "COMMON",
+      "tools": {
+        "type": "specialty_tools",
+        "proficiency": "poison",
+        "usage": "crafting"
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Adamantine Chain Mail",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Crusader_A_01.PNG",
+      "description": "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
+      "category": "ARMOR",
+      "rarity": "UNCOMMON",
+      "classification": "Medium Armor",
+      "armor": {
+        "ac": "14 + Dex"
+      },
+      "cost": 50000
+    },
+    {
+      "name": "Adamantine Breastplate",
+      "image": "/art/item-icons/Equipment_Icons/Opaque/Chest/T_Inv_Chest_Crusader_A_03.PNG",
+      "description": "This suit of armor is reinforced with adamantine, one of the hardest substances in existence. While you're wearing it, any critical hit against you becomes a normal hit.",
+      "category": "ARMOR",
+      "rarity": "UNCOMMON",
+      "classification": "Heavy Armor",
+      "armor": {
+        "ac": "16"
+      },
+      "cost": 50000
+    },
+    {
+      "name": "Greataxe",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d12",
+        "damage_type": "slashing",
+        "properties": ["heavy", "two-handed"]
+      },
+      "cost": 3000
+    },
+    {
+      "name": "Greatsword",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "2d6",
+        "damage_type": "slashing",
+        "properties": ["heavy", "two-handed"]
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Halberd",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d10",
+        "damage_type": "slashing",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      "cost": 2000
+    },
+    {
+      "name": "Lance",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d12",
+        "damage_type": "piercing",
+        "properties": ["reach", "special"]
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Longsword",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "slashing",
+        "properties": ["versatile (1d10)"]
+      },
+      "cost": 1500
+    },
+    {
+      "name": "Maul",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "2d6",
+        "damage_type": "bludgeoning",
+        "properties": ["heavy", "two-handed"]
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Morningstar",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "properties": []
+      },
+      "cost": 1500
+    },
+    {
+      "name": "Pike",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d10",
+        "damage_type": "piercing",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      "cost": 500
+    },
+    {
+      "name": "Rapier",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "properties": ["finesse"]
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Scimitar",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "slashing",
+        "properties": ["finesse", "light"]
+      },
+      "cost": 2500
+    },
+    {
+      "name": "Shortsword",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "properties": ["finesse", "light"]
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Trident",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d7",
+        "damage_type": "piercing",
+        "properties": ["thrown (range 20/60)", "versatile (1d8)"]
+      },
+      "cost": 500
+    },
+    {
+      "name": "War pick",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "properties": []
+      },
+      "cost": 500
+    },
+    {
+      "name": "Warhammer",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "bludgeoning",
+        "properties": ["versatile (1d10)"]
+      },
+      "cost": 1500
+    },
+    {
+      "name": "Whip",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Melee Weapons",
+      "weapon": {
+        "damage": "1d4",
+        "damage_type": "slashing",
+        "properties": ["finesse", "reach"]
+      },
+      "cost": 200
+    },
+    {
+      "name": "Blowgun",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Ranged Weapons",
+      "weapon": {
+        "damage": "1",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 25/100)", "loading"]
+      },
+      "cost": 1000
+    },
+    {
+      "name": "Hand Crossbow",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Ranged Weapons",
+      "weapon": {
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 30/120)", "light", "loading"]
+      },
+      "cost": 7500
+    },
+    {
+      "name": "Heavy Crossbow",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Ranged Weapons",
+      "weapon": {
+        "damage": "1d10",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 100/400)", "heavy", "loading", "two-handed"]
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Longbow",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Ranged Weapons",
+      "weapon": {
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "properties": ["ammunition (range 150/600)", "heavy", "loading", "two-handed"]
+      },
+      "cost": 5000
+    },
+    {
+      "name": "Net",
+      "image": "",
+      "description": "A Large or smaller creature hit by a net is restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When you use an action, bonus action, or reaction to attack with a net, you can make only one attack regardless of the number of attacks you can normally make.",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Martial Ranged Weapons",
+      "weapon": {
+        "damage": "",
+        "damage_type": "",
+        "properties": ["special", "thrown (range 5/15)"]
+      },
+      "cost": 100
+    },
+    {
+      "name": "Arrows (20)",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Ammunition",
+      "weapon": {
+        "damage": "",
+        "damage_type": "piercing",
+        "properties": []
+      },
+      "cost": 100
+    },
+    {
+      "name": "Blowgun Needles (50)",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Ammunition",
+      "weapon": {
+        "damage": "",
+        "damage_type": "piercing",
+        "properties": []
+      },
+      "cost": 100
+    },
+    {
+      "name": "Crossbow Bolts (20)",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Ammunition",
+      "weapon": {
+        "damage": "",
+        "damage_type": "piercing",
+        "properties": []
+      },
+      "cost": 100
+    },
+    {
+      "name": "Sling Bullets (20)",
+      "image": "",
+      "description": "",
+      "category": "WEAPON",
+      "rarity": "COMMON",
+      "classification": "Ammunition",
+      "weapon": {
+        "damage": "",
+        "damage_type": "bludgeoning",
+        "properties": []
+      },
+      "cost": 4
+    },
+    {
+      "name": "Assassin's Blood",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must make a DC 10 Constitution saving throw. On a failed save, it takes 6 (1d12) poison damage and is poisoned for 24 hours. On a successful save, the creature takes half damage and isn't poisoned.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 15000
+    },
+    {
+      "name": "Burnt Othur Fumes",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 13 Constitution saving throw or take 10 (3d6) poison damage, and must repeat the saving throw at the start of each of its turns. On each successive failed save, the character takes 3 (1d6) poison damage. After three successful saves, the poison ends.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 50000
+    },
+    {
+      "name": "Crawler Mucus",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This poison must be harvested from a dead or incapacitated crawler. A creature subjected to this poison must succeed on a DC 13 Constitution saving throw or be poisoned for 1 minute. The poisoned creature is paralyzed. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 20000
+    },
+    {
+      "name": "Drow Poison",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This poison is typically made only by the drow, and only in a place far removed from sunlight. A creature subjected to this poison must succeed on a DC 13 Constitution saving throw or be poisoned for 1 hour. If the saving throw fails by 5 or more, the creature is also unconscious while poisoned in this way. The creature wakes up if it takes damage or if another creature takes an action to shake it awake.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 20000
+    },
+    {
+      "name": "Essence of Ether",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 15 Constitution saving throw or become poisoned for 8 hours. The poisoned creature is unconscious. The creature wakes up if it takes damage or if another creature takes an action to shake it awake.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 30000
+    },
+    {
+      "name": "Malice",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 15 Constitution saving throw or become poisoned for 1 hour. The poisoned creature is blinded.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 25000
+    },
+    {
+      "name": "Midnight Tears",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature that ingests this poison suffers no effect until the stroke of midnight. If the poison has not been neutralized before then, the creature must succeed on a DC 17 Constitution saving throw, taking 31 (9d6) poison damage on a failed save, or half as much damage on a successful one.",
+      "category": "POISONS",
+      "rarity": "RARE",
+      "cost": 150000
+    },
+    {
+      "name": "Oil of Taggit",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 13 Constitution saving throw or become poisoned for 24 hours. The poisoned creature is unconscious. The creature wakes up if it takes damage.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 40000
+    },
+    {
+      "name": "Pale Tincture",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 16 Constitution saving throw or take 3 (1d6) poison damage and become poisoned. The poisoned creature must repeat the saving throw every 24 hours, taking 3 (1d6) poison damage on a failed save. Until this poison ends, the damage the poison deals can't be healed by any means. After seven successful saving throws, the effect ends and the creature can heal normally.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 25000
+    },
+    {
+      "name": "Purple Worm Poison",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This poison must be harvested from a dead or incapacitated purple worm. A creature subjected to this poison must make a DC 19 Constitution saving throw, taking 42 (12d6) poison damage on a failed save, or half as much damage on a successful one.",
+      "category": "POISONS",
+      "rarity": "RARE",
+      "cost": 200000
+    },
+    {
+      "name": "Serpent Venom",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This poison must be harvested from a dead or incapacitated giant poisonous snake. A creature subjected to this poison must succeed on a DC 11 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 20000
+    },
+    {
+      "name": "Torpor",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 15 Constitution saving throw or become poisoned for 4d6 hours. The poisoned creature is incapacitated.",
+      "category": "POISONS",
+      "rarity": "RARE",
+      "cost": 60000
+    },
+    {
+      "name": "Truth Serum",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A creature subjected to this poison must succeed on a DC 11 Constitution saving throw or become poisoned for 1 hour. The poisoned creature can't knowingly speak a lie, as if under the effect of a zone of truth spell.",
+      "category": "POISONS",
+      "rarity": "UNCOMMON",
+      "cost": 15000
+    },
+    {
+      "name": "Wyvern Poison",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This poison must be harvested from a dead or incapacitated wyvern. A creature subjected to this poison must make a DC 15 Constitution saving throw, taking 24 (7d6) poison damage on a failed save, or half as much damage on a successful one.",
+      "category": "POISONS",
+      "rarity": "RARE",
+      "cost": 120000
+    },
+    {
+      "name": "Potion of Healing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "You regain 2d4 + 2 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+      "category": "POTIONS_OILS",
+      "rarity": "COMMON",
+      "cost": 5000
+    },
+    {
+      "name": "Philter of Love",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "The next time you see a creature within 10 minutes after drinking this philter, you become charmed by that creature for 1 hour. If the creature is of a species and gender you are normally attracted to, you regard it as your true love while you are charmed. This potion's rose-hued, effervescent liquid contains one easy-to-miss bubble shaped like a heart.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 9000
+    },
+    {
+      "name": "Potion of Poison",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This concoction looks, smells, and tastes like a potion of healing or other beneficial potion. However, it is actually poison masked by illusion magic. An identify spell reveals its true nature.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 10000
+    },
+    {
+      "name": "Potion of Greater Healing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "You regain 4d4 + 4 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 15000
+    },
+    {
+      "name": "Potion of Climbing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking the bottle fails to mix the colors.",
+      "category": "POTIONS_OILS",
+      "rarity": "COMMON",
+      "cost": 18000
+    },
+    {
+      "name": "Potion of Heroism",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the bless spell (no concentration required). This blue potion bubbles and steams as if boiling.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 18000
+    },
+    {
+      "name": "Potion of Invisibility",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This potion's container looks empty but feels as though it holds liquid. When you drink it, you become invisible for 1 hour. Anything you wear or carry is invisible with you. The effect ends early if you attack or cast a spell.",
+      "category": "POTIONS_OILS",
+      "rarity": "VERY_RARE",
+      "cost": 18000
+    },
+    {
+      "name": "Potion of Mind Reading",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain the effect of the detect thoughts spell (save DC 13). The potion's dense, purple liquid has an ovoid cloud of pink floating in it.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 18000
+    },
+    {
+      "name": "Potion of Water Breathing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "You can breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 18000
+    },
+    {
+      "name": "Potion of Animal Friendship",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you can cast the animal friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 20000
+    },
+    {
+      "name": "Potion of Diminution",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain the 'reduce' effect of the enlarge/reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 27000
+    },
+    {
+      "name": "Potion of Growth",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain the 'enlarge' effect of the enlarge/reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 27000
+    },
+    {
+      "name": "Potion of Gaseous Form",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain the effect of the gaseous form spell for 1 hour (no concentration required) or until you end the effect as a bonus action. This potion's container seems to hold fog that moves and pours like water.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 30000
+    },
+    {
+      "name": "Potion of Resistance",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain resistance to one type of damage for 1 hour. The GM chooses the type or determines it randomly from the options below. (d10: 1-Acid, 2-Cold, 3-Fire, 4-Force, 5-Lightning, 6-Necrotic, 7-Poison, 8-Psychic, 9-Radiant, 10-Thunder)",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 30000
+    },
+    {
+      "name": "Potion of Superior Healing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "You regain 8d4 + 8 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 45000
+    },
+    {
+      "name": "Potion of Supreme Healing",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Potions_bottle_A.PNG",
+      "description": "You regain 10d4 + 20 hit points when you drink this potion. The potion's red liquid glimmers when agitated.",
+      "category": "POTIONS_OILS",
+      "rarity": "VERY_RARE",
+      "cost": 135000
+    },
+    {
+      "name": "Potion of Speed",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain the effect of the haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+      "category": "POTIONS_OILS",
+      "rarity": "VERY_RARE",
+      "cost": 40000
+    },
+    {
+      "name": "Oil of Slipperiness",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This sticky black unguent is thick and heavy in the container, but it flows quickly when poured. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of a freedom of movement spell for 8 hours. Alternatively, the oil can be poured on the ground as an action, where it covers a 10-foot square, duplicating the effect of the grease spell in that area for 8 hours.",
+      "category": "POTIONS_OILS",
+      "rarity": "UNCOMMON",
+      "cost": 48000
+    },
+    {
+      "name": "Potion of Flying",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "When you drink this potion, you gain a flying speed equal to your walking speed for 1 hour and can hover. If you're in the air when the potion wears off, you fall unless you have some other means of staying aloft. This potion's clear liquid floats at the top of its container and has cloudy white impurities drifting in it.",
+      "category": "POTIONS_OILS",
+      "rarity": "VERY_RARE",
+      "cost": 50000
+    },
+    {
+      "name": "Oil of Etherealness",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "Beads of this cloudy gray oil form on the outside of its container and quickly evaporate. The oil can cover a Medium or smaller creature, along with the equipment it's wearing and carrying (one additional vial is required for each size category above Medium). Applying the oil takes 10 minutes. The affected creature then gains the effect of the etherealness spell for 1 hour.",
+      "category": "POTIONS_OILS",
+      "rarity": "RARE",
+      "cost": 192000
+    },
+    {
+      "name": "Oil of Sharpness",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This clear, gelatinous oil sparkles with tiny, ultrathin silver shards. The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. Applying the oil takes 1 minute. For 1 hour, the coated item is magical and has a +3 bonus to attack and damage rolls.",
+      "category": "POTIONS_OILS",
+      "rarity": "VERY_RARE",
+      "cost": 320000
+    },
+    {
+      "name": "Feather Token Anchor",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This tiny object looks like a feather. Different types of feather tokens exist, each with a different single-use effect. Effect: You can use an action to touch the token to a boat or ship. For the next 24 hours, the vessel can't be moved by any means. Touching the token to the vessel again ends the effect. When the effect ends, the token disappears.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 5000
+    },
+    {
+      "name": "Dust of Dryness (1 pellet)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This small packet contains 1d6 + 4 pinches of dust. You can use an action to sprinkle a pinch of it over water. The dust turns a cube of water 15 feet on a side into one marble-sized pellet, which floats or rests near where the dust was sprinkled. The pellet's weight is negligible. Someone can use an action to smash the pellet against a hard surface, causing the pellet to shatter and release the water the dust absorbed. Doing so ends that pellet's magic. An elemental composed mostly of water that is exposed to a pinch of the dust must make a DC 13 Constitution saving throw, taking 10d6 necrotic damage on a failed save, or half as much damage on a successful one.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 12000
+    },
+    {
+      "name": "Feather Token Fan",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This tiny object looks like a feather. Different types of feather tokens exist, each with a different single-use effect. Effect: If you are on a boat or ship, you can use an action to toss the token up to 10 feet in the air. The token disappears, and a giant flapping fan takes its place. The fan floats and creates a wind strong enough to fill the sails of one ship, increasing its speed by 5 miles per hour for 8 hours. You can dismiss the fan as an action.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 25000
+    },
+    {
+      "name": "Feather Token Whip",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This tiny object looks like a feather. Different types of feather tokens exist, each with a different single-use effect. Effect: You can use an action to throw the token to a point within 10 feet of you. The token disappears, and a floating whip takes its place. You can then use a Bonus Action to make a melee spell Attack against a creature within 10 feet of the whip, with an Attack bonus of +9. On a hit, the target takes 1d6 + 5 force damage. As a Bonus Action on Your Turn, you can direct the whip to fly up to 20 feet and repeat the Attack against a creature within 10 feet of it. The whip disappears after 1 hour, when you use an action to dismiss it, or when you are incapacitated or die.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 25000
+    },
+    {
+      "name": "Dust of Disappearance",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "Found in a small packet, this powder resembles very fine sand. There is enough of it for one use. When you use an action to throw the dust into the air, you and each creature and object within 10 feet of you become invisible for 2d4 minutes. The duration is the same for all subjects, and the dust is consumed when its magic takes effect. If a creature affected by the dust attacks or casts a spell, the invisibility ends for that creature.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 30000
+    },
+    {
+      "name": "Universal Solvent",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This tube holds milky liquid with a strong alcohol smell. You can use an action to pour the contents of the tube onto a surface within reach. The liquid instantly dissolves up to 1 square foot of adhesive it touches, including sovereign glue.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "LEGENDARY",
+      "cost": 30000
+    },
+    {
+      "name": "Necklace of Fireballs",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This necklace has 1d6 + 3 beads hanging from it. You can use an action to detach a bead and throw it up to 60 feet away. When it reaches the end of its trajectory, the bead detonates as a 3rd-level fireball spell (save DC 15). You can hurl multiple beads, or even the whole necklace, as one action. When you do so, increase the level of the fireball by 1 for each bead beyond the first.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Marvelous Pigments",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "Typically found in 1d4 pots inside a fine wooden box with a brush (weighing 1 pound in total), these pigments allow you to create three-dimensional objects by painting them in two dimensions. The paint flows from the brush to form the desired object as you concentrate on its image.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 20000
+    },
+    {
+      "name": "Sovereign Glue",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "This viscous, milky-white substance can form a permanent adhesive bond between any two objects. It must be stored in a jar or flask that has been coated inside with oil of slipperiness. When found, a container contains 1d6 + 1 ounces. One ounce of the glue can cover a 1-foot square surface. The glue takes 1 minute to set. Once it has done so, the bond it creates can be broken only by the application of universal solvent or oil of etherealness, or with a wish spell.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "LEGENDARY",
+      "cost": 40000
+    },
+    {
+      "name": "Helm of Comprehending Languages",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "While wearing this helm, you can use an action to cast the comprehend languages spell from it at will.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 50000
+    },
+    {
+      "name": "Golden Lion",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. The creature is friendly to you and your companions. It understands your languages and obeys your spoken commands. If you issue no commands, the creature defends itself but takes no other actions. The creature exists for a duration specific to each figurine. At the end of the duration, the creature reverts to its figurine form. It reverts to a figurine early if it drops to 0 hit points or if you use an action to speak the command word again while touching it. When the creature becomes a figurine again, its property can't be used again until a certain amount of time has passed, as specified in the figurine's description. Golden Lions. These gold statuettes of lions are always created in pairs. You can use one figurine or both simultaneously. Each can become a lion for up to 1 hour. Once a lion has been used, it can't be used again until 7 days have passed.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 60000
+    },
+    {
+      "name": "Ivory Goat (Travail)",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. The goat of travail becomes a giant goat for up to 3 hours. Once it has been used, it can't be used again until 30 days have passed.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 40000
+    },
+    {
+      "name": "Horn of Blasting",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "You can use an action to speak the horn's command word and then blow the horn, which emits a thunderous blast in a 30-foot cone that is audible 600 feet away. Each creature in the cone must make a DC 15 Constitution saving throw. On a failed save, a creature takes 5d6 thunder damage and is deafened for 1 minute. On a successful save, a creature takes half as much damage and isn't deafened. Creatures and objects made of glass or crystal have disadvantage on the saving throw and take 10d6 thunder damage instead of 5d6. Each use of the horn's magic has a 20 percent chance of causing the horn to explode. The explosion deals 10d6 fire damage to the blower and destroys the horn.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 45000
+    },
+    {
+      "name": "Dust of Sneezing and Choking",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "Found in a small container, this powder resembles very fine sand. It appears to be dust of disappearance, and an identify spell reveals it to be such. There is enough of it for one use. When you use an action to throw a handful of the dust into the air, you and each creature that needs to breathe within 30 feet of you must succeed on a DC 15 Constitution saving throw or become unable to breathe, while sneezing uncontrollably. A creature affected in this way is incapacitated and suffocating. As long as it is conscious, a creature can repeat the saving throw at the end of each of its turns, ending the effect on it on a success. The lesser restoration spell can also end the effect on a creature.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 48000
+    },
+    {
+      "name": "Ivory Goat of Traveling",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "A figurine of wondrous power is a statuette of a beast small enough to fit in a pocket. If you use an action to speak the command word and throw the figurine to a point on the ground within 60 feet of you, the figurine becomes a living creature. The goat of traveling can become a Large goat with the same statistics as a riding horse. It has 24 charges, and each hour or portion thereof it spends in beast form costs 1 charge. While it has charges, you can use it as often as you wish. When it runs out of charges, it reverts to a figurine and can't be used again until 7 days have passed, when it regains all its charges.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 100000
+    },
+    {
+      "name": "Ioun Stone of Sustenance",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: You don't need to eat or drink while this clear spindle orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 100000
+    },
+    {
+      "name": "Ring of Warmth",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "While wearing this ring, you have resistance to cold damage. In addition, you and everything you wear and carry are unharmed by temperatures as low as −50 degrees Fahrenheit.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 100000
+    },
+    {
+      "name": "Ioun Stone of Protection",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: You gain a +1 bonus to AC while this dusty rose prism orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "RARE",
+      "cost": 120000
+    },
+    {
+      "name": "Wind Fan",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "While holding this fan, you can use an action to cast the gust of wind spell (save DC 13) from it. Once used, the fan shouldn't be used again until the next dawn. Each time it is used again before then, it has a cumulative 20 percent chance of not working and tearing into useless, nonmagical tatters.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "UNCOMMON",
+      "cost": 150000
+    },
+    {
+      "name": "Ioun Stone of Absorption",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: While this pale lavender ellipsoid orbits your head, you can use your reaction to cancel a spell of 4th level or lower cast by a creature you can see and targeting only you.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 240000
+    },
+    {
+      "name": "Ioun Stone of Agility",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Dexterity score increases by 2, to a maximum of 20, while this deep red sphere orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Ioun Stone of Fortitude",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Constitution score increases by 2, to a maximum of 20, while this pink rhomboid orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Ioun Stone of Insight",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Wisdom score increases by 2, to a maximum of 20, while this incandescent blue sphere orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Ioun Stone of Intellect",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Intelligence score increases by 2, to a maximum of 20, while this marbled scarlet and blue sphere orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Ioun Stone of Leadership",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Charisma score increases by 2, to a maximum of 20, while this marbled pink and green sphere orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    },
+    {
+      "name": "Ioun Stone of Strength",
+      "image": "/art/item-icons/Crafting_Icons/Opaque/T_Nhance_Magic_Cube_02.PNG",
+      "description": "An Ioun stone is named after Ioun, a god of knowledge and prophecy revered on some worlds. Many types of Ioun stone exist, each type a distinct combination of shape and color. When you use an action to toss one of these stones into the air, the stone orbits your head at a distance of 1d3 feet and confers a benefit to you. Thereafter, another creature must use an action to grasp or net the stone to separate it from you, either by making a successful attack roll against AC 24 or a successful DC 24 Dexterity (Acrobatics) check. You can use an action to seize and stow the stone, ending its effect. A stone has AC 24, 10 hit points, and resistance to all damage. It is considered to be an object that is being worn while it orbits your head. Effect for this Ioun Stone: Your Strength score increases by 2, to a maximum of 20, while this pale blue rhomboid orbits your head.",
+      "category": "WONDROUS_ITEMS",
+      "rarity": "VERY_RARE",
+      "cost": 300000
+    }
+  ]
+} 

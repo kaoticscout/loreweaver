@@ -1,0 +1,517 @@
+{
+  "timestamp": "2025-05-18T21:37:22.757Z",
+  "locations": [
+    {
+      "name": "Waterdeep",
+      "description": "The City of Splendors, a bustling metropolis and one of the greatest cities in Faerûn. Located on the Sword Coast, it is the most influential city in the North.",
+      "type": "Large City",
+      "coordinates": {
+        "x": 2897.5732477017764,
+        "y": 1475.4918944870906
+      },
+      "population": 1320000,
+      "primaryRaces": ["Humans", "Dwarves", "Elves", "Halflings", "Gnomes"],
+      "notableFeatures": [
+        "The Yawning Portal Inn",
+        "Castle Waterdeep",
+        "The City of the Dead",
+        "The Market",
+        "The Dock Ward",
+        "The Sea Ward",
+        "The Castle Ward",
+        "The Trades Ward",
+        "The North Ward",
+        "The Southern Ward"
+      ],
+      "services": [
+        "Merchant Guilds",
+        "Magic Shops",
+        "Temples",
+        "Inns and Taverns",
+        "Blacksmiths",
+        "Alchemists",
+        "Banks",
+        "Theaters",
+        "Schools of Magic",
+        "Mercenary Companies"
+      ],
+      "localGovernment": "The Lords of Waterdeep (Masked Lords) and the Open Lord"
+    },
+    {
+      "name": "Mirabar",
+      "description": "A mining city known for its skilled metalworkers and gem cutters. The city is built into the side of the mountain and is famous for its dwarven craftsmanship.",
+      "type": "City",
+      "coordinates": {
+        "x": 2777.94195978492,
+        "y": 306.69168358598824
+      },
+      "population": 15000,
+      "primaryRaces": ["Dwarves", "Humans", "Gnomes"],
+      "notableFeatures": [
+        "The Mirabarran Mines",
+        "The Forge District",
+        "The Gem Quarter",
+        "The Dwarven Halls",
+        "The Surface City"
+      ],
+      "services": [
+        "Mining Operations",
+        "Metalworking",
+        "Gem Cutting",
+        "Trade Caravans",
+        "Mercenary Companies",
+        "Inns and Taverns"
+      ],
+      "localGovernment": "The Council of Sparkling Stones"
+    },
+    {
+      "name": "Longsaddle",
+      "description": "A small town famous for the Harpell family of wizards. The town is known for its magical experiments and eccentric inhabitants.",
+      "type": "Village",
+      "coordinates": {
+        "x": 2895.4980631713966,
+        "y": 621.5354974013584
+      },
+      "population": 1200,
+      "primaryRaces": ["Humans", "Gnomes", "Halflings"],
+      "notableFeatures": [
+        "The Ivy Mansion",
+        "The Harpell Laboratories",
+        "The Magical Menagerie",
+        "The Experiment Grounds"
+      ],
+      "services": [
+        "Magical Supplies",
+        "Inn and Tavern",
+        "Basic Supplies",
+        "Magical Training"
+      ],
+      "localGovernment": "The Harpell Family Council"
+    },
+    {
+      "name": "Amphail",
+      "description": "A small but prosperous town known for horse breeding and training. The town is famous for its annual horse fair and the quality of its steeds.",
+      "type": "Village",
+      "coordinates": {
+        "x": 2903.5074330607654,
+        "y": 1316.5903992303986
+      },
+      "population": 800,
+      "primaryRaces": ["Humans", "Halflings"],
+      "notableFeatures": [
+        "The Grand Stables",
+        "The Horse Fair Grounds",
+        "The Training Fields",
+        "The Old Amphail Road"
+      ],
+      "services": [
+        "Horse Trading",
+        "Stable Services",
+        "Inn and Tavern",
+        "Blacksmithing",
+        "Basic Supplies"
+      ],
+      "localGovernment": "The Stablemaster's Council"
+    },
+    {
+      "name": "Daggerford",
+      "description": "A fortified town that guards an important crossing of the Trade Way. The town is known for its strategic location and strong defenses.",
+      "type": "Village",
+      "coordinates": {
+        "x": 3108.832284752284,
+        "y": 1617.6447907647905
+      },
+      "population": 1000,
+      "primaryRaces": ["Humans", "Dwarves", "Halflings"],
+      "notableFeatures": [
+        "The Ford",
+        "The Town Walls",
+        "The Market Square",
+        "The Guard Barracks"
+      ],
+      "services": [
+        "Ferry Service",
+        "Inn and Tavern",
+        "Blacksmithing",
+        "Basic Supplies",
+        "Guard Services"
+      ],
+      "localGovernment": "The Duke of Daggerford"
+    },
+    {
+      "name": "Candlekeep",
+      "description": "A fortress library containing the largest collection of books and scrolls in Faerûn. The keep is protected by powerful magic and dedicated scholars.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 3274.3059082459076,
+        "y": 2986.6913859313854
+      },
+      "significance": "The greatest repository of knowledge in Faerûn",
+      "history": "Founded in the Year of the Watching Cold (241 DR) by the great sage Alaundo, Candlekeep has stood as a bastion of knowledge for centuries.",
+      "notableFeatures": [
+        "The Great Library",
+        "The Avowed's Quarters",
+        "The Outer Ward",
+        "The Inner Ward",
+        "The Hearth",
+        "The Scriptorium"
+      ],
+      "visitingHours": "Dawn to Dusk, by appointment only"
+    },
+    {
+      "name": "The Sword Mountains",
+      "description": "A mountain range home to various monsters and several dwarven strongholds. The mountains are rich in minerals and dangerous creatures.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 2825.8042488375813,
+        "y": 983.8139490139488
+      },
+      "significance": "Major geographical feature and source of valuable minerals",
+      "history": "The mountains have been home to dwarven clans for millennia, though many of their halls have fallen to monsters and orcs.",
+      "notableFeatures": [
+        "Ancient Dwarven Halls",
+        "Dragon Lairs",
+        "Mineral Deposits",
+        "Mountain Passes",
+        "Hidden Valleys"
+      ]
+    },
+    {
+      "name": "High Forest",
+      "description": "An ancient forest realm, one of the largest forests in Faerûn. The forest is home to many elven communities and magical creatures.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 3826.9746896842116,
+        "y": 900.0228041799467
+      },
+      "significance": "One of the last great elven realms in Faerûn",
+      "history": "The forest has stood since the dawn of time, growing and evolving with the world itself. It has been a refuge for elves and other magical beings for millennia.",
+      "notableFeatures": [
+        "Ancient Trees",
+        "Elven Settlements",
+        "Sacred Groves",
+        "Hidden Glades",
+        "Magical Creatures"
+      ]
+    },
+    {
+      "name": "Neverwinter Woods",
+      "description": "A dense forest region known for its ancient trees and magical creatures. The wood is home to many druids and fey creatures.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 2725.7027914614123,
+        "y": 760.6467797847108
+      },
+      "significance": "Major natural resource and magical site",
+      "history": "The forest has existed since the dawn of time, growing and evolving with the world itself. Its ancient trees are said to hold memories of the world's earliest days.",
+      "notableFeatures": [
+        "Ancient Trees",
+        "Druid Circles",
+        "Fey Crossings",
+        "Sacred Groves",
+        "Magical Creatures"
+      ]
+    },
+    {
+      "name": "Thornhold",
+      "description": "Thornhold, also known as Stoneshaft Hold among its dwarven residents, was a fortress located off the southern edge of the Mere of Dead Men.",
+      "type": "Stronghold",
+      "coordinates": {
+        "x": 2690.8061691848948,
+        "y": 1230.171437778967
+      },
+      "owner": "The Stoneshaft Clan",
+      "garrison": 500,
+      "defenses": [
+        "Stone Walls",
+        "Dwarven Traps",
+        "Guard Towers",
+        "Underground Tunnels",
+        "Magical Wards"
+      ],
+      "notableFeatures": [
+        "The Great Hall",
+        "The Forge",
+        "The Armory",
+        "The Treasury",
+        "The Living Quarters"
+      ],
+      "access": "By invitation or official business only"
+    },
+    {
+      "name": "Helm's Hold",
+      "description": "Helm's Hold was a fortified city and cathedral dedicated to Helm found on the Sword Coast North. It serves as a major religious center and defensive outpost.",
+      "type": "City",
+      "coordinates": {
+        "x": 2610.363060128292,
+        "y": 789.4227908215595
+      },
+      "population": 8000,
+      "primaryRaces": ["Humans", "Dwarves", "Halflings"],
+      "notableFeatures": [
+        "The Cathedral of Helm",
+        "The Defensive Walls",
+        "The Training Grounds",
+        "The Market Square",
+        "The Living Quarters"
+      ],
+      "services": [
+        "Religious Services",
+        "Military Training",
+        "Inn and Tavern",
+        "Basic Supplies",
+        "Healing Services"
+      ],
+      "localGovernment": "The High Watcher of Helm"
+    },
+    {
+      "name": "Baldur's Gate",
+      "description": "Baldur's Gate, the Halfway to Everywhere, the City of Blood, also simply called the Gate, was one of the largest metropolises and city-states on the Sword Coast.",
+      "type": "Large City",
+      "coordinates": {
+        "x": 3378.7565279194578,
+        "y": 2668.9526777877954
+      },
+      "population": 125000,
+      "primaryRaces": ["Humans", "Dwarves", "Elves", "Halflings", "Gnomes", "Tieflings"],
+      "notableFeatures": [
+        "The Upper City",
+        "The Lower City",
+        "The Outer City",
+        "The Docks",
+        "The Market",
+        "The Flaming Fist Headquarters"
+      ],
+      "services": [
+        "Merchant Guilds",
+        "Magic Shops",
+        "Temples",
+        "Inns and Taverns",
+        "Blacksmiths",
+        "Alchemists",
+        "Banks",
+        "Theaters",
+        "Schools of Magic",
+        "Mercenary Companies"
+      ],
+      "localGovernment": "The Council of Four"
+    },
+    {
+      "name": "Red Larch",
+      "description": "The town of Red Larch was a waystop on the Long Road seven days north of Waterdeep, and was located at the intersection of three trails.",
+      "type": "Village",
+      "coordinates": {
+        "x": 2948.5777453548553,
+        "y": 1128.2401441286966
+      },
+      "population": 600,
+      "primaryRaces": ["Humans", "Halflings"],
+      "notableFeatures": [
+        "The Crossroads",
+        "The Market Square",
+        "The Old Larch Tree",
+        "The Waystop Inn"
+      ],
+      "services": [
+        "Inn and Tavern",
+        "Basic Supplies",
+        "Stable Services",
+        "Blacksmithing"
+      ],
+      "localGovernment": "The Town Council"
+    },
+    {
+      "name": "The Golden Fields",
+      "description": "Goldenfields, nicknamed the Granary of the North, was a walled abbey to Chauntea of spectacular scope and size. It was the most prolific provider of crops, grains and fruits to the people of the North.",
+      "type": "City",
+      "coordinates": {
+        "x": 3010.726541321614,
+        "y": 1328.3081859394963
+      },
+      "population": 5000,
+      "primaryRaces": ["Humans", "Halflings", "Dwarves"],
+      "notableFeatures": [
+        "The Great Granary",
+        "The Temple of Chauntea",
+        "The Farmlands",
+        "The Market Square",
+        "The Living Quarters"
+      ],
+      "services": [
+        "Agricultural Supplies",
+        "Food Storage",
+        "Religious Services",
+        "Inn and Tavern",
+        "Basic Supplies"
+      ],
+      "localGovernment": "The High Harvestmaster"
+    },
+    {
+      "name": "Neverwinter City",
+      "description": "The City of Skilled Hands, Neverwinter is known for its skilled craftspeople and beautiful architecture. The city has recovered from the Spellplague and is once again a thriving metropolis.",
+      "type": "Large City",
+      "coordinates": {
+        "x": 2537.5878518203194,
+        "y": 761.738631228458
+      },
+      "population": 23000,
+      "primaryRaces": ["Humans", "Dwarves", "Elves", "Halflings", "Gnomes"],
+      "notableFeatures": [
+        "The Protector's Enclave",
+        "The Blacklake District",
+        "The Chasm",
+        "The Moonstone Mask",
+        "The House of Knowledge",
+        "The Neverwinter WoodS"
+      ],
+      "services": [
+        "Crafting Guilds",
+        "Magic Shops",
+        "Temples",
+        "Inns and Taverns",
+        "Blacksmiths",
+        "Alchemists",
+        "Banks",
+        "Theaters",
+        "Schools of Magic",
+        "Mercenary Companies"
+      ],
+      "localGovernment": "The Lord Protector"
+    },
+    {
+      "name": "Luskan City",
+      "description": "Luskan, also known as the City of Sails, was a port city at the mouth of the River Mirar on the Sword Coast North. Despite its troubled past, it remains an important trading port.",
+      "type": "Large City",
+      "coordinates": {
+        "x": 2457.667122810477,
+        "y": 453.37342491913137
+      },
+      "population": 16000,
+      "primaryRaces": ["Humans", "Dwarves", "Half-Orcs"],
+      "notableFeatures": [
+        "The Harbor",
+        "The Five Ships",
+        "The Market Square",
+        "The Arcane Brotherhood Tower",
+        "The Docks"
+      ],
+      "services": [
+        "Shipping Services",
+        "Merchant Guilds",
+        "Inns and Taverns",
+        "Blacksmiths",
+        "Alchemists",
+        "Banks",
+        "Mercenary Companies"
+      ],
+      "localGovernment": "The High Captains"
+    },
+    {
+      "name": "Blacklake District",
+      "description": "A wealthy and influential district in Neverwinter, known for its noble estates and the mysterious Blacklake itself.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 2545.2,
+        "y": 755.1
+      },
+      "significance": "Center of political and economic power in Neverwinter",
+      "history": "The district was established during Neverwinter's early history and has been home to the city's elite for centuries.",
+      "notableFeatures": [
+        "The Blacklake",
+        "Noble Estates",
+        "The Moonstone Mask",
+        "The Gardens",
+        "The Market Square"
+      ]
+    },
+    {
+      "name": "The Chasm",
+      "description": "A massive rift that split the city during the Spellplague, now a source of danger and dark rumors.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 2528.0,
+        "y": 770.0
+      },
+      "significance": "Reminder of the Spellplague's devastation",
+      "history": "Created during the Spellplague, the Chasm has been a source of both danger and opportunity for the city.",
+      "notableFeatures": [
+        "The Rift",
+        "Magical Anomalies",
+        "Hidden Passages",
+        "Ancient Ruins",
+        "Monster Lairs"
+      ]
+    },
+    {
+      "name": "Protector's Enclave",
+      "description": "The heart of Neverwinter's government and commerce, bustling with markets, guards, and adventurers.",
+      "type": "Village",
+      "coordinates": {
+        "x": 2539.5,
+        "y": 765.0
+      },
+      "population": 3000,
+      "primaryRaces": ["Humans", "Dwarves", "Elves", "Halflings"],
+      "notableFeatures": [
+        "The Hall of Justice",
+        "The Market Square",
+        "The Guard Barracks",
+        "The Town Hall",
+        "The Shops"
+      ],
+      "services": [
+        "Government Services",
+        "Market Stalls",
+        "Inn and Tavern",
+        "Basic Supplies",
+        "Guard Services"
+      ],
+      "localGovernment": "The Lord Protector's Office"
+    },
+    {
+      "name": "Tower District",
+      "description": "Once a center of arcane study, now a ruined area haunted by monsters and the remnants of magical disasters.",
+      "type": "Village",
+      "coordinates": {
+        "x": 2550.0,
+        "y": 750.0
+      },
+      "population": 800,
+      "primaryRaces": ["Humans", "Elves", "Gnomes"],
+      "notableFeatures": [
+        "The Fallen Towers",
+        "The Arcane Library",
+        "The Alchemist's Quarter",
+        "The Magical Shops",
+        "The Ruined Gardens"
+      ],
+      "services": [
+        "Magical Supplies",
+        "Arcane Training",
+        "Inn and Tavern",
+        "Basic Supplies",
+        "Monster Hunting"
+      ],
+      "localGovernment": "The Tower Council"
+    },
+    {
+      "name": "Neverdeath Graveyard",
+      "description": "The city's ancient graveyard, shrouded in mist and tales of restless spirits.",
+      "type": "Landmark",
+      "coordinates": {
+        "x": 2540.0,
+        "y": 780.0
+      },
+      "significance": "Major historical and religious site",
+      "history": "The graveyard has been the final resting place for Neverwinter's citizens for centuries, with some graves dating back to the city's founding.",
+      "notableFeatures": [
+        "Ancient Tombs",
+        "The Mausoleum",
+        "The Memorial Gardens",
+        "The Crypts",
+        "The Spirit Shrines"
+      ],
+      "visitingHours": "Dawn to Dusk"
+    }
+  ]
+}

@@ -3,8 +3,15 @@ import { locations } from '../src/data/locations.js';
 import { regions } from '../src/data/worlds/sword-coast/regions/index.js';
 import { quests } from '../src/data/worlds/sword-coast/quests/index.js';
 import { npcs } from '../src/data/worlds/sword-coast/npcs/index.js';
+import { dungeonEncounters } from '../src/data/worlds/sword-coast/dungeon-encounters/index.js';
 
 const prisma = new PrismaClient();
+
+// Map encounters by their IDs for easy lookup
+const encountersMap = dungeonEncounters.reduce((acc, encounter) => {
+  acc[encounter.id] = encounter;
+  return acc;
+}, {});
 
 // Define the dungeon data directly since it's not in a separate file
 const dungeons = [
@@ -148,24 +155,41 @@ const prepareNPCData = (npc) => ({
   updatedAt: new Date().toISOString()
 });
 
-const prepareDungeonData = (dungeon) => ({
-  id: dungeon.id,
-  name: dungeon.name,
-  description: dungeon.description,
-  type: dungeon.location.environment,
-  difficulty: dungeon.challengeRating,
-  minLevel: Math.max(1, dungeon.challengeRating - 2),
-  maxLevel: dungeon.challengeRating + 2,
-  size: 'Medium',
-  environment: dungeon.location.environment,
-  hazards: [],
-  creatures: dungeon.encounters || [],
-  treasures: dungeon.treasure ? [dungeon.treasure] : [],
-  traps: [],
-  puzzles: [],
-  boss: null,
-  locationId: dungeon.locationId
-});
+const prepareDungeonData = (dungeon) => {
+  // Get full encounter data for each encounter ID
+  const encounterDetails = dungeon.encounters.map(encounterId => {
+    const encounter = encountersMap[encounterId];
+    if (!encounter) {
+      console.warn(`Warning: Encounter ${encounterId} not found in encounters data`);
+      return null;
+    }
+    return encounter;
+  }).filter(Boolean);
+
+  // Extract creature names from encounters
+  const creatures = encounterDetails.flatMap(encounter => 
+    encounter.enemies.map(enemy => `${enemy.name} (CR ${enemy.cr})`)
+  );
+
+  return {
+    id: dungeon.id,
+    name: dungeon.name,
+    description: dungeon.description,
+    type: dungeon.location.environment,
+    difficulty: dungeon.challengeRating,
+    minLevel: Math.max(1, dungeon.challengeRating - 2),
+    maxLevel: dungeon.challengeRating + 2,
+    size: 'Medium',
+    environment: dungeon.location.environment,
+    hazards: [],
+    creatures: creatures,
+    treasures: dungeon.treasure ? [dungeon.treasure] : [],
+    traps: [],
+    puzzles: [],
+    boss: null,
+    locationId: dungeon.locationId
+  };
+};
 
 // Map locations to their regions based on the region data
 const locationRegionMap = {};

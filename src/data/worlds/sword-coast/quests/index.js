@@ -14,8 +14,8 @@ export const quests = [
         requirements: [
             { type: 'LEVEL', value: 5 }
         ],
-        location: 'Baldurs Gate Market',
-        npcs: ['Merchant Guild Master'],
+        location: 'Waterdeep',
+        npcs: ['1'],
         objectives: [
             {
                 id: '1',
@@ -59,8 +59,8 @@ export const quests = [
             { type: 'LEVEL', value: 8 },
             { type: 'ITEM', value: 'Fire Resistance Potion' }
         ],
-        location: 'Wyrms Peak',
-        npcs: ['Lord Blackwood', 'Village Elder'],
+        location: 'Sword Mountains',
+        npcs: ['2', '4'],
         objectives: [
             {
                 id: '1',
@@ -103,8 +103,8 @@ export const quests = [
         requirements: [
             { type: 'LEVEL', value: 5 }
         ],
-        location: 'Arcane Brotherhood Tower',
-        npcs: ['Archmage Vorthos'],
+        location: 'Luskan',
+        npcs: ['3'],
         objectives: [
             {
                 id: '1',

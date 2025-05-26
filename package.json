@@ -12,7 +12,7 @@
     "server": "node server.js",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "migrate-data": "ts-node scripts/migrateData.mjs",
+    "migrate-data": "npx tsx scripts/migrateData.mts",
     "migrate-worlds": "ts-node scripts/migrateWorldsData.mjs",
     "migrate-npcs": "ts-node scripts/migrateNPCsData.mjs",
     "migrate-quests": "ts-node scripts/migrateQuestsData.mjs",

@@ -3,8 +3,8 @@ export const npcs = [
         id: '1',
         name: 'Merchant Guild Master',
         role: 'Quest Giver',
-        location: 'Baldurs Gate Market',
-        description: 'A shrewd businessman who oversees the Merchant Guild\'s operations in Baldur\'s Gate.',
+        location: 'Waterdeep',
+        description: 'A shrewd businessman who oversees the Merchant Guild\'s operations in Waterdeep.',
         level: 8,
         faction: 'Merchant Guild',
         status: 'alive',
@@ -70,7 +70,7 @@ export const npcs = [
         id: '2',
         name: 'Lord Blackwood',
         role: 'Quest Giver',
-        location: 'Blackwood Keep',
+        location: 'Neverwinter',
         description: 'A noble lord concerned about the dragon threatening his lands.',
         level: 12,
         faction: 'Noble House Blackwood',
@@ -132,7 +132,7 @@ export const npcs = [
         id: '3',
         name: 'Archmage Vorthos',
         role: 'Quest Giver',
-        location: 'Arcane Brotherhood Tower',
+        location: 'Luskan',
         description: 'A powerful wizard and leader of the Arcane Brotherhood.',
         level: 15,
         faction: 'Arcane Brotherhood',
@@ -186,7 +186,7 @@ export const npcs = [
         id: '4',
         name: 'Village Elder',
         role: 'Quest Giver',
-        location: 'Wyrms Peak',
+        location: 'Sword Mountains',
         description: 'A wise and respected elder who has witnessed the dragon\'s attacks firsthand.',
         level: 5,
         faction: 'Village Council',
@@ -206,28 +206,28 @@ export const npcs = [
             }
         ],
         schedule: [
-            { time: 'Morning', location: 'Village Hall', activity: 'Meeting with villagers' },
-            { time: 'Afternoon', location: 'Lookout Point', activity: 'Watching for dragons' },
-            { time: 'Evening', location: 'Home', activity: 'Recording observations' }
+            { time: 'Morning', location: 'Village Square', activity: 'Holding council' },
+            { time: 'Afternoon', location: 'Fields', activity: 'Inspecting crops' },
+            { time: 'Evening', location: 'Elder\'s Hut', activity: 'Storytelling' }
         ],
         dialogue: [{
             id: '1',
-            text: 'The dragon has been growing bolder with each passing day.',
+            text: 'The dragon\'s attacks have become more frequent. We need help.',
             options: [
                 {
-                    text: 'Tell me about the dragon\'s patterns.',
+                    text: 'Tell me about the dragon.',
                     nextDialogueId: '2'
                 },
                 {
-                    text: 'How many attacks have there been?',
+                    text: 'How can we help?',
                     nextDialogueId: '3'
                 }
             ]
         }],
         skills: [
-            { name: 'History', level: 4, description: 'Expert in local history' },
-            { name: 'Nature', level: 3, description: 'Dragon knowledge' },
-            { name: 'Survival', level: 3, description: 'Mountain living' }
+            { name: 'Nature', level: 4, description: 'Knowledgeable about local flora and fauna' },
+            { name: 'Medicine', level: 3, description: 'Skilled with herbal remedies' },
+            { name: 'History', level: 4, description: 'Keeper of village lore' }
         ],
         relationships: [
             {

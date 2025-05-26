@@ -5,6 +5,8 @@ import type { Region } from '../types/region';
 import type { Dungeon } from '../types/dungeon';
 import type { DungeonEncounter } from '../types/dungeonEncounter';
 import type { Item } from '../types/item';
+import type { Quest, QuestType, QuestStatus } from '../types/quest';
+import type { NPC, NPCStatus, RelationshipStatus } from '../types/npc';
 
 const prisma = new PrismaClient();
 
@@ -166,6 +168,77 @@ const fromDBItem = (dbItem: any): Item => ({
   worldId: dbItem.worldId
 });
 
+const fromDBQuest = (dbQuest: any): Quest => ({
+  id: dbQuest.id,
+  title: dbQuest.title,
+  description: dbQuest.description,
+  level: dbQuest.level,
+  type: dbQuest.type as QuestType,
+  status: dbQuest.status as QuestStatus,
+  rewards: dbQuest.rewards || [],
+  requirements: dbQuest.requirements || [],
+  location: dbQuest.location,
+  npcs: dbQuest.npcs || [],
+  objectives: dbQuest.objectives || [],
+  createdAt: dbQuest.createdAt,
+  updatedAt: dbQuest.updatedAt,
+  difficulty: dbQuest.difficulty,
+  timeEstimate: dbQuest.timeEstimate,
+  recommendedPartySize: dbQuest.recommendedPartySize,
+  minPartySize: dbQuest.minPartySize,
+  maxPartySize: dbQuest.maxPartySize,
+  recommendedClasses: dbQuest.recommendedClasses || [],
+  recommendedLevels: dbQuest.recommendedLevels || [],
+  questChain: dbQuest.questChain,
+  detailedLocations: dbQuest.detailedLocations || [],
+  detailedNPCs: dbQuest.detailedNPCs || [],
+  lore: dbQuest.lore,
+  consequences: dbQuest.consequences,
+  specialConditions: dbQuest.specialConditions,
+  hiddenObjectives: dbQuest.hiddenObjectives || [],
+  alternativeEndings: dbQuest.alternativeEndings || [],
+  reputationChanges: dbQuest.reputationChanges || [],
+  skillChecks: dbQuest.skillChecks || [],
+  environmentalHazards: dbQuest.environmentalHazards || [],
+  questItems: dbQuest.questItems || []
+});
+
+const fromDBNPC = (dbNPC: any): NPC => {
+  const parseField = (field: any) => {
+    if (!field) return [];
+    if (typeof field === 'string') {
+      try {
+        return JSON.parse(field);
+      } catch (e) {
+        console.warn(`Failed to parse ${field} as JSON, returning empty array`);
+        return [];
+      }
+    }
+    return field;
+  };
+
+  return {
+    id: dbNPC.id,
+    name: dbNPC.name,
+    role: dbNPC.role,
+    location: dbNPC.locationName,
+    description: dbNPC.description,
+    level: dbNPC.level,
+    faction: dbNPC.faction,
+    status: dbNPC.status as NPCStatus,
+    questGiver: dbNPC.questGiver,
+    relationshipStatus: dbNPC.relationshipStatus as RelationshipStatus,
+    notes: parseField(dbNPC.notes),
+    schedule: parseField(dbNPC.schedule),
+    dialogue: parseField(dbNPC.dialogue),
+    inventory: parseField(dbNPC.inventory),
+    skills: parseField(dbNPC.skills),
+    relationships: parseField(dbNPC.relationships),
+    createdAt: dbNPC.createdAt,
+    updatedAt: dbNPC.updatedAt
+  };
+};
+
 export const DatabaseService = {
   // World operations
   async getAllWorlds(): Promise<World[]> {
@@ -311,5 +384,116 @@ export const DatabaseService = {
       }
     });
     return items.map(fromDBItem);
+  },
+
+  // Quest operations
+  async getQuestsByWorldId(worldId: string): Promise<Quest[]> {
+    const quests = await prisma.quest.findMany({
+      where: { worldId }
+    });
+    return quests.map(fromDBQuest);
+  },
+
+  async getQuestById(id: string): Promise<Quest | null> {
+    const quest = await prisma.quest.findUnique({
+      where: { id }
+    });
+    return quest ? fromDBQuest(quest) : null;
+  },
+
+  async updateQuestStatus(id: string, status: QuestStatus): Promise<Quest> {
+    const quest = await prisma.quest.update({
+      where: { id },
+      data: { 
+        status,
+        updatedAt: new Date().toISOString()
+      }
+    });
+    return fromDBQuest(quest);
+  },
+
+  // NPC operations
+  async getNPCsByWorldId(worldId: string): Promise<NPC[]> {
+    try {
+      console.log('\n=== Database Service: getNPCsByWorldId ===');
+      console.log('Checking for world:', worldId);
+
+      // First check if the world exists
+      const world = await prisma.world.findUnique({
+        where: { id: worldId }
+      });
+
+      if (!world) {
+        console.log('World not found');
+        return [];
+      }
+
+      console.log('Found world:', world.name);
+      
+      // Check for NPCs
+      const npcs = await prisma.nPC.findMany({
+        where: { 
+          OR: [
+            { worldId },
+            { world: { id: worldId } }
+          ]
+        },
+        include: {
+          location: true,
+          world: true
+        }
+      });
+      
+      console.log('Found NPCs:', npcs.length);
+      if (npcs.length === 0) {
+        console.log('No NPCs found for this world');
+      } else {
+        console.log('NPC IDs:', npcs.map(npc => npc.id));
+      }
+
+      return npcs.map(npc => {
+        try {
+          return fromDBNPC(npc);
+        } catch (error) {
+          console.error('Error transforming NPC:', npc.id, error);
+          return null;
+        }
+      }).filter(Boolean) as NPC[];
+    } catch (error) {
+      console.error('Database error in getNPCsByWorldId:', error);
+      throw error;
+    }
+  },
+
+  async getNPCById(id: string): Promise<NPC | null> {
+    const npc = await prisma.nPC.findUnique({
+      where: { id }
+    });
+    return npc ? fromDBNPC(npc) : null;
+  },
+
+  async updateNPC(id: string, data: Partial<NPC>): Promise<NPC> {
+    const npc = await prisma.nPC.update({
+      where: { id },
+      data: {
+        name: data.name,
+        role: data.role,
+        locationName: data.location,
+        description: data.description,
+        level: data.level,
+        faction: data.faction,
+        status: data.status,
+        questGiver: data.questGiver,
+        relationshipStatus: data.relationshipStatus,
+        notes: data.notes ? JSON.stringify(data.notes) : undefined,
+        schedule: data.schedule ? JSON.stringify(data.schedule) : undefined,
+        dialogue: data.dialogue ? JSON.stringify(data.dialogue) : undefined,
+        inventory: data.inventory ? JSON.stringify(data.inventory) : undefined,
+        skills: data.skills ? JSON.stringify(data.skills) : undefined,
+        relationships: data.relationships ? JSON.stringify(data.relationships) : undefined,
+        updatedAt: new Date().toISOString()
+      }
+    });
+    return fromDBNPC(npc);
   }
 }; 

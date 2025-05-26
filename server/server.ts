@@ -114,6 +114,85 @@ app.get('/api/items/:id', async (req, res) => {
   }
 });
 
+// Quest routes
+app.get('/api/worlds/:worldId/quests', async (req, res) => {
+  try {
+    const quests = await DatabaseService.getQuestsByWorldId(req.params.worldId);
+    res.json(quests);
+  } catch (error) {
+    console.error('Error fetching quests:', error);
+    res.status(500).json({ error: 'Failed to fetch quests' });
+  }
+});
+
+app.get('/api/quests/:id', async (req, res) => {
+  try {
+    const quest = await DatabaseService.getQuestById(req.params.id);
+    if (!quest) {
+      res.status(404).json({ error: 'Quest not found' });
+      return;
+    }
+    res.json(quest);
+  } catch (error) {
+    console.error('Error fetching quest:', error);
+    res.status(500).json({ error: 'Failed to fetch quest' });
+  }
+});
+
+app.patch('/api/quests/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    const quest = await DatabaseService.updateQuestStatus(req.params.id, status);
+    res.json(quest);
+  } catch (error) {
+    console.error('Error updating quest status:', error);
+    res.status(500).json({ error: 'Failed to update quest status' });
+  }
+});
+
+// NPC routes
+app.get('/api/worlds/:worldId/npcs', async (req, res) => {
+  try {
+    console.log('\n=== NPC Request ===');
+    console.log('Fetching NPCs for world:', req.params.worldId);
+    
+    const npcs = await DatabaseService.getNPCsByWorldId(req.params.worldId);
+    console.log('Successfully fetched NPCs:', npcs.length);
+    res.json(npcs);
+  } catch (error) {
+    console.error('Error fetching NPCs:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch NPCs',
+      details: error instanceof Error ? error.message : 'Unknown error',
+      worldId: req.params.worldId
+    });
+  }
+});
+
+app.get('/api/npcs/:id', async (req, res) => {
+  try {
+    const npc = await DatabaseService.getNPCById(req.params.id);
+    if (!npc) {
+      res.status(404).json({ error: 'NPC not found' });
+      return;
+    }
+    res.json(npc);
+  } catch (error) {
+    console.error('Error fetching NPC:', error);
+    res.status(500).json({ error: 'Failed to fetch NPC' });
+  }
+});
+
+app.patch('/api/npcs/:id', async (req, res) => {
+  try {
+    const npc = await DatabaseService.updateNPC(req.params.id, req.body);
+    res.json(npc);
+  } catch (error) {
+    console.error('Error updating NPC:', error);
+    res.status(500).json({ error: 'Failed to update NPC' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 }); 

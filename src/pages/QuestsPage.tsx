@@ -18,16 +18,14 @@ const QuestsPage: React.FC = () => {
     // Load quests when world changes
     useEffect(() => {
         if (selectedWorld) {
-            // Dynamically import quests based on selected world
             const loadQuests = async () => {
                 try {
-                    const questModules = await Promise.all([
-                        import(`../data/worlds/${selectedWorld.id}/quests/index`).catch(() => ({ quests: [] })),
-                        // Add more quest files if they exist in the world's directory
-                    ]);
-                    
-                    const allQuests = questModules.flatMap(module => module.quests || []);
-                    setQuests(allQuests);
+                    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/worlds/${selectedWorld.id}/quests`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch quests');
+                    }
+                    const quests = await response.json();
+                    setQuests(quests);
                 } catch (error) {
                     console.error(`Failed to load quests for world ${selectedWorld.id}:`, error);
                     setQuests([]);
@@ -46,20 +44,31 @@ const QuestsPage: React.FC = () => {
         return ['all', ...Array.from(uniqueLocations)].sort();
     }, [quests]);
 
-    // Function to update quest status
-    const updateQuestStatus = (questId: string, newStatus: QuestStatus) => {
-        setQuests(currentQuests => 
-            currentQuests.map(quest => {
-                if (quest.id === questId) {
-                    return {
-                        ...quest,
-                        status: newStatus,
-                        updatedAt: new Date().toISOString()
-                    };
-                }
-                return quest;
-            })
-        );
+    // Update quest status
+    const updateQuestStatus = async (questId: string, newStatus: QuestStatus) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/quests/${questId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update quest status');
+            }
+
+            const updatedQuest = await response.json();
+            setQuests(currentQuests => 
+                currentQuests.map(quest => 
+                    quest.id === questId ? updatedQuest : quest
+                )
+            );
+        } catch (error) {
+            console.error('Failed to update quest status:', error);
+            // You might want to show an error message to the user here
+        }
     };
 
     const toggleQuestExpansion = (questId: string) => {

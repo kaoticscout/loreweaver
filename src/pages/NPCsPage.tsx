@@ -24,13 +24,21 @@ const NPCsPage: React.FC = () => {
     // Load NPCs when world changes
     useEffect(() => {
         if (selectedWorld) {
-            // Dynamically import NPCs based on selected world
-            import(`../data/worlds/${selectedWorld.id}/npcs/index`).then(module => {
-                setNPCs(module.npcs || []);
-            }).catch(error => {
-                console.error(`Failed to load NPCs for world ${selectedWorld.id}:`, error);
-                setNPCs([]);
-            });
+            const loadNPCs = async () => {
+                try {
+                    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/worlds/${selectedWorld.id}/npcs`);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch NPCs');
+                    }
+                    const npcs = await response.json();
+                    setNPCs(npcs);
+                } catch (error) {
+                    console.error(`Failed to load NPCs for world ${selectedWorld.id}:`, error);
+                    setNPCs([]);
+                }
+            };
+            
+            loadNPCs();
         } else {
             setNPCs([]);
         }
@@ -54,18 +62,36 @@ const NPCsPage: React.FC = () => {
         return ['all', ...Array.from(uniqueLocations)].sort();
     }, [npcs]);
 
-    const handleEdit = (npc: NPC) => {
+    const handleEdit = async (npc: NPC) => {
         setEditingNPC(npc.id);
         setEditedNPC({ ...npc });
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (editedNPC) {
-            setNPCs(npcs.map(npc => 
-                npc.id === editedNPC.id ? editedNPC : npc
-            ));
-            setEditingNPC(null);
-            setEditedNPC(null);
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/npcs/${editedNPC.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editedNPC),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update NPC');
+                }
+
+                const updatedNPC = await response.json();
+                setNPCs(npcs.map(npc => 
+                    npc.id === updatedNPC.id ? updatedNPC : npc
+                ));
+                setEditingNPC(null);
+                setEditedNPC(null);
+            } catch (error) {
+                console.error('Failed to update NPC:', error);
+                // You might want to show an error message to the user here
+            }
         }
     };
 
@@ -80,24 +106,41 @@ const NPCsPage: React.FC = () => {
         }
     };
 
-    const handleAddNote = (npcId: string) => {
+    const handleAddNote = async (npcId: string) => {
         if (!newNote.trim()) return;
         
-        setNPCs(npcs.map(npc => {
-            if (npc.id === npcId) {
-                const newNoteObj = {
-                    id: Date.now().toString(),
-                    text: newNote.trim(),
-                    timestamp: new Date().toISOString()
-                };
-                return {
-                    ...npc,
-                    notes: [...(npc.notes || []), newNoteObj]
-                };
+        const npc = npcs.find(n => n.id === npcId);
+        if (!npc) return;
+
+        const newNoteObj = {
+            id: Date.now().toString(),
+            text: newNote.trim(),
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            const updatedNotes = [...(npc.notes || []), newNoteObj];
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/npcs/${npcId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notes: updatedNotes }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add note');
             }
-            return npc;
-        }));
-        setNewNote('');
+
+            const updatedNPC = await response.json();
+            setNPCs(npcs.map(n => 
+                n.id === npcId ? updatedNPC : n
+            ));
+            setNewNote('');
+        } catch (error) {
+            console.error('Failed to add note:', error);
+            // You might want to show an error message to the user here
+        }
     };
 
     const handleDeleteNote = (npcId: string, noteId: string) => {
@@ -108,25 +151,34 @@ const NPCsPage: React.FC = () => {
         });
     };
 
-    const confirmDeleteNote = () => {
+    const confirmDeleteNote = async () => {
         if (deleteConfirmation) {
-            if (editingNPC === deleteConfirmation.npcId) {
-                // If we're in edit mode, update the editedNPC state
-                const updatedNotes = editedNPC?.notes?.filter(note => note.id !== deleteConfirmation.noteId) || [];
-                handleChange('notes', updatedNotes);
-            } else {
-                // If we're in view mode, update the npcs state directly
-                setNPCs(npcs.map(npc => {
-                    if (npc.id === deleteConfirmation.npcId) {
-                        return {
-                            ...npc,
-                            notes: npc.notes?.filter(note => note.id !== deleteConfirmation.noteId) || []
-                        };
-                    }
-                    return npc;
-                }));
+            const npc = npcs.find(n => n.id === deleteConfirmation.npcId);
+            if (!npc) return;
+
+            try {
+                const updatedNotes = npc.notes?.filter(note => note.id !== deleteConfirmation.noteId) || [];
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/npcs/${deleteConfirmation.npcId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ notes: updatedNotes }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete note');
+                }
+
+                const updatedNPC = await response.json();
+                setNPCs(npcs.map(n => 
+                    n.id === deleteConfirmation.npcId ? updatedNPC : n
+                ));
+                setDeleteConfirmation(null);
+            } catch (error) {
+                console.error('Failed to delete note:', error);
+                // You might want to show an error message to the user here
             }
-            setDeleteConfirmation(null);
         }
     };
 

@@ -6,17 +6,10 @@ import { MagnifyingGlassIcon, FunnelIcon, AdjustmentsHorizontalIcon } from '@her
 interface Enemy {
   name: string;
   type: string;
+  count: number;
   cr?: number;
   abilities: string[];
-  traits?: string[];
   alignment?: string;
-  resistances?: string[];
-  immunities?: string[];
-  legendaryActions?: {
-    name: string;
-    description: string;
-    cost?: number;
-  }[];
   source: {
     encounter: string;
     location: {
@@ -25,6 +18,15 @@ interface Enemy {
       environment?: string;
     };
   };
+}
+
+interface DBEnemy {
+  name: string;
+  type: string;
+  count: number;
+  cr?: number;
+  abilities?: string[];
+  alignment?: string;
 }
 
 interface LevelEncountersModule {
@@ -46,12 +48,12 @@ export default function EnemiesPage() {
   const [hasImmunities, setHasImmunities] = useState<boolean | null>(null);
   const [minCR, setMinCR] = useState<number | ''>('');
   const [maxCR, setMaxCR] = useState<number | ''>('');
-  const [sortField, setSortField] = useState<SortField>('name');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [enemies, setEnemies] = useState<Enemy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortField, setSortField] = useState<SortField>('name');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
     const loadEnemies = async () => {
@@ -59,21 +61,14 @@ export default function EnemiesPage() {
 
       try {
         setLoading(true);
-        const encountersModule = await import(`../data/worlds/${selectedWorld.id}/dungeon-encounters/level-encounters.ts`) as Promise<LevelEncountersModule>;
-        const { levelEncounters } = await encountersModule;
-        const encounters: DungeonEncounter[] = Object.values(levelEncounters).flat();
-
-        const allEnemies = encounters.flatMap(encounter => 
-          encounter.enemies.map(enemy => ({
-            ...enemy,
-            source: {
-              encounter: encounter.name,
-              location: encounter.location
-            }
-          }))
-        );
-
-        setEnemies(allEnemies);
+        
+        const response = await fetch(`http://localhost:3001/api/worlds/${selectedWorld.id}/enemies`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch enemies');
+        }
+        
+        const enemies = await response.json();
+        setEnemies(enemies);
         setError(null);
       } catch (err) {
         console.error('Error loading enemies:', err);
@@ -88,40 +83,17 @@ export default function EnemiesPage() {
 
   const filteredEnemies = useMemo(() => {
     return enemies.filter(enemy => {
-      // Basic text search
       const matchesSearch = searchQuery === '' || 
         enemy.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         enemy.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        enemy.abilities.some(ability => ability.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (enemy.traits?.some(trait => trait.toLowerCase().includes(searchQuery.toLowerCase())) ?? false);
+        enemy.abilities.some(ability => ability.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      // Type filter
       const matchesType = typeFilter === '' || enemy.type === typeFilter;
+      const matchesCR = crFilter === '' || enemy.cr === crFilter;
+      const matchesAlignment = alignmentFilter === '' || enemy.alignment === alignmentFilter;
+      const matchesEnvironment = environmentFilter === '' || enemy.source.location.environment === environmentFilter;
 
-      // CR range filter
-      const matchesCR = (crFilter === '' || enemy.cr === crFilter) &&
-        (minCR === '' || (enemy.cr ?? 0) >= minCR) &&
-        (maxCR === '' || (enemy.cr ?? 0) <= maxCR);
-
-      // Alignment filter
-      const matchesAlignment = alignmentFilter === '' || enemy.alignment?.includes(alignmentFilter);
-
-      // Environment filter
-      const matchesEnvironment = environmentFilter === '' || enemy.source.location.environment?.includes(environmentFilter);
-
-      // Special properties filters
-      const matchesLegendaryActions = hasLegendaryActions === null || 
-        (hasLegendaryActions ? (enemy.legendaryActions?.length ?? 0) > 0 : !enemy.legendaryActions);
-      
-      const matchesResistances = hasResistances === null ||
-        (hasResistances ? (enemy.resistances?.length ?? 0) > 0 : !(enemy.resistances?.length));
-
-      const matchesImmunities = hasImmunities === null ||
-        (hasImmunities ? (enemy.immunities?.length ?? 0) > 0 : !(enemy.immunities?.length));
-
-      return matchesSearch && matchesType && matchesCR && matchesAlignment && 
-             matchesEnvironment && matchesLegendaryActions && matchesResistances && 
-             matchesImmunities;
+      return matchesSearch && matchesType && matchesCR && matchesAlignment && matchesEnvironment;
     }).sort((a, b) => {
       let comparison = 0;
       switch (sortField) {
@@ -150,11 +122,6 @@ export default function EnemiesPage() {
     crFilter, 
     alignmentFilter, 
     environmentFilter,
-    hasLegendaryActions,
-    hasResistances,
-    hasImmunities,
-    minCR,
-    maxCR,
     sortField,
     sortOrder
   ]);
@@ -237,158 +204,67 @@ export default function EnemiesPage() {
             </button>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            {/* Search */}
-            <div className="flex-1 min-w-[300px]">
-              <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search enemies..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400"
-                />
-              </div>
-            </div>
+          {/* Search */}
+          <div className="relative mb-4">
+            <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search by name, type, or abilities..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white/5 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
 
-            {/* Basic Filters */}
-            <div className="w-48">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Type</label>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
-              >
-                <option value="">All Types</option>
-                {uniqueTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-            </div>
+          {/* Basic Filters */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="bg-white/5 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">All Types</option>
+              {uniqueTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
 
-            <div className="w-48">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Alignment</label>
-              <select
-                value={alignmentFilter}
-                onChange={(e) => setAlignmentFilter(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
-              >
-                <option value="">All Alignments</option>
-                {uniqueAlignments.map(alignment => (
-                  <option key={alignment} value={alignment}>{alignment}</option>
-                ))}
-              </select>
-            </div>
+            <select
+              value={crFilter}
+              onChange={(e) => setCrFilter(e.target.value ? Number(e.target.value) : '')}
+              className="bg-white/5 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">All CRs</option>
+              {uniqueCRs.map(cr => (
+                <option key={cr} value={cr}>CR {cr}</option>
+              ))}
+            </select>
 
-            <div className="w-48">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Environment</label>
+            <select
+              value={alignmentFilter}
+              onChange={(e) => setAlignmentFilter(e.target.value)}
+              className="bg-white/5 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">All Alignments</option>
+              {uniqueAlignments.map(alignment => (
+                <option key={alignment} value={alignment}>{alignment}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Advanced Filters */}
+          {showAdvancedFilters && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <select
                 value={environmentFilter}
                 onChange={(e) => setEnvironmentFilter(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
+                className="bg-white/5 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">All Environments</option>
                 {uniqueEnvironments.map(env => (
                   <option key={env} value={env}>{env}</option>
                 ))}
               </select>
-            </div>
-          </div>
-
-          {/* Advanced Filters */}
-          {showAdvancedFilters && (
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                {/* Left Column */}
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-300 mb-3">Challenge Rating Range</h3>
-                    <div className="flex items-center gap-3">
-                      <div>
-                        <label className="block text-xs text-gray-400 mb-1">Min CR</label>
-                        <input
-                          type="number"
-                          placeholder="0"
-                          value={minCR}
-                          onChange={(e) => setMinCR(e.target.value === '' ? '' : Number(e.target.value))}
-                          className="w-24 px-2 py-1 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
-                        />
-                      </div>
-                      <div className="text-gray-400 mt-5">to</div>
-                      <div>
-                        <label className="block text-xs text-gray-400 mb-1">Max CR</label>
-                        <input
-                          type="number"
-                          placeholder="30"
-                          value={maxCR}
-                          onChange={(e) => setMaxCR(e.target.value === '' ? '' : Number(e.target.value))}
-                          className="w-24 px-2 py-1 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-300 mb-3">Special Properties</h3>
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={hasLegendaryActions === true}
-                          onChange={(e) => setHasLegendaryActions(e.target.checked ? true : null)}
-                          className="rounded bg-gray-700 border-gray-600 text-purple-500 focus:ring-purple-500 focus:ring-offset-gray-800"
-                        />
-                        <span className="text-sm text-gray-300">Has Legendary Actions</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={hasResistances === true}
-                          onChange={(e) => setHasResistances(e.target.checked ? true : null)}
-                          className="rounded bg-gray-700 border-gray-600 text-purple-500 focus:ring-purple-500 focus:ring-offset-gray-800"
-                        />
-                        <span className="text-sm text-gray-300">Has Resistances</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={hasImmunities === true}
-                          onChange={(e) => setHasImmunities(e.target.checked ? true : null)}
-                          className="rounded bg-gray-700 border-gray-600 text-purple-500 focus:ring-purple-500 focus:ring-offset-gray-800"
-                        />
-                        <span className="text-sm text-gray-300">Has Immunities</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div>
-                  <h3 className="text-sm font-medium text-gray-300 mb-3">Sort Options</h3>
-                  <div className="flex items-center gap-3">
-                    <select
-                      value={sortField}
-                      onChange={(e) => setSortField(e.target.value as SortField)}
-                      className="px-3 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white border border-gray-600"
-                    >
-                      <option value="name">Name</option>
-                      <option value="type">Type</option>
-                      <option value="cr">Challenge Rating</option>
-                      <option value="alignment">Alignment</option>
-                      <option value="environment">Environment</option>
-                    </select>
-                    <button
-                      onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                      className="px-3 py-2 bg-gray-700 rounded-lg border border-gray-600 hover:bg-gray-600 transition-colors"
-                      title={sortOrder === 'asc' ? 'Sort Ascending' : 'Sort Descending'}
-                    >
-                      {sortOrder === 'asc' ? '↑' : '↓'}
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -420,72 +296,12 @@ export default function EnemiesPage() {
                 </ul>
               </div>
 
-              {/* Traits */}
-              {enemy.traits && enemy.traits.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-300 mb-2">Traits</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {enemy.traits.map((trait, i) => (
-                      <span key={i} className="text-xs bg-white/10 rounded-full px-2 py-1 text-gray-300">
-                        {trait}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Resistances & Immunities */}
-              <div className="flex gap-4 mb-4">
-                {enemy.resistances && enemy.resistances.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-300 mb-2">Resistances</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {enemy.resistances.map((resistance, i) => (
-                        <span key={i} className="text-xs bg-red-900/30 text-red-300 rounded-full px-2 py-1">
-                          {resistance}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+              {/* Location */}
+              <div className="text-sm text-gray-400">
+                <p>Found in: {enemy.source.location.area} ({enemy.source.location.dungeon})</p>
+                {enemy.source.location.environment && (
+                  <p>Environment: {enemy.source.location.environment}</p>
                 )}
-                {enemy.immunities && enemy.immunities.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-300 mb-2">Immunities</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {enemy.immunities.map((immunity, i) => (
-                        <span key={i} className="text-xs bg-purple-900/30 text-purple-300 rounded-full px-2 py-1">
-                          {immunity}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Legendary Actions */}
-              {enemy.legendaryActions && enemy.legendaryActions.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-300 mb-2">Legendary Actions</h4>
-                  <div className="space-y-2">
-                    {enemy.legendaryActions.map((action, i) => (
-                      <div key={i} className="text-sm">
-                        <span className="text-purple-300">{action.name}</span>
-                        <p className="text-gray-400">{action.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Source Information */}
-              <div className="mt-4 pt-4 border-t border-white/10">
-                <div className="text-sm text-gray-400">
-                  <p>Found in: {enemy.source.encounter}</p>
-                  <p>Location: {enemy.source.location.dungeon} - {enemy.source.location.area}</p>
-                  {enemy.source.location.environment && (
-                    <p>Environment: {enemy.source.location.environment}</p>
-                  )}
-                </div>
               </div>
             </div>
           ))}

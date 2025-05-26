@@ -193,6 +193,54 @@ app.patch('/api/npcs/:id', async (req, res) => {
   }
 });
 
+app.get('/api/worlds/:worldId/enemies', async (req, res) => {
+  try {
+    console.log('\n=== Enemies Request ===');
+    console.log('Fetching enemies for world:', req.params.worldId);
+    
+    // Get all encounters for the world
+    const encounters = await prisma.encounter.findMany({
+      where: {
+        worldId: req.params.worldId
+      }
+    });
+
+    // Transform encounters to get a flat list of enemies
+    const enemies = encounters.flatMap(encounter => {
+      const enemiesData = typeof encounter.enemies === 'string' 
+        ? JSON.parse(encounter.enemies) 
+        : encounter.enemies;
+
+      const location = typeof encounter.location === 'string'
+        ? JSON.parse(encounter.location)
+        : encounter.location;
+
+      return enemiesData.map((enemy: any) => ({
+        name: enemy.name || 'Unknown Enemy',
+        type: enemy.type || 'Unknown Type',
+        count: enemy.count || 1,
+        cr: enemy.cr,
+        abilities: enemy.abilities || [],
+        alignment: enemy.alignment,
+        source: {
+          encounter: encounter.name,
+          location: {
+            dungeon: location.dungeon || 'Unknown',
+            area: location.area || 'Unknown',
+            environment: location.environment
+          }
+        }
+      }));
+    });
+
+    console.log('Found enemies:', enemies.length);
+    res.json(enemies);
+  } catch (error) {
+    console.error('Error fetching enemies:', error);
+    res.status(500).json({ error: 'Failed to fetch enemies' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 }); 

@@ -135,22 +135,36 @@ const fromDBDungeon = (dbDungeon: any): Dungeon => ({
   treasure: []
 });
 
-const fromDBEncounter = (dbEncounter: any): DungeonEncounter => ({
-  id: dbEncounter.id,
-  name: dbEncounter.name,
-  description: dbEncounter.description,
-  type: dbEncounter.type,
-  difficulty: dbEncounter.difficulty,
-  enemies: dbEncounter.enemies || [],
-  rewards: dbEncounter.rewards || [],
-  conditions: dbEncounter.conditions,
-  level: dbEncounter.level,
-  location: dbEncounter.location,
-  triggers: dbEncounter.triggers,
-  notes: dbEncounter.notes,
-  xp: dbEncounter.xp,
-  treasure: dbEncounter.treasure
-});
+const fromDBEncounter = (dbEncounter: any): DungeonEncounter => {
+  const parseJsonField = (field: any) => {
+    if (!field) return [];
+    if (typeof field === 'string') {
+      try {
+        return JSON.parse(field);
+      } catch (e) {
+        console.warn(`Failed to parse ${field} as JSON, returning empty array`);
+        return [];
+      }
+    }
+    return field;
+  };
+
+  return {
+    id: dbEncounter.id,
+    name: dbEncounter.name,
+    description: dbEncounter.description,
+    level: dbEncounter.level,
+    difficulty: dbEncounter.difficulty,
+    type: dbEncounter.type,
+    enemies: parseJsonField(dbEncounter.enemies),
+    rewards: parseJsonField(dbEncounter.rewards),
+    location: parseJsonField(dbEncounter.location),
+    triggers: dbEncounter.triggers?.map(parseJsonField) || [],
+    notes: dbEncounter.notes || [],
+    xp: dbEncounter.xp,
+    treasure: dbEncounter.treasure ? parseJsonField(dbEncounter.treasure) : undefined
+  };
+};
 
 const fromDBItem = (dbItem: any): Item => ({
   id: dbItem.id,

@@ -55,9 +55,12 @@ app.get('/api/worlds/:id', async (req, res) => {
   try {
     const world = await DatabaseService.getWorldById(req.params.id);
     if (!world) {
+      console.log('World not found:', req.params.id);
       res.status(404).json({ error: 'World not found' });
       return;
     }
+    console.log('Sending world to client:', world);
+    console.log('World rating:', world.rating);
     res.json(world);
   } catch (error) {
     console.error('Error fetching world:', error);

@@ -60,6 +60,16 @@ const fromDBLocation = (dbLocation: any): Location => ({
 
 const fromDBWorld = (dbWorld: any): World => {
   console.log('Raw DB world data:', dbWorld);
+  const defaultRating = { rating: 0, votes: 0 };
+  let parsedRating;
+  
+  try {
+    parsedRating = typeof dbWorld.rating === 'string' ? JSON.parse(dbWorld.rating) : dbWorld.rating;
+  } catch (error) {
+    console.error('Error parsing rating:', error);
+    parsedRating = defaultRating;
+  }
+
   const world = {
     id: dbWorld.id,
     name: dbWorld.name,
@@ -67,18 +77,18 @@ const fromDBWorld = (dbWorld: any): World => {
     banner: dbWorld.banner,
     thumbnail: dbWorld.thumbnail,
     theme: dbWorld.theme,
-    rating: typeof dbWorld.rating === 'string' ? JSON.parse(dbWorld.rating) : dbWorld.rating,
-    tags: dbWorld.tags,
+    rating: parsedRating || defaultRating,
+    tags: dbWorld.tags || [],
     createdAt: dbWorld.createdAt,
     lastUpdated: dbWorld.lastUpdated,
     creator: dbWorld.creator,
-    featured: dbWorld.featured,
-    popularity: dbWorld.popularity,
+    featured: dbWorld.featured || false,
+    popularity: dbWorld.popularity || 0,
     difficulty: dbWorld.difficulty,
     recommendedLevel: dbWorld.recommendedLevel,
     estimatedPlayTime: dbWorld.estimatedPlayTime,
-    languages: dbWorld.languages,
-    contentWarnings: dbWorld.contentWarnings,
+    languages: dbWorld.languages || [],
+    contentWarnings: dbWorld.contentWarnings || [],
     regions: dbWorld.regions || []
   };
   console.log('Transformed world data:', world);

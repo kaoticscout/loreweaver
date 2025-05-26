@@ -36,7 +36,7 @@ import { StarIcon as StarIconSolid, HeartIcon as HeartIconSolid } from '@heroico
 import { useState, useEffect } from 'react'
 import { useWorld } from '../contexts/WorldContext'
 import { useWorldProgress } from '../contexts/WorldProgressContext'
-import { DatabaseService } from '../services/database'
+import { WorldsAPI } from '../api/worlds'
 import type { World } from '../types/world'
 
 // Mock data for enhanced features
@@ -57,7 +57,7 @@ const mockStats = {
   completedQuests: 1234,
   totalPlayTime: "45,678 hours",
   activePlayers: "1,234",
-  averageRating: 4.8,
+  rating: 4.8,
   totalReviews: 2345
 }
 
@@ -126,7 +126,11 @@ export function WorldPreviewPage() {
       
       try {
         setLoading(true)
-        const worldData = await DatabaseService.getWorldById(worldId)
+        const worldData = await WorldsAPI.getWorldById(worldId)
+        if (!worldData) {
+          setError('World not found')
+          return
+        }
         setWorld(worldData)
         setError(null)
       } catch (err) {
@@ -254,7 +258,7 @@ export function WorldPreviewPage() {
             <div className="flex items-center gap-6 text-lg">
               <div className="flex items-center gap-2">
                 <StarIconSolid className="w-6 h-6 text-yellow-400" />
-                <span>{world.rating.averageRating.toFixed(1)}</span>
+                <span>{world.rating?.rating?.toFixed(1) || '0.0'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <UserGroupIcon className="w-6 h-6 text-purple-400" />
@@ -293,8 +297,8 @@ export function WorldPreviewPage() {
               </div>
               <div className="bg-white/5 rounded-lg p-4 text-center">
                 <StarIconSolid className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
-                <div className="text-2xl font-bold">{mockStats.averageRating}</div>
-                <div className="text-sm text-gray-400">{mockStats.totalReviews} Reviews</div>
+                <div className="text-2xl font-bold">{world.rating?.rating?.toFixed(1) || '0.0'}</div>
+                <div className="text-sm text-gray-400">{world.rating?.votes || 0} Reviews</div>
               </div>
             </div>
 

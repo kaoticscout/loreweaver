@@ -116,6 +116,140 @@ const dungeons = [
   }
 ];
 
+// Add Cyberpunk dungeons
+const cyberpunkDungeons = [
+  {
+    id: 'cp2077-grand-imperial-mall',
+    name: 'Grand Imperial Mall',
+    description: 'A massive abandoned shopping complex taken over by the Animals gang, now serving as their base of operations.',
+    challengeRating: 7,
+    location: {
+      region: 'Night City',
+      environment: 'Urban'
+    },
+    encounters: ['cp2077-tyger-claws-standoff', 'cp2077-gladiator-arena-fight'],
+    treasure: {
+      gold: 10000,
+      gems: [],
+      art: [
+        { type: 'Corporate Art', value: 5000 },
+        { type: 'Vintage Electronics', value: 3000 }
+      ],
+      magicItems: [
+        { name: 'Military Grade Cyberdeck', rarity: 'Rare' },
+        { name: 'Prototype Cyberware', rarity: 'Very Rare' }
+      ]
+    },
+    locationId: 'grand-imperial-mall'
+  },
+  {
+    id: 'cp2077-kabuki-market',
+    name: 'Kabuki Market Underground',
+    description: 'A sprawling underground market complex beneath Kabuki, home to illegal tech dealers and black market cyberware.',
+    challengeRating: 5,
+    location: {
+      region: 'Night City',
+      environment: 'Underground'
+    },
+    encounters: ['cp2077-black-market-exchange', 'cp2077-rogue-netrunner-operation'],
+    treasure: {
+      gold: 8000,
+      gems: [],
+      art: [
+        { type: 'Stolen Tech', value: 4000 },
+        { type: 'Illegal Software', value: 3000 }
+      ],
+      magicItems: [
+        { name: 'Experimental Cyberware', rarity: 'Rare' },
+        { name: 'Black Market Deck', rarity: 'Uncommon' }
+      ]
+    },
+    locationId: 'kabuki-market'
+  },
+  {
+    id: 'cp2077-valentinos-territory',
+    name: 'Valentinos Territory',
+    description: 'The heart of Valentinos gang territory, featuring underground fighting rings and street racing circuits.',
+    challengeRating: 6,
+    location: {
+      region: 'Night City',
+      environment: 'Urban'
+    },
+    encounters: ['cp2077-valentinos-street-race', 'cp2077-santa-muerte-ritual'],
+    treasure: {
+      gold: 7000,
+      gems: [],
+      art: [
+        { type: 'Street Art', value: 2000 },
+        { type: 'Custom Car Parts', value: 4000 }
+      ],
+      magicItems: [
+        { name: 'Racing Implants', rarity: 'Uncommon' },
+        { name: 'Combat Boosters', rarity: 'Rare' }
+      ]
+    },
+    locationId: 'valentinos-territory'
+  }
+];
+
+// Add Cyberpunk dungeon locations
+const cyberpunkDungeonLocations = [
+  {
+    id: 'grand-imperial-mall',
+    name: 'Grand Imperial Mall',
+    description: 'A massive abandoned shopping complex in Night City, now controlled by various gangs.',
+    type: 'Dungeon',
+    coordinates: { x: 1200, y: 700 },
+    primaryRaces: ['Human', 'Cyborg'],
+    notableFeatures: [
+      'Abandoned stores',
+      'Gang territories',
+      'Underground parking complex',
+      'Security systems'
+    ],
+    services: [],
+    localGovernment: 'Animals Gang',
+    regionId: 'night-city'
+  },
+  {
+    id: 'kabuki-market',
+    name: 'Kabuki Market',
+    description: 'A bustling marketplace in Night City\'s Kabuki district, known for its black market dealings.',
+    type: 'Dungeon',
+    coordinates: { x: 1150, y: 750 },
+    primaryRaces: ['Human', 'Cyborg'],
+    notableFeatures: [
+      'Underground shops',
+      'Black market stalls',
+      'Hidden tech dealers',
+      'Secret meeting spots'
+    ],
+    services: [],
+    localGovernment: 'Tyger Claws',
+    regionId: 'night-city'
+  },
+  {
+    id: 'valentinos-territory',
+    name: 'Valentinos Territory',
+    description: 'A section of Night City controlled by the Valentinos gang, featuring street racing and fighting rings.',
+    type: 'Dungeon',
+    coordinates: { x: 1100, y: 800 },
+    primaryRaces: ['Human', 'Cyborg'],
+    notableFeatures: [
+      'Street racing circuits',
+      'Fighting arenas',
+      'Gang hideouts',
+      'Street art murals'
+    ],
+    services: [],
+    localGovernment: 'Valentinos',
+    regionId: 'night-city'
+  }
+];
+
+// Combine all dungeons
+const allDungeons = [...dungeons, ...cyberpunkDungeons];
+
 const prepareLocationData = (location: any): Prisma.LocationCreateInput => ({
   id: location.id,
   name: location.name,
@@ -179,6 +313,21 @@ const prepareQuestData = (quest: any): Prisma.QuestCreateInput => {
   };
 };
 
+// Map locations to their regions based on the region data
+const locationRegionMap: Record<string, string> = {
+  'waterdeep': 'neverwinter-wood',
+  'neverwinter': 'neverwinter-wood',
+  'luskan': 'luskan-region',
+  'mirabar': 'neverwinter-wood',
+  'baldurs-gate': 'neverwinter-wood',
+  'daggerford': 'neverwinter-wood',
+  'candlekeep': 'neverwinter-wood',
+  'sword-mountains': 'luskan-region',
+  'high-forest': 'luskan-region',
+  'longsaddle': 'luskan-region',
+  'amphail': 'luskan-region'
+};
+
 const prepareNPCData = (npc: any): Prisma.NPCCreateInput => {
   // Map the locations to the correct ones
   const locationMap: Record<string, string> = {
@@ -199,6 +348,13 @@ const prepareNPCData = (npc: any): Prisma.NPCCreateInput => {
   }
   console.log(`Mapping location "${npc.location}" to "${locationId}"`);
 
+  // Get the region ID for this location
+  const regionId = locationRegionMap[locationId];
+  if (!regionId && npc.id !== 'cp2077-') { // Only warn for Sword Coast NPCs
+    console.warn(`Warning: No region found for location ${locationId}`);
+  }
+  console.log(`Mapping location "${locationId}" to region "${regionId || 'none'}"`);
+
   return {
     id: npc.id,
     name: npc.name,
@@ -217,7 +373,9 @@ const prepareNPCData = (npc: any): Prisma.NPCCreateInput => {
     relationships: npc.relationships as Prisma.InputJsonValue || [],
     inventory: npc.inventory as Prisma.InputJsonValue || [],
     createdAt: npc.createdAt,
-    updatedAt: npc.updatedAt
+    updatedAt: npc.updatedAt,
+    region: regionId ? { connect: { id: regionId } } : undefined,
+    world: { connect: { id: 'sword-coast' } }
   };
 };
 
@@ -259,14 +417,6 @@ const prepareDungeonData = (dungeon: any): Prisma.DungeonCreateInput => {
     world: { connect: { id: 'sword-coast' } }
   };
 };
-
-// Map locations to their regions based on the region data
-const locationRegionMap: Record<string, string> = {};
-regions.forEach(region => {
-  (region.locations as unknown as string[]).forEach(locationId => {
-    locationRegionMap[locationId] = region.id;
-  });
-});
 
 const prepareEncounterData = (encounter: DungeonEncounter) => {
   return {
@@ -431,16 +581,269 @@ const main = async () => {
       return acc;
     }, {});
 
-    // Migrate dungeons
+    // Migrate Cyberpunk 2077 data
+    console.log('Migrating Cyberpunk 2077 data...');
+
+    // Migrate regions
+    console.log('Migrating Cyberpunk regions...');
+    for (const region of cyberpunkRegions) {
+      await prisma.region.create({
+        data: {
+          id: region.id,
+          name: region.name,
+          description: region.description,
+          biography: region.biography,
+          color: region.color,
+          banner: region.banner,
+          images: region.images || [],
+          notableFeatures: region.notableFeatures,
+          history: region.history as unknown as Prisma.InputJsonValue,
+          keyFigures: region.keyFigures as unknown as Prisma.InputJsonValue[],
+          economy: region.economy as unknown as Prisma.InputJsonValue,
+          seasons: (region.seasons || []) as unknown as Prisma.InputJsonValue[],
+          magicalItems: (region.magicalItems || []) as unknown as Prisma.InputJsonValue[],
+          worldId: 'cyberpunk2077'
+        }
+      });
+      console.log(`Migrated region: ${region.name}`);
+    }
+
+    // Migrate Cyberpunk locations first
+    console.log('Migrating Cyberpunk locations...');
+    const cyberpunkLocations = [
+      {
+        id: 'afterlife-bar',
+        name: 'Afterlife',
+        description: 'The legendary mercenary bar of Night City, run by the equally legendary Rogue. Once a morgue, now the most important networking spot for high-end mercenaries and fixers.',
+        type: 'Point of Interest',
+        coordinates: { x: 1250, y: 750 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Former morgue converted into a bar',
+          'VIP area for elite mercenaries',
+          'Wall of fallen legends',
+          'High-end clientele',
+          'Secure meeting rooms'
+        ],
+        services: [
+          'Premium drinks and synthetic alcohol',
+          'Fixer services and contract negotiation',
+          'Information trading and street intel'
+        ],
+        localGovernment: 'Rogue Amendiares',
+        regionId: 'night-city'
+      },
+      {
+        id: 'lizzys-bar',
+        name: "Lizzie's Bar",
+        description: 'A popular nightclub in Night City, owned by the Mox gang. Known for its neon aesthetics and underground braindance den.',
+        type: 'Entertainment',
+        coordinates: { x: 1100, y: 800 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Neon-lit exterior',
+          'Underground braindance facilities',
+          'Mox gang headquarters',
+          'Live music venue'
+        ],
+        services: [
+          'Drinks and entertainment',
+          'Braindance experiences',
+          'Information trading',
+          'Protection services'
+        ],
+        localGovernment: 'The Mox',
+        regionId: 'night-city'
+      },
+      {
+        id: 'viktors-clinic',
+        name: "Viktor's Clinic",
+        description: 'A trusted ripperdoc clinic in Watson, run by Viktor Vector. Known for quality cyberware installations and fair prices.',
+        type: 'Medical',
+        coordinates: { x: 1000, y: 850 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Underground medical facility',
+          'State-of-the-art cyberware installation equipment',
+          'Boxing gym memorabilia'
+        ],
+        services: [
+          'Cyberware installation',
+          'Medical treatment',
+          'Cyberware maintenance',
+          'Health consultation'
+        ],
+        localGovernment: 'Independent',
+        regionId: 'night-city'
+      },
+      {
+        id: 'arasaka-tower',
+        name: 'Arasaka Tower',
+        description: 'The imposing headquarters of the Arasaka Corporation, a symbol of corporate power in Night City.',
+        type: 'Corporate',
+        coordinates: { x: 1300, y: 700 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Heavily fortified security',
+          'Advanced research labs',
+          'Corporate offices',
+          'Private landing pads',
+          'Underground facilities'
+        ],
+        services: [
+          'Corporate security',
+          'Research and development',
+          'Financial services',
+          'Military contracting'
+        ],
+        localGovernment: 'Arasaka Corporation',
+        regionId: 'night-city'
+      },
+      {
+        id: 'pacifica-combat-zone',
+        name: 'Pacifica Combat Zone',
+        description: 'A dangerous, abandoned district turned urban warzone, controlled by various gangs.',
+        type: 'Combat Zone',
+        coordinates: { x: 900, y: 900 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Abandoned luxury hotels',
+          'Gang territories',
+          'Combat zones',
+          'Black markets',
+          'Underground bunkers'
+        ],
+        services: [
+          'Black market trading',
+          'Underground fighting',
+          'Illegal cyberware',
+          'Weapons dealing'
+        ],
+        localGovernment: 'Various Gangs',
+        regionId: 'pacifica'
+      },
+      {
+        id: 'clouds',
+        name: 'Clouds',
+        description: 'An exclusive dollhouse in Westbrook, offering high-end companionship and unique experiences.',
+        type: 'Entertainment',
+        coordinates: { x: 1150, y: 700 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Luxury suites',
+          'Advanced AI companions',
+          'Private meeting rooms',
+          'State-of-the-art security'
+        ],
+        services: [
+          'AI companionship',
+          'Virtual experiences',
+          'Private entertainment',
+          'Exclusive memberships'
+        ],
+        localGovernment: 'Tyger Claws',
+        regionId: 'night-city'
+      },
+      {
+        id: 'totentanz',
+        name: 'Totentanz',
+        description: 'A multi-level nightclub in Night City, famous for its intense atmosphere and chrome-head clientele.',
+        type: 'Entertainment',
+        coordinates: { x: 1050, y: 750 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Multiple dance floors',
+          'Cyberware showcase area',
+          'Underground fighting rings',
+          'Chrome-head hangout'
+        ],
+        services: [
+          'Live music',
+          'Synthetic alcohol',
+          'Underground fighting',
+          'Black market deals'
+        ],
+        localGovernment: 'Maelstrom',
+        regionId: 'night-city'
+      },
+      {
+        id: 'north-oak',
+        name: 'North Oak',
+        description: 'An exclusive residential district for Night City\'s wealthiest citizens.',
+        type: 'Residential',
+        coordinates: { x: 1400, y: 600 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Luxury mansions',
+          'Private security',
+          'Exclusive clubs',
+          'Automated services'
+        ],
+        services: [
+          'Private security',
+          'Luxury shopping',
+          'Personal services',
+          'Executive transportation'
+        ],
+        localGovernment: 'Corporate Council',
+        regionId: 'night-city'
+      },
+      {
+        id: 'charter-hill',
+        name: 'Charter Hill',
+        description: 'A corporate residential zone known for its relative safety and middle-upper class residents.',
+        type: 'Residential',
+        coordinates: { x: 1200, y: 650 },
+        primaryRaces: ['Human', 'Cyborg'],
+        notableFeatures: [
+          'Corporate housing',
+          'Shopping centers',
+          'Security checkpoints',
+          'Public parks'
+        ],
+        services: [
+          'Corporate housing',
+          'Shopping',
+          'Entertainment',
+          'Security services'
+        ],
+        localGovernment: 'Corporate Council',
+        regionId: 'night-city'
+      },
+      ...cyberpunkDungeonLocations // Add the dungeon locations
+    ];
+
+    for (const location of cyberpunkLocations) {
+      await prisma.location.create({
+        data: {
+          id: location.id,
+          name: location.name,
+          description: location.description,
+          type: location.type,
+          coordinates: location.coordinates as Prisma.InputJsonValue,
+          primaryRaces: location.primaryRaces,
+          notableFeatures: location.notableFeatures,
+          services: location.services,
+          localGovernment: location.localGovernment,
+          region: { connect: { id: location.regionId } },
+          world: { connect: { id: 'cyberpunk2077' } }
+        }
+      });
+      console.log(`Migrated location: ${location.name}`);
+    }
+
+    // Now migrate dungeons after locations are created
     console.log('Migrating dungeons...');
-    for (const dungeon of dungeons) {
+    for (const dungeon of allDungeons) {
       const dungeonData = prepareDungeonData(dungeon);
       const regionId = locationRegionMapFromDb[dungeon.locationId];
+      const worldId = dungeon.id.startsWith('cp2077-') ? 'cyberpunk2077' : 'sword-coast';
       
       await prisma.dungeon.create({
         data: {
           ...dungeonData,
-          region: regionId ? { connect: { id: regionId } } : undefined // Region already has the world connection
+          region: regionId ? { connect: { id: regionId } } : undefined,
+          world: { connect: { id: worldId } }
         }
       });
       console.log(`Migrated dungeon: ${dungeon.name}`);
@@ -529,135 +932,22 @@ const main = async () => {
       console.log(`Migrated quest: ${quest.title}`);
     }
 
-    // Migrate Cyberpunk 2077 data
-    console.log('Migrating Cyberpunk 2077 data...');
-    
-    // Migrate regions
-    console.log('Migrating Cyberpunk regions...');
-    for (const region of cyberpunkRegions) {
-      await prisma.region.create({
-        data: {
-          id: region.id,
-          name: region.name,
-          description: region.description,
-          biography: region.biography,
-          color: region.color,
-          banner: region.banner,
-          images: region.images || [],
-          notableFeatures: region.notableFeatures,
-          history: region.history as unknown as Prisma.InputJsonValue,
-          keyFigures: region.keyFigures as unknown as Prisma.InputJsonValue[],
-          economy: region.economy as unknown as Prisma.InputJsonValue,
-          seasons: (region.seasons || []) as unknown as Prisma.InputJsonValue[],
-          magicalItems: (region.magicalItems || []) as unknown as Prisma.InputJsonValue[],
-          worldId: 'cyberpunk2077'
-        }
-      });
-      console.log(`Migrated region: ${region.name}`);
-    }
-
-    // Migrate Cyberpunk locations
-    console.log('Migrating Cyberpunk locations...');
-    const cyberpunkLocations = [
-      {
-        id: 'afterlife-bar',
-        name: 'Afterlife',
-        description: 'The legendary mercenary bar of Night City, run by the equally legendary Rogue. Once a morgue, now the most important networking spot for high-end mercenaries and fixers.',
-        type: 'Point of Interest',
-        coordinates: { x: 1250, y: 750 },
-        primaryRaces: ['Human', 'Cyborg'],
-        notableFeatures: [
-          'Former morgue converted into a bar',
-          'VIP area for elite mercenaries',
-          'Wall of fallen legends',
-          'High-end clientele',
-          'Secure meeting rooms'
-        ],
-        services: [
-          'Premium drinks and synthetic alcohol',
-          'Fixer services and contract negotiation',
-          'Information trading and street intel'
-        ],
-        localGovernment: 'Rogue Amendiares',
-        regionId: 'night-city'
-      },
-      {
-        id: 'lizzys-bar',
-        name: "Lizzie's Bar",
-        description: 'A popular nightclub in Night City, owned by the Mox gang. Known for its neon aesthetics and underground braindance den.',
-        type: 'Entertainment',
-        coordinates: { x: 1100, y: 800 },
-        primaryRaces: ['Human', 'Cyborg'],
-        notableFeatures: [
-          'Neon-lit exterior',
-          'Underground braindance facilities',
-          'Mox gang headquarters',
-          'Live music venue'
-        ],
-        services: [
-          'Drinks and entertainment',
-          'Braindance experiences',
-          'Information trading',
-          'Protection services'
-        ],
-        localGovernment: 'The Mox',
-        regionId: 'night-city'
-      },
-      {
-        id: 'viktors-clinic',
-        name: "Viktor's Clinic",
-        description: 'A trusted ripperdoc clinic in Watson, run by Viktor Vector. Known for quality cyberware installations and fair prices.',
-        type: 'Medical',
-        coordinates: { x: 1000, y: 850 },
-        primaryRaces: ['Human', 'Cyborg'],
-        notableFeatures: [
-          'Underground medical facility',
-          'State-of-the-art cyberware installation equipment',
-          'Boxing gym memorabilia'
-        ],
-        services: [
-          'Cyberware installation',
-          'Medical treatment',
-          'Cyberware maintenance',
-          'Health consultation'
-        ],
-        localGovernment: 'Independent',
-        regionId: 'night-city'
-      }
-    ];
-
-    for (const location of cyberpunkLocations) {
-      await prisma.location.create({
-        data: {
-          id: location.id,
-          name: location.name,
-          description: location.description,
-          type: location.type,
-          coordinates: location.coordinates as Prisma.InputJsonValue,
-          primaryRaces: location.primaryRaces,
-          notableFeatures: location.notableFeatures,
-          services: location.services,
-          localGovernment: location.localGovernment,
-          region: { connect: { id: location.regionId } },
-          world: { connect: { id: 'cyberpunk2077' } }
-        }
-      });
-      console.log(`Migrated location: ${location.name}`);
-    }
-
     // Migrate Cyberpunk NPCs
     console.log('Migrating Cyberpunk NPCs...');
     const locationMap: Record<string, string> = {
       'The Afterlife, Night City': 'afterlife-bar',
       'Chrome Clinic, Watson District': 'viktors-clinic',
-      'Cyberden, Kabuki Market': 'lizzys-bar' // Using Lizzy's as a temporary location since we don't have Kabuki Market yet
+      'Cyberden, Kabuki Market': 'lizzys-bar', // Using Lizzy's as a temporary location since we don't have Kabuki Market yet
+      'Grand Imperial Mall': 'grand-imperial-mall',
+      'Kabuki Market': 'kabuki-market',
+      'Valentinos Territory': 'valentinos-territory'
     };
 
     for (const npc of cyberpunkNpcs) {
       const locationId = locationMap[npc.location] || 'afterlife-bar'; // Default to Afterlife if location not found
       await prisma.nPC.create({
         data: {
-          id: `cp2077-${npc.id}`, // Prefix Cyberpunk NPC IDs to avoid conflicts
+          id: `cp2077-${npc.id}`,
           name: npc.name,
           description: npc.description,
           role: npc.role,
@@ -674,6 +964,7 @@ const main = async () => {
           inventory: (npc.inventory || []) as unknown as Prisma.InputJsonValue,
           createdAt: npc.createdAt,
           updatedAt: npc.updatedAt,
+          region: { connect: { id: 'night-city' } },
           world: { connect: { id: 'cyberpunk2077' } }
         }
       });
@@ -690,7 +981,9 @@ const main = async () => {
       'Watson District - Northside Industrial Zone': 'afterlife-bar',
       'Watson District - Kabuki Market': 'lizzys-bar',
       'Heywood - Vista del Rey': 'afterlife-bar',
-      'Heywood - Stadium District': 'afterlife-bar'
+      'Heywood - Stadium District': 'afterlife-bar',
+      'Grand Imperial Mall': 'grand-imperial-mall',
+      'Valentinos Territory': 'valentinos-territory'
     };
 
     for (const quest of cyberpunkQuests) {

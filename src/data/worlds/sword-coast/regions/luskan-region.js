@@ -1,3 +1,9 @@
+import { luskan } from '../locations/luskan.js'
+import { swordMountains } from '../locations/sword-mountains.js'
+import { highForest } from '../locations/high-forest.js'
+import { longsaddle } from '../locations/longsaddle.js'
+import { amphail } from '../locations/amphail.js'
+
 export const luskanRegion = {
   id: 'luskan-region',
   name: 'Luskan Region',
@@ -50,9 +56,10 @@ export const luskanRegion = {
   seasons: [],
   magicalItems: [],
   locations: [
-    'sword-mountains',
-    'high-forest',
-    'longsaddle',
-    'amphail'
+    luskan,
+    swordMountains,
+    highForest,
+    longsaddle,
+    amphail
   ]
 }; 

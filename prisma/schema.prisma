@@ -49,9 +49,9 @@ model Dungeon {
   treasures       Json[]
   traps           Json[]
   puzzles         Json[]
-  boss            Json?
-  locationId      String
-  location        Location  @relation("DungeonLocation", fields: [locationId], references: [id])
+  boss            Json
+  locationId      String?
+  location        Location? @relation("DungeonLocation", fields: [locationId], references: [id])
   regionId        String?
   region          Region?   @relation("DungeonRegion", fields: [regionId], references: [id])
   createdAt       DateTime  @default(now())
@@ -85,31 +85,31 @@ model Region {
 }
 
 model World {
-  id               String   @id
-  name             String
-  description      String
-  banner           String
-  thumbnail        String
-  theme            String
-  rating           Json
-  tags             String[]
-  createdAt        String
-  lastUpdated      String
-  creator          Json
-  featured         Boolean
-  popularity       Int
-  difficulty       String
-  recommendedLevel String
-  estimatedPlayTime String
-  languages        String[]
-  contentWarnings  String[]
-  regions          Region[]
-  npcs             NPC[]    @relation("NPCWorld")
-  quests           Quest[]  @relation("QuestWorld")
-  items            Item[]   @relation("ItemWorld")
-  locations        Location[] @relation("LocationWorld")
-  dungeons         Dungeon[]  @relation("DungeonWorld")
-  encounters       Encounter[] @relation("EncounterWorld")
+  id                  String   @id
+  name                String
+  description         String
+  banner              String
+  thumbnail           String
+  theme               String
+  rating              Json
+  tags                String[]
+  createdAt           String
+  lastUpdated         String
+  creator             Json
+  featured            Boolean
+  popularity          Int
+  difficulty          String
+  recommendedLevel    String
+  estimatedPlayTime   String
+  languages           String[]
+  contentWarnings     String[]
+  regions             Region[]
+  locations           Location[] @relation("LocationWorld")
+  dungeons            Dungeon[]  @relation("DungeonWorld")
+  npcs                NPC[]      @relation("NPCWorld")
+  quests              Quest[]    @relation("QuestWorld")
+  encounters          Encounter[] @relation("EncounterWorld")
+  items               Item[]     @relation("ItemWorld")
 }
 
 model NPC {

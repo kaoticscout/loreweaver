@@ -72,15 +72,17 @@ export const neverwinterWood: Region = {
   magicalItems: [],
   cities: [neverwinter, helmsHold],
   locations: [
+    neverwinter,
+    waterdeep,
+    mirabar,
+    baldursGate,
+    daggerford,
+    candlekeep,
     testRuins,
     emeraldEnclaveShop,
     blacklakeDistrict,
     theChasm,
     neverdeathGraveyard,
-    swordMountains,
-    highForest,
-    longsaddle,
-    amphail,
     redLarch
   ]
 } 

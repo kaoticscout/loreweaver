@@ -3,17 +3,37 @@ import { Location, LocationType } from '../types/location';
 import { locationService } from '../services/locationService';
 import { useWorld } from '../contexts/WorldContext';
 
+interface LocationWithImages extends Location {
+  images?: string[];
+}
+
 export function useLocationManagement() {
   const { selectedWorld } = useWorld();
-  const [locations, setLocations] = useState<Location[]>(() => 
-    selectedWorld ? locationService.getLocations(selectedWorld.id) : []
-  );
+  const [locations, setLocations] = useState<LocationWithImages[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [locationHistory, setLocationHistory] = useState<Location[][]>([]);
+  const [locationHistory, setLocationHistory] = useState<LocationWithImages[][]>([]);
 
-  const addLocation = useCallback((name: string, description: string, type: LocationType, x: number, y: number, region?: string) => {
+  // Load locations when world changes
+  useEffect(() => {
+    if (selectedWorld) {
+      locationService.getLocations(selectedWorld.id)
+        .then(fetchedLocations => {
+          setLocations(fetchedLocations);
+          setLocationHistory([]);
+        })
+        .catch(error => {
+          console.error('Error loading locations:', error);
+          setLocations([]);
+        });
+    } else {
+      setLocations([]);
+      setLocationHistory([]);
+    }
+  }, [selectedWorld]);
+
+  const addLocation = useCallback(async (name: string, description: string, type: LocationType, x: number, y: number, region?: string) => {
     if (!selectedWorld) {
       console.error('No world selected when trying to add location');
       return;
@@ -24,6 +44,7 @@ export function useLocationManagement() {
     // Create a base location object
     const baseLocation = {
       id: `loc-${Date.now()}`,
+      worldId: selectedWorld.id,
       name,
       description,
       type,
@@ -37,7 +58,7 @@ export function useLocationManagement() {
     };
 
     // Create the specific location type based on the type parameter
-    let newLocation: Location;
+    let newLocation: LocationWithImages;
     switch (type) {
       case 'Village':
       case 'City':
@@ -50,7 +71,7 @@ export function useLocationManagement() {
           notableFeatures: [],
           services: [],
           localGovernment: ''
-        } as Location;
+        };
         break;
       case 'Landmark':
         newLocation = {
@@ -59,7 +80,7 @@ export function useLocationManagement() {
           significance: '',
           history: '',
           notableFeatures: []
-        } as Location;
+        };
         break;
       case 'Ruins':
         newLocation = {
@@ -69,7 +90,7 @@ export function useLocationManagement() {
           originalPurpose: '',
           currentState: '',
           dangers: []
-        } as Location;
+        };
         break;
       case 'Stronghold':
         newLocation = {
@@ -80,7 +101,7 @@ export function useLocationManagement() {
           defenses: [],
           notableFeatures: [],
           access: ''
-        } as Location;
+        };
         break;
       case 'Fort':
         newLocation = {
@@ -91,7 +112,7 @@ export function useLocationManagement() {
           defenses: [],
           purpose: '',
           access: ''
-        } as Location;
+        };
         break;
       case 'Point of Interest':
         newLocation = {
@@ -99,7 +120,7 @@ export function useLocationManagement() {
           type,
           significance: '',
           features: []
-        } as Location;
+        };
         break;
       case 'Shop':
         newLocation = {
@@ -110,57 +131,67 @@ export function useLocationManagement() {
           inventory: [],
           services: [],
           hours: ''
-        } as Location;
+        };
         break;
       case 'Other':
         newLocation = {
           ...baseLocation,
           type,
           customFields: {}
-        } as Location;
+        };
         break;
       default:
         throw new Error(`Invalid location type: ${type}`);
     }
 
-    // First update the local state
-    setLocations(prev => [...prev, newLocation]);
-    
-    // Then update the service with the world ID
     try {
-      locationService.initializeWorld(selectedWorld.id);
-      locationService.addLocation(selectedWorld.id, newLocation);
+      // First update the database
+      await locationService.addLocation(newLocation);
+      // Then update the local state
+      setLocations(prev => [...prev, newLocation]);
     } catch (error) {
       console.error('Error adding location:', error);
-      // Revert the local state if the service update fails
-      setLocations(prev => prev.filter(loc => loc.id !== newLocation.id));
-      throw error; // Re-throw to let the caller handle the error
+      throw error;
     }
   }, [locations, selectedWorld]);
 
-  const updateLocation = useCallback((location: Location) => {
+  const updateLocation = useCallback(async (location: LocationWithImages) => {
     if (!selectedWorld) return;
     
     setLocationHistory(prev => [...prev, locations]);
-    setLocations(prev => prev.map(loc => 
-      loc.name === location.name ? {
-        ...location,
-        images: location.images || [
-          '/art/environments/Saltmarsh_1920x1080_WallpaperTemplate.png',
-          '/art/environments/dnd_idrfm_wall1_1920.png',
-          '/art/environments/1920x1080-terrain-wa.png',
-        ]
-      } : loc
-    ));
-    locationService.updateLocation(selectedWorld.id, location);
+    try {
+      // First update the database
+      await locationService.updateLocation(location.id, location);
+      // Then update the local state
+      setLocations(prev => prev.map(loc => 
+        loc.id === location.id ? {
+          ...location,
+          images: location.images || [
+            '/art/environments/Saltmarsh_1920x1080_WallpaperTemplate.png',
+            '/art/environments/dnd_idrfm_wall1_1920.png',
+            '/art/environments/1920x1080-terrain-wa.png',
+          ]
+        } : loc
+      ));
+    } catch (error) {
+      console.error('Error updating location:', error);
+      throw error;
+    }
   }, [locations, selectedWorld]);
 
-  const deleteLocation = useCallback((id: string) => {
+  const deleteLocation = useCallback(async (id: string) => {
     if (!selectedWorld) return;
     
     setLocationHistory(prev => [...prev, locations]);
-    setLocations(prev => prev.filter(loc => loc.id !== id));
-    locationService.deleteLocation(selectedWorld.id, id);
+    try {
+      // First update the database
+      await locationService.deleteLocation(id);
+      // Then update the local state
+      setLocations(prev => prev.filter(loc => loc.id !== id));
+    } catch (error) {
+      console.error('Error deleting location:', error);
+      throw error;
+    }
   }, [locations, selectedWorld]);
 
   const selectLocation = useCallback((name: string | null) => {
@@ -175,36 +206,6 @@ export function useLocationManagement() {
     setIsEditMode(prev => !prev);
   }, []);
 
-  const saveLocations = useCallback(() => {
-    if (!selectedWorld) return;
-    locationService.saveLocations(selectedWorld.id, locations);
-    setLocationHistory([]); // Clear history after saving
-  }, [locations, selectedWorld]);
-
-  const undoLocations = useCallback(() => {
-    if (!selectedWorld) return false;
-    
-    if (locationHistory.length > 0) {
-      const previousState = locationHistory[locationHistory.length - 1];
-      setLocations(previousState);
-      setLocationHistory(prev => prev.slice(0, -1));
-      return true;
-    }
-    return false;
-  }, [locationHistory, selectedWorld]);
-
-  // Update locations when world changes
-  useEffect(() => {
-    if (selectedWorld) {
-      const worldLocations = locationService.getLocations(selectedWorld.id);
-      setLocations(worldLocations);
-      setLocationHistory([]);
-    } else {
-      setLocations([]);
-      setLocationHistory([]);
-    }
-  }, [selectedWorld]);
-
   return {
     locations,
     selectedLocation,
@@ -216,8 +217,6 @@ export function useLocationManagement() {
     selectLocation,
     setHovered,
     toggleEditMode,
-    saveLocations,
-    undoLocations,
     setLocations,
     setLocationHistory
   };

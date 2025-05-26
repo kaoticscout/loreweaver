@@ -33,10 +33,11 @@ import {
   PlusIcon
 } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid, HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
-import { worlds } from '../data/worlds'
 import { useState, useEffect } from 'react'
 import { useWorld } from '../contexts/WorldContext'
 import { useWorldProgress } from '../contexts/WorldProgressContext'
+import { DatabaseService } from '../services/database'
+import type { World } from '../types/world'
 
 // Mock data for enhanced features
 const mockReviews = [
@@ -112,19 +113,49 @@ export function WorldPreviewPage() {
   const [likedWorlds, setLikedWorlds] = useState<Set<string>>(new Set())
   const { setSelectedWorld } = useWorld()
   const { hasCreatedWorld, getCurrentChapter, setWorldProgress } = useWorldProgress()
+  const [world, setWorld] = useState<World | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Add useEffect to scroll to top
+  // Add useEffect to scroll to top and load world data
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [worldId]) // Re-run when worldId changes
+    
+    const loadWorld = async () => {
+      if (!worldId) return;
+      
+      try {
+        setLoading(true)
+        const worldData = await DatabaseService.getWorldById(worldId)
+        setWorld(worldData)
+        setError(null)
+      } catch (err) {
+        console.error('Error loading world:', err)
+        setError('Failed to load world data')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const world = worlds.find(w => w.id === worldId)
+    loadWorld()
+  }, [worldId])
 
-  if (!world) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#1B0A20] text-white p-8 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading World...</h1>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !world) {
     return (
       <div className="min-h-screen bg-[#1B0A20] text-white p-8 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">World Not Found</h1>
+          <p className="text-red-400 mb-4">{error}</p>
           <button 
             onClick={() => navigate('/')}
             className="text-purple-400 hover:text-purple-300 transition-colors"

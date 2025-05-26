@@ -27,6 +27,7 @@ export interface RegionMagicalItem {
 
 export interface Region {
   id: string
+  worldId: string
   name: string
   description: string
   biography: string

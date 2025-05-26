@@ -1,12 +1,29 @@
 export interface Item {
   id: string
   name: string
-  description: string
-  type: string
-  rarity: string
-  value: string
   image: string
-  properties?: string[]
-  requirements?: string[]
-  effects?: string[]
+  description: string
+  category: string
+  rarity: string
+  cost: number
+  classification?: string
+  armor?: {
+    ac: string
+  }
+  weapon?: {
+    damage: string
+    damage_type: string
+    properties: string[]
+  }
+  gear?: {
+    capacity?: string
+    usage?: string
+    [key: string]: any
+  }
+  tools?: {
+    type: string
+    proficiency: string
+    usage: string
+  }
+  worldId: string
 } 

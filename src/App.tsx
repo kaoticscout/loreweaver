@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams, useLocation, Routes, Route, Navigate } from 'react-router-dom'
 import { InformationCircleIcon, MapIcon, UserGroupIcon, BanknotesIcon, BuildingLibraryIcon, SparklesIcon, BookOpenIcon, UserIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
-import { regions as initialRegions } from './data/worlds/sword-coast/regions'
 import { City, TransportationRoute, SeasonalEffect, MagicalItem, Dungeon, PointOfInterest, RestArea, Shop, InventoryItem } from './types/city'
 import { Region } from './types/region'
 import { DungeonView } from './components/DungeonView'
@@ -46,6 +45,7 @@ import { TreasureHoardGeneratorPage } from './pages/utilities/TreasureHoardGener
 import { BattleMapGeneratorPage } from './pages/utilities/BattleMapGeneratorPage'
 import { MerchantGeneratorPage } from './pages/utilities/MerchantGeneratorPage'
 import { CampaignPage } from './pages/CampaignPage'
+import { RegionsAPI } from './api/regions'
 
 interface Deity {
   name: string
@@ -150,7 +150,7 @@ function AppContent() {
     handleSaveCity,
     setIsAddingRegion,
     setIsAddingCity
-  } = useWorldManagement(initialRegions)
+  } = useWorldManagement()
   const { selectedWorld } = useWorld();
   const [regions, setRegions] = useState<Region[]>([]);
   const [lastAddedId, setLastAddedId] = useState<string | null>(null);
@@ -205,12 +205,14 @@ function AppContent() {
   // Load regions when world changes
   useEffect(() => {
     if (selectedWorld) {
-      import(`./data/worlds/${selectedWorld.id}/regions`).then(module => {
-        setRegions(module.regions || []);
-      }).catch(error => {
-        console.error(`Failed to load regions for world ${selectedWorld.id}:`, error);
-        setRegions([]);
-      });
+      RegionsAPI.getRegionsByWorldId(selectedWorld.id)
+        .then((regions: Region[]) => {
+          setRegions(regions || []);
+        })
+        .catch((error: Error) => {
+          console.error(`Failed to load regions for world ${selectedWorld.id}:`, error);
+          setRegions([]);
+        });
     }
   }, [selectedWorld]);
 

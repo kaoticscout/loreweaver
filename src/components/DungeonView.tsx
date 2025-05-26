@@ -1,9 +1,10 @@
 import { Dungeon } from '../types/city'
-import { DungeonEncounter } from '../types/dungeon-encounter'
+import { DungeonEncounter } from '../types/dungeonEncounter'
 import { InformationCircleIcon, BookOpenIcon, SparklesIcon, MapPinIcon, ShieldExclamationIcon, UserGroupIcon, CurrencyDollarIcon, PuzzlePieceIcon, ChatBubbleLeftRightIcon, BoltIcon, XMarkIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
-import { levelEncounters } from '../data/worlds/sword-coast/dungeon-encounters/level-encounters'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useBorderColor } from '../hooks/useBorderColor'
+import { DatabaseService } from '../services/database'
+import { useWorld } from '../contexts/WorldContext'
 import { 
   LocationSection, 
   BasicInformationSection, 
@@ -23,6 +24,9 @@ interface DungeonViewProps {
 export function DungeonView({ dungeon, onBack, onClose }: DungeonViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const defaultColor = useBorderColor()
+  const { selectedWorld } = useWorld()
+  const [encounters, setEncounters] = useState<DungeonEncounter[]>([])
+  const [loading, setLoading] = useState(true)
 
   // Environment images for carousel
   const spotlightImages = dungeon.images && dungeon.images.length > 0
@@ -38,15 +42,34 @@ export function DungeonView({ dungeon, onBack, onClose }: DungeonViewProps) {
     window.scrollTo({ top: 0, behavior: 'auto' })
   }, [dungeon])
 
-  // Get full encounter data for each encounter ID
-  const encounters = dungeon.encounters?.map(encounterId => {
-    // Find the encounter in levelEncounters by searching through all levels
-    for (const encountersList of Object.values(levelEncounters)) {
-      const foundEncounter = encountersList.find((e: DungeonEncounter) => e.id === encounterId)
-      if (foundEncounter) return foundEncounter
-    }
-    return null
-  }).filter((encounter): encounter is DungeonEncounter => encounter !== null) || []
+  // Load encounters from database
+  useEffect(() => {
+    const loadEncounters = async () => {
+      if (!selectedWorld) return;
+      
+      try {
+        setLoading(true);
+        // Get encounters for this dungeon's level
+        const dungeonLevel = parseInt(dungeon.level.toString(), 10);
+        const levelEncounters = await DatabaseService.getEncountersByLevel(selectedWorld.id, dungeonLevel);
+        
+        // Filter encounters to only those that belong to this dungeon
+        const dungeonEncounters = levelEncounters.filter(encounter => 
+          encounter.location?.region === dungeon.name || // Check region name
+          encounter.location?.environment === dungeon.location.environment // Check environment
+        );
+        
+        setEncounters(dungeonEncounters);
+      } catch (error) {
+        console.error('Failed to load encounters:', error);
+        setEncounters([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEncounters();
+  }, [dungeon, selectedWorld]);
 
   return (
     <div ref={containerRef} className="space-y-6">
@@ -137,6 +160,7 @@ export function DungeonView({ dungeon, onBack, onClose }: DungeonViewProps) {
         <EncountersSection
           encounters={encounters}
           borderColor={defaultColor}
+          loading={loading}
         />
       </div>
     </div>

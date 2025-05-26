@@ -44,6 +44,7 @@ import { useWorld } from '../contexts/WorldContext'
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap'
 import { v4 as uuidv4 } from 'uuid'
+import { Dungeon } from '../types/dungeon'
 
 
 interface WorldViewProps {
@@ -57,7 +58,7 @@ interface WorldViewProps {
   onBack: () => void
   onHome: () => void
   lastAddedId: string | null
-  selectedDungeon?: City['dungeons'][0] | null
+  selectedDungeon?: Dungeon | null
   onDungeonSelect?: (dungeonId: string | null) => void
 }
 
@@ -158,19 +159,18 @@ export function WorldView({
 
   const {
     locations,
-    selectedLocation: viewedLocation,
+    selectedLocation: selectedLocationId,
     hoveredLocation,
+    isEditMode: locationEditMode,
     addLocation,
     updateLocation,
     deleteLocation,
     selectLocation,
     setHovered,
     toggleEditMode,
-    saveLocations,
-    undoLocations,
     setLocations,
     setLocationHistory
-  } = useLocationManagement()
+  } = useLocationManagement();
 
   const {
     zoom,
@@ -555,57 +555,62 @@ export function WorldView({
     }
   };
 
-  const handleLocationDelete = (location: Location) => {
-    deleteLocation(location.name)
-    setNotification({
-      open: true,
-      message: 'Location deleted successfully',
-      severity: 'success'
-    })
-  }
-
-  const handleResetLocations = () => {
-    if (!selectedWorld) return;
-    
-    // Reset to the last saved state from localStorage
-    const savedLocations = locationService.getLocations(selectedWorld.id);
-    setLocations(savedLocations);
-    setLocationHistory([]); // Clear the undo history
-    
-    setNotification({
-      open: true,
-      message: 'Locations reset to last saved state',
-      severity: 'success'
-    });
+  const handleLocationDelete = async (location: Location) => {
+    try {
+      await deleteLocation(location.id);
+      setNotification({
+        open: true,
+        message: 'Location deleted successfully',
+        severity: 'success'
+      });
+    } catch (error) {
+      setNotification({
+        open: true,
+        message: 'Error deleting location',
+        severity: 'error'
+      });
+    }
   };
 
-  const handleSaveLocations = async () => {
+  const handleResetLocations = async () => {
     if (!selectedWorld) return;
     
     try {
-      // Save the current state of locations to localStorage
-      saveLocations();
+      // Fetch fresh locations from the database
+      const freshLocations = await locationService.getLocations(selectedWorld.id);
+      setLocations(freshLocations);
+      setLocationHistory([]); // Clear the undo history
       
-      // Then create a backup file for download
-      const success = await backupLocations(selectedWorld.id);
-      if (success) {
-        setNotification({
-          open: true,
-          message: 'Location changes saved and backup file downloaded',
-          severity: 'success'
-        });
-      } else {
-        setNotification({
-          open: true,
-          message: 'Changes saved but backup download failed',
-          severity: 'error'
-        });
+      setNotification({
+        open: true,
+        message: 'Locations reset successfully',
+        severity: 'success'
+      });
+    } catch (error) {
+      setNotification({
+        open: true,
+        message: 'Error resetting locations',
+        severity: 'error'
+      });
+    }
+  };
+
+  const handleSaveLocations = async () => {
+    try {
+      // Save locations to database
+      for (const location of locations) {
+        await updateLocation(location);
       }
+      setNotification({
+        open: true,
+        message: 'Locations saved successfully',
+        severity: 'success'
+      });
     } catch (error) {
       console.error('Error saving locations:', error);
       setNotification({
         open: true,
-        message: 'Error saving changes',
+        message: 'Error saving locations',
         severity: 'error'
       });
     }
@@ -613,34 +618,25 @@ export function WorldView({
 
   const handleRestoreFromBackup = async () => {
     if (!selectedWorld) return;
+    
     try {
-      const success = await restoreFromBackup(selectedWorld.id);
-      if (success) {
-        // Reload locations from service and update state through the hook
-        const restoredLocations = locationService.getLocations(selectedWorld.id);
-        restoredLocations.forEach(loc => {
-          if (loc.coordinates) {
-            addLocation(loc.name, loc.description, loc.type, loc.coordinates.x, loc.coordinates.y);
-          }
-        });
-        saveLocations();
-        setNotification({
-          open: true,
-          message: 'Locations restored from backup file',
-          severity: 'success'
-        });
-      } else {
-        setNotification({
-          open: true,
-          message: 'Failed to restore from backup',
-          severity: 'error'
-        });
+      // Reload locations from service and update state through the hook
+      const restoredLocations = await locationService.getLocations(selectedWorld.id);
+      for (const loc of restoredLocations) {
+        if (loc.coordinates) {
+          await addLocation(loc.name, loc.description, loc.type, loc.coordinates.x, loc.coordinates.y);
+        }
       }
-    } catch (error) {
-      console.error('Error restoring from backup:', error);
       setNotification({
         open: true,
-        message: 'Error restoring from backup',
+        message: 'Locations restored successfully',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Error restoring locations:', error);
+      setNotification({
+        open: true,
+        message: 'Error restoring locations',
         severity: 'error'
       });
     }
@@ -859,7 +855,7 @@ export function WorldView({
     setDraggedLocation(null);
   }, [roadCreationState, mapDimensions, imageNaturalSize, pan, zoom]);
 
-  const handleDungeonSelect = (dungeon: City['dungeons'][0] | null) => {
+  const handleDungeonSelect = (dungeon: Dungeon | null) => {
     if (onDungeonSelect) {
       onDungeonSelect(dungeon?.id ?? null);
     }
@@ -896,13 +892,12 @@ export function WorldView({
 
   const renderSeasonalInfo = (entity: Region | City) => (
     <div className="mt-8">
-      <div className="flex items-center gap-2 mb-4">
-        <SparklesIcon className="w-6 h-6 text-yellow-400" />
-        <h4 className="text-2xl font-semibold">Seasonal Effects</h4>
+      <div className="flex items-center gap-2 mb-2">
+        <h4 className="text-xl font-semibold">Seasonal Effects</h4>
       </div>
       <div className={`bg-gray-800/40 rounded-xl border ${borderColor.borderSecondary} p-6`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {entity.seasons.map((season: any, index) => {
+          {(entity.seasons || []).map((season: any, index) => {
             const name = (typeof season.name === 'string' ? season.name : season.season || '').toLowerCase();
             let gradient = 'bg-gradient-to-br from-gray-900 via-gray-800 to-black';
             let border = borderColor.borderSecondary;
@@ -961,20 +956,18 @@ export function WorldView({
             );
           })}
         </div>
-                                  </div>
+      </div>
     </div>
   )
 
   const renderMagicalItems = (entity: Region | City) => (
     <div className="mt-8">
-
-      <div className="flex items-center gap-2 mb-4">
-        <SparklesIcon className="w-6 h-6 text-purple-400" />
-        <h4 className="text-2xl font-semibold">Magical Items</h4>
+      <div className="flex items-center gap-2 mb-2">
+        <h4 className="text-xl font-semibold">Magical Items</h4>
       </div>
       <div className={`bg-gray-800/40 rounded-xl border ${borderColor.borderSecondary} p-6`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {entity.magicalItems.map((item: any, index: number) => {
+          {(entity.magicalItems || []).map((item: any, index: number) => {
             let rarityBorder = 'border-gray-400';
             let rarityText = 'text-gray-400';
             let rarityBg = 'bg-gray-700';
@@ -1263,68 +1256,44 @@ export function WorldView({
     });
   };
 
-  const handleCompleteRoadCreation = (endLocation: Location) => {
-    console.log('[Debug] handleCompleteRoadCreation called:', {
-      startLocation: roadCreationState.startLocation?.name,
-      endLocation: endLocation.name,
-      waypoints: roadCreationState.waypoints.length
-    });
-
-    if (!roadCreationState.startLocation || !roadCreationState.currentPoint) {
-      console.log('[Debug] Cannot complete road: missing start location or current point');
-      return;
+  const handleCompleteRoadCreation = async (endLocation: Location) => {
+    if (roadCreationState.startLocation && roadCreationState.type) {
+      await handleRoadCreation(
+        roadCreationState.startLocation,
+        endLocation,
+        roadCreationState.type
+      );
+      setRoadCreationState({
+        active: false,
+        startLocation: null,
+        type: 'Major' as const,
+        waypoints: []
+      });
     }
+  };
 
-    // Create an array of all points including waypoints
-    const allPoints = [
-      roadCreationState.startLocation.coordinates!,
-      ...roadCreationState.waypoints.map(wp => ({ x: wp.x, y: wp.y })),
-      endLocation.coordinates!
-    ];
+  const handleLocationDragEnd = async (location: Location, newX: number, newY: number) => {
+    await handleLocationDrag(location, newX, newY);
+  };
 
-    const newRoad: Road = {
-      id: uuidv4(),
-      name: `${roadCreationState.startLocation.name} to ${endLocation.name}`,
-      type: roadCreationState.type,
-      points: allPoints,
-      connectedLocations: [roadCreationState.startLocation.id, endLocation.id],
-      waypoints: roadCreationState.waypoints
-    };
-
-    console.log('[Debug] Creating new road:', newRoad);
-
-    // Update roads state
-    setRoads(prev => [...prev, newRoad]);
-    
-    // Update locations to reference the new road
-    setLocations(prev => prev.map(loc => {
-      if (loc.id === roadCreationState.startLocation!.id || loc.id === endLocation.id) {
-        return {
-          ...loc,
-          roads: [...(loc.roads || []), newRoad.id]
-        };
+  const handleUpdateLocations = async (locations: Location[]) => {
+    try {
+      for (const location of locations) {
+        await updateLocation(location);
       }
-      return loc;
-    }));
-
-    // Save the changes
-    saveLocations();
-
-    // Reset road creation state with all required properties
-    setRoadCreationState({
-      isCreating: false,
-      startLocation: null,
-      currentPoint: null,
-      type: 'Major',
-      waypoints: [],
-      isWaypointMode: false
-    });
-
-    setNotification({
-      open: true,
-      message: 'Road created successfully',
-      severity: 'success'
-    });
+      setNotification({
+        open: true,
+        message: 'Locations updated successfully',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Error updating locations:', error);
+      setNotification({
+        open: true,
+        message: 'Error updating locations',
+        severity: 'error'
+      });
+    }
   };
 
   // Add waypoint handlers
@@ -1701,7 +1670,7 @@ export function WorldView({
         
         // Update locations to reference the new road
         setLocations(prev => prev.map(loc => {
-          if (loc.id === roadCreationState.startLocation!.id || loc.id === location.id) {
+          if (loc.id === roadCreationState.startLocation!.id || loc.id === endLocation.id) {
             return {
               ...loc,
               roads: [...(loc.roads || []), newRoad.id]
@@ -1787,6 +1756,68 @@ export function WorldView({
       horse: formatTravelTime(distance / TRAVEL_SPEEDS.horse * 24),
       caravan: formatTravelTime(distance / TRAVEL_SPEEDS.caravan * 24)
     };
+  };
+
+  const handleRoadCreation = async (startLocation: Location, endLocation: Location, type: 'Major' | 'Minor' | 'Path') => {
+    if (!roadCreationState.waypoints) return;
+
+    const newRoad: Road = {
+      id: `road-${Date.now()}`,
+      name: `${startLocation.name} to ${endLocation.name} ${type} Road`,
+      type,
+      points: [
+        { x: startLocation.coordinates!.x, y: startLocation.coordinates!.y },
+        ...roadCreationState.waypoints,
+        { x: endLocation.coordinates!.x, y: endLocation.coordinates!.y }
+      ],
+      connectedLocations: [startLocation.id, endLocation.id],
+      waypoints: roadCreationState.waypoints.map((point, index) => ({
+        id: `waypoint-${index}`,
+        x: point.x,
+        y: point.y
+      }))
+    };
+
+    try {
+      // Update both locations with the new road
+      await updateLocation({
+        ...startLocation,
+        roads: [...(startLocation.roads || []), newRoad.id]
+      });
+      await updateLocation({
+        ...endLocation,
+        roads: [...(endLocation.roads || []), newRoad.id]
+      });
+
+      setNotification({
+        open: true,
+        message: 'Road created successfully',
+        severity: 'success'
+      });
+    } catch (error) {
+      console.error('Error creating road:', error);
+      setNotification({
+        open: true,
+        message: 'Error creating road',
+        severity: 'error'
+      });
+    }
+  };
+
+  const handleLocationDrag = async (location: Location, newX: number, newY: number) => {
+    try {
+      await updateLocation({
+        ...location,
+        coordinates: { x: newX, y: newY }
+      });
+    } catch (error) {
+      console.error('Error updating location position:', error);
+      setNotification({
+        open: true,
+        message: 'Error updating location position',
+        severity: 'error'
+      });
+    }
   };
 
   return (

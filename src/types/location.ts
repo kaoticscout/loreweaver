@@ -138,6 +138,7 @@ export interface Road {
 
 export interface Location {
   id: string;
+  worldId: string;
   name: string;
   description: string;
   type: LocationType;
@@ -147,13 +148,63 @@ export interface Location {
   };
   region?: string;
   roads?: string[]; // Array of road IDs connected to this location
+  images?: string[];
+  
+  // Fields from Village/City/LargeCity
   population?: number;
   primaryRaces?: string[];
   notableFeatures?: string[];
   services?: string[];
   localGovernment?: string;
+
+  // Fields from Landmark
   significance?: string;
   history?: string;
+  visitingHours?: string;
+
+  // Fields from Ruins
+  age?: string;
+  originalPurpose?: string;
+  currentState?: string;
+  dangers?: string[];
+  treasures?: string[];
+
+  // Fields from Stronghold
+  owner?: string;
+  garrison?: number;
+  defenses?: string[];
+  access?: string;
+
+  // Fields from Fort
+  commander?: string;
+  purpose?: string;
+
+  // Fields from PointOfInterest
+  features?: string[];
+  restrictions?: string[];
+
+  // Fields from Shop
+  specialties?: string[];
+  inventory?: string[];
+  hours?: string;
+  additionalInfo?: {
+    history?: string;
+    notableFeatures?: string[];
+    specialEvents?: string[];
+    restrictions?: string[];
+    prices?: {
+      common: string;
+      rare: string;
+      legendary: string;
+    };
+    payment?: {
+      accepted: string[];
+      preferred: string;
+    };
+  };
+
+  // Fields from OtherLocation
+  customFields?: Record<string, string>;
 }
 
 export interface LocationState {

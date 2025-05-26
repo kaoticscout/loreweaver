@@ -2,20 +2,23 @@ import { useState, useEffect, useMemo } from 'react';
 import { useWorld } from '../contexts/WorldContext';
 import { DungeonEncounter } from '../types/dungeon-encounter';
 import { MagnifyingGlassIcon, CircleStackIcon, ShieldExclamationIcon, CommandLineIcon } from '@heroicons/react/24/outline';
+import { DatabaseService } from '../services/database';
 
 interface Enemy {
   name: string;
   type: string;
+  count: number;
   cr?: number;
-  abilities: string[];
+  abilities?: string[];
   traits?: string[];
   alignment?: string;
   source: {
     encounter: string;
     location: {
-      dungeon: string;
-      area: string;
+      region?: string;
       environment?: string;
+      dungeon?: string;
+      area?: string;
     };
   };
 }
@@ -67,29 +70,23 @@ export default function CyberpunkEnemiesPage() {
 
       try {
         setLoading(true);
-        // Import all dungeon encounters from different areas
-        const dungeonModules = await Promise.all([
-          import('../data/worlds/cyberpunk2077/dungeons/industrial-complex'),
-          import('../data/worlds/cyberpunk2077/dungeons/japantown-plaza'),
-          import('../data/worlds/cyberpunk2077/dungeons/kabuki-market'),
-          import('../data/worlds/cyberpunk2077/dungeons/voodoo-territory'),
-          import('../data/worlds/cyberpunk2077/dungeons/nomad-territory'),
-          import('../data/worlds/cyberpunk2077/dungeon-encounters/grand-imperial-mall'),
-          import('../data/worlds/cyberpunk2077/dungeons/valentinos-territory')
-        ]);
-
-        // Combine all encounters
-        const allEncounters = dungeonModules.flatMap(module => 
-          module.dungeonEncounters || []
-        );
+        
+        // Load all encounters from the database
+        const allEncounters = await DatabaseService.getEncountersByWorldId(selectedWorld.id);
 
         // Transform encounters into a flat list of enemies with source information
         const allEnemies = allEncounters.flatMap(encounter => 
           encounter.enemies.map(enemy => ({
             ...enemy,
+            abilities: [], // Default empty array since abilities are not in the database yet
             source: {
               encounter: encounter.name,
-              location: encounter.location
+              location: {
+                region: encounter.location?.region,
+                environment: encounter.location?.environment,
+                dungeon: encounter.location?.region || 'Unknown',
+                area: encounter.location?.environment || 'Unknown'
+              }
             }
           }))
         );
@@ -112,7 +109,7 @@ export default function CyberpunkEnemiesPage() {
       const matchesSearch = searchQuery === '' || 
         enemy.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         enemy.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        enemy.abilities.some(ability => ability.toLowerCase().includes(searchQuery.toLowerCase()));
+        (enemy.abilities?.some(ability => ability.toLowerCase().includes(searchQuery.toLowerCase())) ?? false);
 
       const matchesType = typeFilter === '' || enemy.type === typeFilter;
       const matchesCR = crFilter === '' || enemy.cr === crFilter;
@@ -251,7 +248,7 @@ export default function CyberpunkEnemiesPage() {
                 <div className="mb-4">
                   <h4 className="text-sm font-semibold text-cyan-300 mb-2">Capabilities</h4>
                   <ul className="text-sm text-cyan-500 space-y-1">
-                    {enemy.abilities.map((ability, i) => (
+                    {enemy.abilities?.map((ability, i) => (
                       <li key={i} className="list-disc ml-4">{ability}</li>
                     ))}
                   </ul>

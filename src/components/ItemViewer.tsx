@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Box, 
   Typography, 
@@ -24,34 +24,8 @@ import { useBorderColor } from '../hooks/useBorderColor';
 import { useWorld } from '../contexts/WorldContext';
 import Checkbox from '@mui/material/Checkbox';
 import { SparklesIcon } from '@heroicons/react/24/outline';
-
-interface Item {
-  name: string;
-  image: string;
-  description: string;
-  category: string;
-  rarity: string;
-  cost: number;
-  classification?: string;
-  armor?: {
-    ac: string;
-  };
-  weapon?: {
-    damage: string;
-    damage_type: string;
-    properties: string[];
-  };
-  gear?: {
-    capacity?: string;
-    usage?: string;
-    [key: string]: any;
-  };
-  tools?: {
-    type: string;
-    proficiency: string;
-    usage: string;
-  };
-}
+import { ItemsAPI } from '../api/items';
+import type { Item } from '../types/item';
 
 const rarityColors = {
   COMMON: { bg: 'rgba(75, 85, 99, 0.4)', text: 'rgba(209, 213, 219, 1)', border: 'rgba(107, 114, 128, 1)' },
@@ -67,11 +41,12 @@ const ItemViewer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRarity, setSelectedRarity] = useState('ALL');
   const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [anchorPosition, setAnchorPosition] = useState<{ mouseX: number; mouseY: number } | null>(null);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const borderColor = useBorderColor();
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }>({ key: 'name', direction: 'asc' });
-  const [itemsData, setItemsData] = useState<any>(null);
 
   const categories = ['ALL', 'ARMOR', 'WEAPON', 'ADVENTURING_GEAR', 'TOOLS'];
   const rarities = ['ALL', 'COMMON', 'UNCOMMON', 'RARE', 'VERY_RARE', 'LEGENDARY'];
@@ -107,11 +82,55 @@ const ItemViewer: React.FC = () => {
     });
   };
 
-  const sortedItems = React.useMemo(() => {
-    const sorted = [...items];
+  useEffect(() => {
+    const loadItems = async () => {
+      if (!selectedWorld) {
+        setItems([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        let fetchedItems: Item[];
+
+        if (selectedCategory !== 'ALL') {
+          fetchedItems = await ItemsAPI.getItemsByCategory(selectedWorld.id, selectedCategory);
+        } else if (selectedRarity !== 'ALL') {
+          fetchedItems = await ItemsAPI.getItemsByRarity(selectedWorld.id, selectedRarity);
+        } else {
+          fetchedItems = await ItemsAPI.getItemsByWorldId(selectedWorld.id);
+        }
+
+        setItems(fetchedItems);
+      } catch (err) {
+        console.error('Failed to load items:', err);
+        setError('Failed to load items. Please try again later.');
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadItems();
+  }, [selectedWorld, selectedCategory, selectedRarity]);
+
+  const filteredItems = useMemo(() => {
+    if (!searchTerm) return items;
+
+    return items.filter(item =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [items, searchTerm]);
+
+  const sortedItems = useMemo(() => {
+    const sorted = [...filteredItems];
     sorted.sort((a, b) => {
       let aValue: any = a[sortConfig.key as keyof Item];
       let bValue: any = b[sortConfig.key as keyof Item];
+      
       if (sortConfig.key === 'cost') {
         aValue = Number(aValue);
         bValue = Number(bValue);
@@ -119,47 +138,13 @@ const ItemViewer: React.FC = () => {
         aValue = aValue?.toString().toLowerCase();
         bValue = bValue?.toString().toLowerCase();
       }
+      
       if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
       if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
     return sorted;
-  }, [items, sortConfig]);
-
-  useEffect(() => {
-    if (selectedWorld) {
-      // Dynamically import items data based on selected world
-      import(`../data/worlds/${selectedWorld.id}/items/items.json`).then(module => {
-        setItemsData(module.default);
-      }).catch(error => {
-        console.error(`Failed to load items for world ${selectedWorld.id}:`, error);
-        setItemsData(null);
-      });
-    } else {
-      setItemsData(null);
-    }
-  }, [selectedWorld]);
-
-  useEffect(() => {
-    let filteredItems = itemsData?.items || [];
-
-    if (selectedCategory !== 'ALL') {
-      filteredItems = filteredItems.filter(item => item.category === selectedCategory);
-    }
-
-    if (selectedRarity !== 'ALL') {
-      filteredItems = filteredItems.filter(item => item.rarity === selectedRarity);
-    }
-
-    if (searchTerm) {
-      filteredItems = filteredItems.filter(item =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setItems(filteredItems);
-  }, [selectedCategory, selectedRarity, searchTerm, itemsData]);
+  }, [filteredItems, sortConfig]);
 
   const formatCost = (cost: number) => {
     const gold = Math.floor(cost / 100);
@@ -168,10 +153,26 @@ const ItemViewer: React.FC = () => {
     return `${gold > 0 ? gold + ' gp ' : ''}${silver > 0 ? silver + ' sp ' : ''}${copper > 0 ? copper + ' cp' : ''}`.trim();
   };
 
-  if (!itemsData) {
+  if (!selectedWorld) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-gray-400">Please select a world to view items</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-400">Loading items...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-400">{error}</p>
       </div>
     );
   }

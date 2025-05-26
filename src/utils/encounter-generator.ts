@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useWorld } from '../contexts/WorldContext';
-import { DungeonEncounter } from '../types/dungeon-encounter'
+import { DungeonEncounter } from '../types/dungeonEncounter';
+import { DatabaseService } from '../services/database';
 
 export function useEncounterGenerator() {
   const { selectedWorld } = useWorld();
@@ -8,13 +9,24 @@ export function useEncounterGenerator() {
 
   useEffect(() => {
     if (selectedWorld) {
-      // Dynamically import encounters based on selected world
-      import(`../data/worlds/${selectedWorld.id}/dungeon-encounters/level-encounters`).then(module => {
-        setLevelEncounters(module.levelEncounters);
-      }).catch(error => {
-        console.error(`Failed to load encounters for world ${selectedWorld.id}:`, error);
-        setLevelEncounters(null);
-      });
+      // Load encounters from database
+      DatabaseService.getEncountersByWorldId(selectedWorld.id)
+        .then(encounters => {
+          // Group encounters by level
+          const grouped = encounters.reduce((acc, encounter) => {
+            const level = parseInt(encounter.level, 10);
+            if (!acc[level]) {
+              acc[level] = [];
+            }
+            acc[level].push(encounter);
+            return acc;
+          }, {} as Record<number, DungeonEncounter[]>);
+          setLevelEncounters(grouped);
+        })
+        .catch(error => {
+          console.error(`Failed to load encounters for world ${selectedWorld.id}:`, error);
+          setLevelEncounters(null);
+        });
     } else {
       setLevelEncounters(null);
     }

@@ -3,10 +3,8 @@ import { Region } from './region'
 export type WorldTheme = 'Fantasy' | 'Sci-Fi' | 'Steampunk' | 'Post-Apocalyptic' | 'Historical' | 'Horror' | 'Mystery'
 
 export interface WorldRating {
-  averageRating: number
-  totalRatings: number
-  upvotes: number
-  downvotes: number
+  rating: number
+  votes: number
 }
 
 export interface World {

@@ -3,7 +3,7 @@ import { MapPinIcon, InformationCircleIcon, UserGroupIcon, BanknotesIcon, Sparkl
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { Dungeon as CityDungeon, City } from '../../types/city'
-import { DungeonEncounter } from '../../types/dungeon-encounter'
+import { DungeonEncounter } from '../../types/dungeonEncounter'
 import { ArrowLeftIcon, XMarkIcon } from '@heroicons/react/24/solid'
 
 interface LocationSectionProps {
@@ -1381,6 +1381,7 @@ interface EncountersSectionProps {
   borderColor: {
     borderSecondary: string
   }
+  loading?: boolean
 }
 
 interface Treasure {
@@ -1506,21 +1507,51 @@ function getRarityColor(rarity: string): string {
   }
 }
 
-export function EncountersSection({ encounters, borderColor }: EncountersSectionProps) {
+export function EncountersSection({ encounters, borderColor, loading = false }: EncountersSectionProps) {
   const [expandedEncounters, setExpandedEncounters] = useState<Set<string>>(new Set())
-
-  if (!encounters || encounters.length === 0) return null
 
   const toggleEncounter = (encounterId: string) => {
     setExpandedEncounters(prev => {
-      const next = new Set(prev)
-      if (next.has(encounterId)) {
-        next.delete(encounterId)
+      const newSet = new Set(prev)
+      if (newSet.has(encounterId)) {
+        newSet.delete(encounterId)
       } else {
-        next.add(encounterId)
+        newSet.add(encounterId)
       }
-      return next
+      return newSet
     })
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <BoltIcon className="w-5 h-5" />
+          <h4 className="text-xl font-semibold">Encounters</h4>
+        </div>
+        <div className={`bg-gray-800/40 rounded-lg p-4 border ${borderColor.borderSecondary}`}>
+          <div className="animate-pulse space-y-4">
+            <div className="h-12 bg-gray-700/50 rounded"></div>
+            <div className="h-12 bg-gray-700/50 rounded"></div>
+            <div className="h-12 bg-gray-700/50 rounded"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!encounters || encounters.length === 0) {
+    return (
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <BoltIcon className="w-5 h-5" />
+          <h4 className="text-xl font-semibold">Encounters</h4>
+        </div>
+        <div className={`bg-gray-800/40 rounded-lg p-4 border ${borderColor.borderSecondary}`}>
+          <p className="text-gray-400 text-center">No encounters found for this area.</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -1529,150 +1560,105 @@ export function EncountersSection({ encounters, borderColor }: EncountersSection
         <BoltIcon className="w-5 h-5" />
         <h4 className="text-xl font-semibold">Encounters</h4>
       </div>
-      <div className={`bg-white/5 rounded-lg p-4 space-y-4`}>
-        {encounters.map((encounter) => (
-          <div key={encounter.id} className={`border ${borderColor.borderSecondary} rounded-lg overflow-hidden`}>
-            <div 
-              className="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-800/40 transition-colors"
-              onClick={() => toggleEncounter(encounter.id)}
-            >
-              <div className="flex-1">
-                <h5 className="text-lg font-semibold text-white">{encounter.name}</h5>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-2 py-0.5 bg-blue-700/40 text-blue-200 text-xs rounded-md font-semibold">
-                    Level {encounter.level}
-                  </span>
-                  <span className="px-2 py-0.5 bg-purple-700/40 text-purple-200 text-xs rounded-md font-semibold">
-                    {encounter.difficulty}
-                  </span>
-                  <span className="px-2 py-0.5 bg-pink-700/40 text-pink-200 text-xs rounded-md font-semibold">
-                    {encounter.type}
-                  </span>
-                </div>
-              </div>
-              {expandedEncounters.has(encounter.id) ? (
-                <ChevronUpIcon className="w-5 h-5 text-gray-400" />
-              ) : (
-                <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-              )}
-            </div>
+      <div className={`bg-gray-800/40 rounded-lg p-4 border ${borderColor.borderSecondary}`}>
+        <div className="space-y-4">
+          {encounters.map(encounter => {
+            const isExpanded = expandedEncounters.has(encounter.id)
 
-            {expandedEncounters.has(encounter.id) && (
-              <div className="p-4 bg-gray-900/40 border-t border-gray-800/40">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column */}
-                  <div className="space-y-4">
-                    {/* Description */}
-                    <div className="bg-gray-800/40 rounded-lg p-3">
-                      <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                        <BookOpenIcon className="w-4 h-4" />
-                        Description
-                      </h6>
-                      <p className="text-sm text-gray-300">{encounter.description}</p>
+            return (
+              <div key={encounter.id} className="bg-gray-900/40 rounded-lg p-4">
+                <div 
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() => toggleEncounter(encounter.id)}
+                >
+                  <div className="flex-1">
+                    <h5 className="text-lg font-semibold">{encounter.name}</h5>
+                    <p className="text-sm text-gray-400">{encounter.description}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        encounter.difficulty === 'Easy' ? 'bg-green-500/20 text-green-300' :
+                        encounter.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                        encounter.difficulty === 'Hard' ? 'bg-orange-500/20 text-orange-300' :
+                        'bg-red-500/20 text-red-300'
+                      }`}>
+                        {encounter.difficulty}
+                      </span>
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        encounter.type === 'Combat' ? 'bg-red-500/20 text-red-300' :
+                        encounter.type === 'Trap' ? 'bg-yellow-500/20 text-yellow-300' :
+                        encounter.type === 'Puzzle' ? 'bg-blue-500/20 text-blue-300' :
+                        'bg-purple-500/20 text-purple-300'
+                      }`}>
+                        {encounter.type}
+                      </span>
                     </div>
-
-                    {/* Location */}
-                    <div className="bg-gray-800/40 rounded-lg p-3">
-                      <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                        <MapPinIcon className="w-4 h-4" />
-                        Location
-                      </h6>
-                      <p className="text-sm text-gray-300">{encounter.location.area}</p>
-                    </div>
-
-                    {/* Enemies */}
-                    {encounter.enemies && encounter.enemies.length > 0 && (
-                      <div className="bg-gray-800/40 rounded-lg p-3">
-                        <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                          <ShieldExclamationIcon className="w-4 h-4" />
-                          Enemies
-                        </h6>
-                        <div className="space-y-2">
-                          {encounter.enemies.map((enemy, index) => (
-                            <div key={index} className="bg-gray-900/60 rounded p-2 border border-gray-700/40">
-                              <div className="flex items-center justify-between">
-                                <span className="font-medium text-gray-200">{enemy.name}</span>
-                                <span className="text-xs text-gray-400">CR {enemy.cr}</span>
-                              </div>
-                              <div className="text-xs text-gray-400 mt-1">
-                                {enemy.type} • Count: {enemy.count}
-                              </div>
-                              {enemy.abilities && enemy.abilities.length > 0 && (
-                                <div className="mt-1">
-                                  <span className="text-xs text-gray-400">Abilities:</span>
-                                  <ul className="list-disc list-inside text-xs text-gray-300">
-                                    {enemy.abilities.map((ability, i) => (
-                                      <li key={i}>{ability}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                    {isExpanded ? (
+                      <ChevronUpIcon className="w-5 h-5" />
+                    ) : (
+                      <ChevronDownIcon className="w-5 h-5" />
                     )}
                   </div>
+                </div>
 
-                  {/* Right Column */}
-                  <div className="space-y-4">
-                    {/* Rewards */}
-                    {encounter.rewards && encounter.rewards.length > 0 && (
-                      <div className="bg-gray-800/40 rounded-lg p-3">
-                        <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                          <CurrencyDollarIcon className="w-4 h-4" />
-                          Rewards
-                        </h6>
-                        <div className="space-y-2">
-                          {encounter.rewards.map((reward, index) => (
-                            <div key={index} className="bg-gray-900/60 rounded p-2 border border-gray-700/40">
-                              <div className="text-sm text-gray-300">
-                                <span className="font-medium text-gray-200">{reward.type}</span>
-                                <p className="text-xs text-gray-400 mt-1">{reward.description}</p>
-                                {(reward.value || reward.rarity) && (
-                                  <div className="flex gap-2 mt-1">
-                                    {reward.value && (
-                                      <span className="text-xs bg-blue-900/40 text-blue-200 px-2 py-0.5 rounded">
-                                        {reward.value}
-                                      </span>
-                                    )}
-                                    {reward.rarity && (
-                                      <span className="text-xs bg-purple-900/40 text-purple-200 px-2 py-0.5 rounded">
-                                        {reward.rarity}
-                                      </span>
-                                    )}
-                                  </div>
-                                )}
+                {isExpanded && (
+                  <div className="mt-4 space-y-4">
+                    {/* Enemies */}
+                    {encounter.enemies && encounter.enemies.length > 0 && (
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Enemies</h6>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {encounter.enemies.map((enemy, index) => (
+                            <div key={index} className="bg-gray-800/40 rounded p-2">
+                              <div className="flex items-center justify-between">
+                                <span>{enemy.name}</span>
+                                <span className="text-sm text-gray-400">×{enemy.count}</span>
                               </div>
+                              {enemy.type && (
+                                <div className="text-sm text-gray-400">{enemy.type}</div>
+                              )}
+                              {enemy.cr && (
+                                <div className="text-sm text-gray-400">CR {enemy.cr}</div>
+                              )}
                             </div>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {/* Treasure */}
-                    {encounter.treasure && (
-                      <EncounterTreasureSection treasure={encounter.treasure} borderColor={borderColor} />
+                    {/* Rewards */}
+                    {encounter.rewards && encounter.rewards.length > 0 && (
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Rewards</h6>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {encounter.rewards.map((reward, index) => (
+                            <div key={index} className="bg-gray-800/40 rounded p-2">
+                              <div className="flex items-center justify-between">
+                                <span>{reward.type}</span>
+                                {reward.value && (
+                                  <span className="text-sm text-gray-400">{reward.value}</span>
+                                )}
+                              </div>
+                              <div className="text-sm text-gray-400">{reward.description}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
 
-                    {/* Triggers */}
-                    {encounter.triggers && encounter.triggers.length > 0 && (
-                      <div className="bg-gray-800/40 rounded-lg p-3">
-                        <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                          <BoltIcon className="w-4 h-4" />
-                          Triggers
-                        </h6>
-                        <div className="space-y-2">
-                          {encounter.triggers.map((trigger, index) => (
-                            <div key={index} className="bg-gray-900/60 rounded p-2 border border-gray-700/40">
-                              <span className="text-sm font-medium text-gray-200">{trigger.type}</span>
-                              <p className="text-sm text-gray-300 mt-1">{trigger.description}</p>
-                              {trigger.dc && (
-                                <span className="inline-block mt-1 text-xs bg-blue-900/40 text-blue-200 px-2 py-0.5 rounded">
-                                  DC {trigger.dc}
-                                </span>
-                              )}
-                            </div>
+                    {/* Conditions */}
+                    {encounter.conditions && encounter.conditions.length > 0 && (
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Conditions</h6>
+                        <div className="flex flex-wrap gap-2">
+                          {encounter.conditions.map((condition, index) => (
+                            <span 
+                              key={index}
+                              className="bg-gray-800/40 px-2 py-1 rounded text-sm"
+                            >
+                              {condition}
+                            </span>
                           ))}
                         </div>
                       </div>
@@ -1680,16 +1666,11 @@ export function EncountersSection({ encounters, borderColor }: EncountersSection
 
                     {/* Notes */}
                     {encounter.notes && encounter.notes.length > 0 && (
-                      <div className="bg-gray-800/40 rounded-lg p-3">
-                        <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                          <BookOpenIcon className="w-4 h-4" />
-                          Notes
-                        </h6>
-                        <ul className="space-y-1">
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Notes</h6>
+                        <ul className="list-disc list-inside space-y-1">
                           {encounter.notes.map((note, index) => (
-                            <li key={index} className="text-sm text-gray-300 bg-gray-900/60 rounded p-2 border border-gray-700/40">
-                              {note}
-                            </li>
+                            <li key={index} className="text-sm text-gray-400">{note}</li>
                           ))}
                         </ul>
                       </div>
@@ -1697,22 +1678,42 @@ export function EncountersSection({ encounters, borderColor }: EncountersSection
 
                     {/* XP */}
                     {encounter.xp && (
-                      <div className="bg-gray-800/40 rounded-lg p-3">
-                        <h6 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                          <SparklesIcon className="w-4 h-4" />
-                          Experience
-                        </h6>
-                        <div className="bg-gray-900/60 rounded p-2 border border-gray-700/40">
-                          <span className="text-sm font-medium text-gray-200">{encounter.xp} XP</span>
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Experience Points</h6>
+                        <span className="text-yellow-400">{encounter.xp} XP</span>
+                      </div>
+                    )}
+
+                    {/* Treasure */}
+                    {encounter.treasure && (
+                      <div>
+                        <h6 className="text-sm font-semibold mb-2">Treasure</h6>
+                        <div className="bg-gray-800/40 rounded p-2">
+                          {encounter.treasure.gold && (
+                            <div className="flex items-center gap-2">
+                              <CurrencyDollarIcon className="w-4 h-4 text-yellow-400" />
+                              <span>{encounter.treasure.gold} gold</span>
+                            </div>
+                          )}
+                          {encounter.treasure.items && encounter.treasure.items.length > 0 && (
+                            <div className="mt-2">
+                              <h6 className="text-sm font-semibold mb-1">Items</h6>
+                              <ul className="list-disc list-inside space-y-1">
+                                {encounter.treasure.items.map((item, index) => (
+                                  <li key={index} className="text-sm text-gray-400">{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
                   </div>
-                </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            )
+          })}
+        </div>
       </div>
     </div>
   )

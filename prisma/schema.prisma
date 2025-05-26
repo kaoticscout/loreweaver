@@ -30,6 +30,8 @@ model Location {
   npcs            NPC[]    @relation("NPCLocation")
   quests          Quest[]  @relation("QuestLocation")
   dungeons        Dungeon[] @relation("DungeonLocation")
+  worldId         String?
+  world           World?   @relation("LocationWorld", fields: [worldId], references: [id])
 }
 
 model Dungeon {
@@ -54,6 +56,8 @@ model Dungeon {
   region          Region?   @relation("DungeonRegion", fields: [regionId], references: [id])
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  worldId         String?
+  world           World?    @relation("DungeonWorld", fields: [worldId], references: [id])
 }
 
 model Region {
@@ -102,6 +106,10 @@ model World {
   regions          Region[]
   npcs             NPC[]    @relation("NPCWorld")
   quests           Quest[]  @relation("QuestWorld")
+  items            Item[]   @relation("ItemWorld")
+  locations        Location[] @relation("LocationWorld")
+  dungeons         Dungeon[]  @relation("DungeonWorld")
+  encounters       Encounter[] @relation("EncounterWorld")
 }
 
 model NPC {
@@ -182,6 +190,8 @@ model Item {
   cost          Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  worldId       String?
+  world         World?   @relation("ItemWorld", fields: [worldId], references: [id])
 }
 
 model Art {
@@ -191,4 +201,24 @@ model Art {
   url         String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Encounter {
+  id          String   @id
+  name        String
+  description String
+  level       String
+  difficulty  String
+  type        String
+  enemies     Json
+  rewards     Json
+  location    Json
+  triggers    Json[]
+  notes       String[]
+  xp          Int
+  treasure    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  worldId     String?
+  world       World?   @relation("EncounterWorld", fields: [worldId], references: [id])
 } 

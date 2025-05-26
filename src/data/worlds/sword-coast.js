@@ -1,9 +1,15 @@
+import { neverwinterWood, luskanRegion } from './sword-coast/regions/index.js'
+
 export const swordCoast = {
   id: 'sword-coast',
   name: 'Sword Coast',
   description: 'The Sword Coast is a vast region of Faerûn, stretching along the western coast of the continent. It is known for its diverse landscapes, from the rugged Neverwinter Wood to the bustling port city of Luskan. The region is rich in history, magic, and adventure, with countless stories waiting to be discovered.',
   banner: '/art/banners/dragon-lair.jpg',
   thumbnail: '/art/banners/dragon-lair.jpg',
+  regions: [
+    neverwinterWood,
+    luskanRegion
+  ],
   theme: 'Fantasy',
   rating: {
     averageRating: 4.8,

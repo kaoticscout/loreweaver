@@ -236,5 +236,79 @@ export const npcs: NPC[] = [
         ],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
+    },
+    {
+        id: '4',
+        name: 'Village Elder',
+        role: 'Quest Giver',
+        location: 'Wyrms Peak',
+        description: 'A wise and respected elder who has witnessed the dragon\'s attacks firsthand. Their knowledge of local history and dragon lore is invaluable.',
+        level: 5,
+        faction: 'Village Council',
+        status: NPCStatus.ALIVE,
+        questGiver: true,
+        relationshipStatus: RelationshipStatus.FRIENDLY,
+        notes: [
+            {
+                id: '1',
+                text: 'Has ancient knowledge about dragon behavior.',
+                timestamp: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: '2',
+                text: 'Keeps a detailed record of dragon sightings.',
+                timestamp: new Date(Date.now() - 43200000).toISOString()
+            }
+        ],
+        schedule: [
+            { time: 'Morning', location: 'Village Hall', activity: 'Meeting with villagers' },
+            { time: 'Afternoon', location: 'Lookout Point', activity: 'Watching for dragon activity' },
+            { time: 'Evening', location: 'Home', activity: 'Recording observations' }
+        ],
+        dialogue: [{
+            id: '1',
+            text: 'The dragon has been growing bolder with each passing day. We need help before it\'s too late.',
+            options: [
+                {
+                    text: 'Tell me about the dragon\'s patterns.',
+                    nextDialogueId: '2'
+                },
+                {
+                    text: 'How many attacks have there been?',
+                    nextDialogueId: '3'
+                }
+            ]
+        }],
+        skills: [
+            { name: 'History', level: 4, description: 'Expert in local history and legends' },
+            { name: 'Nature', level: 3, description: 'Knowledge of dragon behavior' },
+            { name: 'Survival', level: 3, description: 'Experienced in mountain living' }
+        ],
+        relationships: [
+            {
+                npcId: '2',
+                type: 'FRIEND',
+                description: 'Reports dragon activity to Lord Blackwood',
+                reputation: 85
+            }
+        ],
+        inventory: [
+            {
+                name: 'Dragon Lore Book',
+                description: 'Ancient tome containing dragon knowledge',
+                quantity: 1,
+                forSale: false,
+                rarity: 'UNCOMMON'
+            },
+            {
+                name: 'Village Records',
+                description: 'Detailed records of dragon sightings',
+                quantity: 1,
+                forSale: false,
+                rarity: 'COMMON'
+            }
+        ],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
     }
 ]; 

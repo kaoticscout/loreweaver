@@ -1,6 +1,4 @@
-import type { Location } from '../types/location';
-
-export const locations: Location[] = [
+export const locations = [
   {
     id: "waterdeep",
     name: "Waterdeep",
@@ -114,5 +112,65 @@ export const locations: Location[] = [
     significance: "One of the last great elven realms in Faerûn",
     history: "Ancient elven homeland and current home to various fey creatures",
     notableFeatures: ["Ancient Trees", "Elven Settlements", "Fey Crossings"]
+  },
+  {
+    id: "baldurs-gate",
+    name: "Baldur's Gate",
+    description: "A prosperous city on the Sword Coast, known for its strong mercantile influence and strategic location.",
+    type: "City",
+    coordinates: { x: 250, y: 500 },
+    population: 120000,
+    primaryRaces: ["Humans", "Dwarves", "Halflings"],
+    notableFeatures: ["The Wide", "Baldur's Gate Port", "The Iron Throne"],
+    services: ["Trading", "Shipping", "Banking", "Entertainment"],
+    localGovernment: "The Council of Four"
+  },
+  {
+    id: "baldurs-gate-market",
+    name: "Baldurs Gate Market",
+    description: "The bustling central market of Baldur's Gate, where merchants from across the Sword Coast gather to trade.",
+    type: "Market",
+    coordinates: { x: 250, y: 400 },
+    population: 5000,
+    primaryRaces: ["Humans", "Dwarves", "Halflings"],
+    notableFeatures: ["The Grand Bazaar", "The Merchant's Guild Hall"],
+    services: ["Trading", "Banking", "Crafting"],
+    localGovernment: "Merchant's Guild Council"
+  },
+  {
+    id: "blackwood-keep",
+    name: "Blackwood Keep",
+    description: "A fortified keep overlooking the surrounding lands, home to Lord Blackwood and his forces.",
+    type: "Castle",
+    coordinates: { x: 280, y: 320 },
+    population: 200,
+    primaryRaces: ["Humans"],
+    notableFeatures: ["The Great Hall", "The War Room", "The Training Grounds"],
+    services: ["Military", "Defense"],
+    localGovernment: "Lord Blackwood"
+  },
+  {
+    id: "arcane-brotherhood-tower",
+    name: "Arcane Brotherhood Tower",
+    description: "A tall tower housing the mysterious Arcane Brotherhood, filled with magical artifacts and ancient knowledge.",
+    type: "Tower",
+    coordinates: { x: 320, y: 280 },
+    population: 50,
+    primaryRaces: ["Humans", "Elves"],
+    notableFeatures: ["The Library", "The Laboratory", "The Council Chamber"],
+    services: ["Magic", "Research", "Training"],
+    localGovernment: "Archmage Council"
+  },
+  {
+    id: "wyrms-peak",
+    name: "Wyrms Peak",
+    description: "A small village nestled in the mountains, recently troubled by dragon attacks.",
+    type: "Village",
+    coordinates: { x: 300, y: 340 },
+    population: 300,
+    primaryRaces: ["Humans", "Dwarves"],
+    notableFeatures: ["The Lookout Point", "The Village Hall", "The Dragon's Cave"],
+    services: ["Mining", "Smithing"],
+    localGovernment: "Village Council"
   }
 ]; 

@@ -7,7 +7,8 @@ export type LocationType =
   | 'Stronghold'
   | 'Fort'
   | 'Point of Interest'
-  | 'Shop';
+  | 'Shop'
+  | 'Other';
 
 export interface BaseLocation {
   id: string;
@@ -147,7 +148,12 @@ export interface Location {
   region?: string;
   roads?: string[]; // Array of road IDs connected to this location
   population?: number;
+  primaryRaces?: string[];
+  notableFeatures?: string[];
+  services?: string[];
   localGovernment?: string;
+  significance?: string;
+  history?: string;
 }
 
 export interface LocationState {

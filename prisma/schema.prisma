@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id              String   @id
+  name            String   @unique
+  description     String
+  type            String
+  coordinates     Json?
+  population      Int?
+  primaryRaces    String[]
+  notableFeatures String[]
+  services        String[]
+  localGovernment String?
+  significance    String?
+  history         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  regionId        String?
+  region          Region?  @relation(fields: [regionId], references: [id])
+  npcs            NPC[]    @relation("NPCLocation")
+  quests          Quest[]  @relation("QuestLocation")
+  dungeons        Dungeon[] @relation("DungeonLocation")
+}
+
+model Dungeon {
+  id              String    @id
+  name            String    @unique
+  description     String
+  type            String
+  difficulty      Int
+  minLevel        Int
+  maxLevel        Int
+  size            String
+  environment     String
+  hazards         String[]
+  creatures       String[]
+  treasures       Json[]
+  traps           Json[]
+  puzzles         Json[]
+  boss            Json?
+  locationId      String
+  location        Location  @relation("DungeonLocation", fields: [locationId], references: [id])
+  regionId        String?
+  region          Region?   @relation("DungeonRegion", fields: [regionId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Region {
+  id              String     @id
+  name            String
+  description     String
+  biography       String
+  color           String
+  banner          String
+  images          String[]
+  notableFeatures String[]
+  history         Json
+  keyFigures      Json[]
+  economy         Json
+  seasons         Json[]
+  magicalItems    Json[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  worldId         String
+  world           World      @relation(fields: [worldId], references: [id])
+  locations       Location[]
+  dungeons        Dungeon[]  @relation("DungeonRegion")
+  npcs            NPC[]      @relation("NPCRegion")
+  quests          Quest[]    @relation("QuestRegion")
+}
+
+model World {
+  id               String   @id
+  name             String
+  description      String
+  banner           String
+  thumbnail        String
+  theme            String
+  rating           Json
+  tags             String[]
+  createdAt        String
+  lastUpdated      String
+  creator          Json
+  featured         Boolean
+  popularity       Int
+  difficulty       String
+  recommendedLevel String
+  estimatedPlayTime String
+  languages        String[]
+  contentWarnings  String[]
+  regions          Region[]
+  npcs             NPC[]    @relation("NPCWorld")
+  quests           Quest[]  @relation("QuestWorld")
+}
+
+model NPC {
+  id                String            @id
+  name              String
+  role              String
+  locationName      String
+  description       String
+  level             Int?
+  faction           String?
+  status            String
+  questGiver        Boolean
+  relationshipStatus String
+  notes             Json?
+  schedule          Json?
+  dialogue          Json?
+  inventory         Json?
+  skills            Json?
+  relationships     Json?
+  createdAt         String
+  updatedAt         String
+  location          Location          @relation("NPCLocation", fields: [locationName], references: [name])
+  region            Region?           @relation("NPCRegion", fields: [regionId], references: [id])
+  regionId          String?
+  world             World?            @relation("NPCWorld", fields: [worldId], references: [id])
+  worldId           String?
+  quests            Quest[]           @relation("QuestNPC")
+}
+
+model Quest {
+  id                  String   @id
+  title               String
+  description         String
+  level               Int
+  type                String
+  status              String
+  rewards             Json
+  requirements        Json
+  locationName        String
+  objectives          Json
+  createdAt           String
+  updatedAt           String
+  difficulty          String?
+  timeEstimate        Int?
+  recommendedPartySize Int?
+  minPartySize        Int?
+  maxPartySize        Int?
+  recommendedClasses  String[]
+  questChain          Json?
+  detailedLocations   Json?
+  lore                Json?
+  consequences        Json?
+  specialConditions   Json?
+  hiddenObjectives    Json?
+  alternativeEndings  Json?
+  reputationChanges   Json?
+  skillChecks         Json?
+  environmentalHazards Json?
+  questItems          Json?
+  location            Location @relation("QuestLocation", fields: [locationName], references: [name])
+  region              Region?  @relation("QuestRegion", fields: [regionId], references: [id])
+  regionId            String?
+  world               World?   @relation("QuestWorld", fields: [worldId], references: [id])
+  worldId             String?
+  npcs                NPC[]    @relation("QuestNPC")
+}
+
+model Item {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  image         String?
+  description   String
+  category      String
+  rarity        String
+  classification String
+  armor         Json?
+  weapon        Json?
+  cost          Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Art {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+} 

@@ -2,9 +2,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MapIcon, BookOpenIcon, GlobeAltIcon, CubeIcon, ArrowsPointingInIcon, ClipboardDocumentListIcon, UserGroupIcon, ChevronDownIcon, ArrowRightOnRectangleIcon, BoltIcon, WrenchScrewdriverIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { UserProfile } from './UserProfile';
 import { useWorld } from '../contexts/WorldContext';
+import { useAuth } from '../contexts/AuthContext';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { worlds } from '../data/worlds';
 
 const utilityCategories = {
   "Character Tools": [
@@ -48,6 +48,7 @@ export function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedWorld, setSelectedWorld, isWorldSelected } = useWorld();
+  const { user } = useAuth();
   const isActive = (path: string) => location.pathname === path;
 
   const protectedPaths = ['/world', '/quests', '/npcs', '/items', '/enemies', '/campaign'];
@@ -69,10 +70,8 @@ export function Header() {
 
         {/* Navigation and User Profile - Right Side */}
         <div className="flex items-center gap-6">
-
-
-           {/* Utilities Dropdown - Always show */}
-            <Menu as="div" className="relative inline-block text-left">
+          {/* Utilities Dropdown - Always show */}
+          <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">
               <WrenchScrewdriverIcon className="h-5 w-5" />
               <span>Utilities</span>
@@ -119,9 +118,8 @@ export function Header() {
             </Transition>
           </Menu>
 
-
-          {/* World Selector - Only show on protected paths */}
-          {isProtectedPath && (
+          {/* World Selector - Only show when logged in and on protected paths */}
+          {user && isProtectedPath && (
             <Menu as="div" className="relative inline-block text-left">
               <Menu.Button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">
                 <BookOpenIcon className="h-5 w-5" />
@@ -138,7 +136,7 @@ export function Header() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left rounded-lg bg-[#2D1B36] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-[#2D1B36] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
                     {selectedWorld && (
                       <div className="px-4 py-2 border-b border-gray-700/50">
@@ -165,9 +163,8 @@ export function Header() {
             </Menu>
           )}
 
-
-          {/* Navigation Links - Only show when a world is selected */}
-          {isWorldSelected && (
+          {/* Navigation Links - Only show when logged in and world is selected */}
+          {user && isWorldSelected && (
             <nav className="hidden md:flex items-center gap-1">
               <Link
                 to="/world"

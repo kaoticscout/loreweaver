@@ -23,18 +23,6 @@ export function LoginPage() {
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black/50" />
 
-      {/* Header */}
-      <div className="relative z-50">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2 text-xl font-bold text-white hover:text-purple-300 transition-colors">
-              <MapIcon className="h-6 w-6" />
-              <span className="drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">Loreweaver</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-md w-full space-y-8">

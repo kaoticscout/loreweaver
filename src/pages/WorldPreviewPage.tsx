@@ -112,10 +112,11 @@ export function WorldPreviewPage() {
   const navigate = useNavigate()
   const [likedWorlds, setLikedWorlds] = useState<Set<string>>(new Set())
   const { setSelectedWorld } = useWorld()
-  const { hasCreatedWorld, getCurrentChapter, setWorldProgress } = useWorldProgress()
+  const { hasCreatedWorld, getCurrentChapter, setWorldProgress, worldProgress } = useWorldProgress()
   const [world, setWorld] = useState<World | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showPremiumPrompt, setShowPremiumPrompt] = useState(false)
 
   // Add useEffect to scroll to top and load world data
   useEffect(() => {
@@ -191,6 +192,18 @@ export function WorldPreviewPage() {
 
   const handlePlay = () => {
     if (!world) return;
+
+    // Check if this is a new world creation
+    if (!hasCreatedWorld(world.id)) {
+      // Count existing worlds
+      const createdWorldsCount = Object.keys(worldProgress).length;
+      
+      // If user has 2 or more worlds and trying to create a new one, show premium prompt
+      if (createdWorldsCount >= 2) {
+        setShowPremiumPrompt(true);
+        return;
+      }
+    }
 
     setSelectedWorld(world);
     
@@ -727,6 +740,32 @@ export function WorldPreviewPage() {
           </div>
         </div>
       </div>
+
+      {/* Premium Prompt Modal */}
+      {showPremiumPrompt && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[#2D1B36] rounded-xl p-8 max-w-md mx-4 relative">
+            <h2 className="text-2xl font-bold text-[#fcedbe] mb-4">Upgrade to Premium</h2>
+            <p className="text-gray-300 mb-6">
+              You've reached the limit of 2 worlds for free accounts. Upgrade to Premium to create unlimited worlds and unlock more features!
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => navigate('/premium')}
+                className="flex-1 bg-gradient-to-r from-[#B67C3C] to-[#fcedbe] text-[#2A1B3D] px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
+              >
+                Upgrade Now
+              </button>
+              <button
+                onClick={() => setShowPremiumPrompt(false)}
+                className="flex-1 bg-white/10 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 transition-colors"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 

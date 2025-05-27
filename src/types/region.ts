@@ -1,14 +1,11 @@
 import { Location } from './location'
+import { City } from './city'
 
 export interface RegionSeasonalEffect {
   season: string
   description: string
-  economicImpact: string
-  tradeModifiers: {
-    exports: Record<string, number>
-    imports: Record<string, number>
-  }
-  specialEvents: string[]
+  activities?: string[]
+  hazards?: string[]
 }
 
 export interface RegionMagicalItem {
@@ -24,6 +21,12 @@ export interface RegionMagicalItem {
   image: string
 }
 
+export interface RegionHistory {
+  founding: string
+  majorEvents: string[]
+  currentEra: string
+}
+
 export interface Region {
   id: string
   worldId: string
@@ -34,11 +37,7 @@ export interface Region {
   banner: string
   images?: string[]
   notableFeatures: string[]
-  history: {
-    founding: string
-    majorEvents: string[]
-    currentEra: string
-  }
+  history: RegionHistory
   keyFigures: {
     id: string
     name: string
@@ -75,7 +74,17 @@ export interface Region {
     economicPolicies: string[]
     marketRegulations: string[]
   }
-  seasons: RegionSeasonalEffect[]
-  magicalItems: RegionMagicalItem[]
+  seasons?: RegionSeasonalEffect[]
+  magicalItems?: any[]
   locations: Location[]
+  climate: string
+  terrain: string
+  cities: City[]
+  history?: string
+  notableLocations?: string[]
+  resources?: string[]
+  threats?: string[]
+  factions?: string[]
+  createdAt: Date
+  updatedAt: Date
 } 

@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { DatabaseService } from '../src/services/database';
 import { PrismaClient } from '@prisma/client';
+import { AuthService } from '../src/services/auth';
+import { authenticateToken, requireRole } from '../src/middleware/auth';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -20,6 +22,52 @@ prisma.$connect()
     process.exit(1);
   });
 
+// Authentication routes
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const result = await AuthService.register({ email, password });
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : 'Registration failed' });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const result = await AuthService.login({ email, password });
+    res.json(result);
+  } catch (error) {
+    res.status(401).json({ error: error instanceof Error ? error.message : 'Login failed' });
+  }
+});
+
+// Protected user routes
+app.get('/api/user/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await AuthService.getUser(req.user!.id);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch user profile' });
+  }
+});
+
+app.patch('/api/user/profile', authenticateToken, async (req, res) => {
+  try {
+    const { displayName, avatar, bio, preferences } = req.body;
+    const user = await AuthService.updateUser(req.user!.id, {
+      displayName,
+      avatar,
+      bio,
+      preferences
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user profile' });
+  }
+});
+
 // World routes
 app.get('/api/worlds', async (req, res) => {
   try {
@@ -32,10 +80,8 @@ app.get('/api/worlds', async (req, res) => {
       worlds = await DatabaseService.getAllWorlds();
     }
     
-    console.log('Sending worlds to client:', worlds);
     res.json(worlds);
   } catch (error) {
-    console.error('Error fetching worlds:', error);
     res.status(500).json({ error: 'Failed to fetch worlds' });
   }
 });
@@ -320,6 +366,72 @@ app.delete('/api/locations/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting location:', error);
     res.status(500).json({ error: 'Failed to delete location' });
+  }
+});
+
+// Protected world creation/modification routes
+app.post('/api/worlds', authenticateToken, async (req, res) => {
+  try {
+    const worldData = {
+      ...req.body,
+      creator: {
+        id: req.user!.id,
+        username: req.user!.username,
+        displayName: req.user!.displayName
+      },
+      creatorId: req.user!.id,
+      createdAt: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
+      featured: false,
+      popularity: 0
+    };
+    const world = await prisma.world.create({ 
+      data: worldData,
+      include: {
+        createdBy: true
+      }
+    });
+    res.json(world);
+  } catch (error) {
+    console.error('Failed to create world:', error);
+    res.status(500).json({ error: 'Failed to create world' });
+  }
+});
+
+app.patch('/api/worlds/:id', authenticateToken, async (req, res) => {
+  try {
+    // Check if user owns the world or is admin
+    const world = await prisma.world.findUnique({
+      where: { id: req.params.id },
+      include: {
+        createdBy: true
+      }
+    });
+
+    if (!world) {
+      res.status(404).json({ error: 'World not found' });
+      return;
+    }
+
+    if (world.createdBy.id !== req.user!.id && req.user!.role !== 'admin') {
+      res.status(403).json({ error: 'Not authorized to modify this world' });
+      return;
+    }
+
+    const updatedWorld = await prisma.world.update({
+      where: { id: req.params.id },
+      data: {
+        ...req.body,
+        lastUpdated: new Date().toISOString()
+      },
+      include: {
+        createdBy: true
+      }
+    });
+    res.json(updatedWorld);
+  } catch (error) {
+    console.error('Failed to update world:', error);
+    res.status(500).json({ error: 'Failed to update world' });
   }
 });
 

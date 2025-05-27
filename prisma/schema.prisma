@@ -110,6 +110,11 @@ model World {
   quests              Quest[]    @relation("QuestWorld")
   encounters          Encounter[] @relation("EncounterWorld")
   items               Item[]     @relation("ItemWorld")
+  
+  // New relations
+  createdBy          User      @relation("CreatedWorlds", fields: [creatorId], references: [id])
+  creatorId          String
+  favoritedBy        User[]    @relation("FavoriteWorlds")
 }
 
 model NPC {
@@ -221,4 +226,30 @@ model Encounter {
   updatedAt   DateTime @updatedAt
   worldId     String?
   world       World?   @relation("EncounterWorld", fields: [worldId], references: [id])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  password      String    // Hashed password
+  displayName   String?
+  avatar        String?
+  bio           String?
+  role          String    @default("user") // user, admin, moderator
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  isActive      Boolean   @default(true)
+  
+  // User preferences
+  preferences   Json?     // Theme, language, notifications settings, etc.
+  
+  // Relations
+  createdWorlds World[]   @relation("CreatedWorlds")
+  favoriteWorlds World[]  @relation("FavoriteWorlds")
+  
+  // Social features
+  followers     User[]    @relation("UserFollows")
+  following     User[]    @relation("UserFollows")
 } 

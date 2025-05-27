@@ -1,87 +1,98 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  avatar?: string;
-}
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { User, AuthResponse, LoginCredentials, RegisterData, authApi } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  signup: (email: string, password: string, username: string) => Promise<void>;
+  isLoading: boolean;
+  error: string | null;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
+  logout: () => void;
+  updateProfile: (data: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for stored user data on mount
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem('token');
+    if (token) {
+      loadUser();
+    } else {
+      setIsLoading(false);
     }
-    setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const loadUser = async () => {
     try {
-      // TODO: Implement actual API call
-      // For now, simulate a successful login
-      const mockUser: User = {
-        id: '1',
-        username: 'Demo User',
-        email: email,
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1'
-      };
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
+      const user = await authApi.getProfile();
+      setUser(user);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Failed to load user:', error);
+      localStorage.removeItem('token');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const login = async (credentials: LoginCredentials) => {
+    try {
+      setError(null);
+      const { user, token } = await authApi.login(credentials);
+      localStorage.setItem('token', token);
+      setUser(user);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Login failed';
+      setError(message);
       throw error;
     }
   };
 
-  const logout = async () => {
+  const register = async (data: RegisterData) => {
     try {
-      // TODO: Implement actual API call
-      setUser(null);
-      localStorage.removeItem('user');
+      setError(null);
+      const { user, token } = await authApi.register(data);
+      localStorage.setItem('token', token);
+      setUser(user);
     } catch (error) {
-      console.error('Logout failed:', error);
+      const message = error instanceof Error ? error.message : 'Registration failed';
+      setError(message);
       throw error;
     }
   };
 
-  const signup = async (email: string, password: string, username: string) => {
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  const updateProfile = async (data: Partial<User>) => {
     try {
-      // TODO: Implement actual API call
-      // For now, simulate a successful signup
-      const mockUser: User = {
-        id: '1',
-        username,
-        email,
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1'
-      };
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
+      setError(null);
+      const updatedUser = await authApi.updateProfile(data);
+      setUser(updatedUser);
     } catch (error) {
-      console.error('Signup failed:', error);
+      const message = error instanceof Error ? error.message : 'Failed to update profile';
+      setError(message);
       throw error;
     }
   };
 
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout, signup }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = {
+    user,
+    isLoading,
+    error,
+    login,
+    register,
+    logout,
+    updateProfile,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

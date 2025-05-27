@@ -1,10 +1,38 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Location, LocationType } from '../types/location';
+import { Location, LocationType, City } from '../types/location';
 import { locationService } from '../services/locationService';
 import { useWorld } from '../contexts/WorldContext';
 
-interface LocationWithImages extends Location {
+interface LocationWithImages extends Omit<Location, 'type'> {
+  type: LocationType;
   images?: string[];
+  // City-specific fields
+  basicInformation?: {
+    population: string;
+    primaryRaces: string[];
+    deities: any[];
+  };
+  economy?: {
+    primaryIndustry?: string;
+    gdp?: string;
+    currency?: string;
+    tradeGoods?: string[];
+    tradePartners?: string[];
+    transportationRoutes?: string[];
+    economicPolicies?: string[];
+    marketRegulations?: string[];
+  };
+  cityHistory?: {
+    founding: string;
+    majorEvents: string[];
+    currentEra: string;
+  };
+  keyFigures?: any[];
+  dungeons?: any[];
+  pointsOfInterest?: any[];
+  restAreas?: any[];
+  shops?: any[];
+  biography?: string;
 }
 
 export function useLocationManagement() {
@@ -70,8 +98,30 @@ export function useLocationManagement() {
           primaryRaces: [],
           notableFeatures: [],
           services: [],
-          localGovernment: ''
-        };
+          localGovernment: '',
+          history: '',
+          basicInformation: {
+            population: '0',
+            primaryRaces: [],
+            deities: []
+          },
+          economy: {
+            primaryIndustry: '',
+            gdp: '',
+            currency: '',
+            tradeGoods: [],
+            tradePartners: [],
+            transportationRoutes: [],
+            economicPolicies: [],
+            marketRegulations: []
+          },
+          keyFigures: [],
+          dungeons: [],
+          pointsOfInterest: [],
+          restAreas: [],
+          shops: [],
+          biography: ''
+        } as LocationWithImages;
         break;
       case 'Landmark':
         newLocation = {

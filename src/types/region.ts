@@ -1,4 +1,3 @@
-import { City } from './city'
 import { Location } from './location'
 
 export interface RegionSeasonalEffect {
@@ -78,6 +77,5 @@ export interface Region {
   }
   seasons: RegionSeasonalEffect[]
   magicalItems: RegionMagicalItem[]
-  cities: City[]
   locations: Location[]
 } 

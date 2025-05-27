@@ -17,19 +17,20 @@ export interface DungeonEncounter {
   description: string;
   type: string;
   difficulty: string;
-  enemies: Enemy[];
-  rewards: Reward[];
-  conditions?: string[];
-  level: string;
-  location?: {
-    region: string;
-    environment: string;
-  };
-  triggers?: string[];
-  notes?: string[];
-  xp?: number;
+  creatures: string[];
   treasure?: {
     gold?: number;
-    items?: string[];
+    gems?: Array<{
+      type: string;
+      value: number;
+    }>;
+    art?: Array<{
+      type: string;
+      value: number;
+    }>;
+    magicItems?: Array<{
+      name: string;
+      rarity: string;
+    }>;
   };
 } 

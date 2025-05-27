@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Region } from '../types/region'
-import { City } from '../types/city'
-import { Location, LocationType, Road } from '../types/location'
+import { Location, LocationType, Road, City } from '../types/location'
 import { useLocationManagement } from '../hooks/useLocationManagement'
 import { useMapControl, MIN_ZOOM, MAX_ZOOM, ZOOM_STEP } from '../hooks/useMapControl'
 import { locationService } from '../services/locationService'
@@ -12,9 +12,7 @@ import { ExplorerPanel } from './ExplorerPanel'
 import { WelcomePanel } from './WelcomePanel'
 import { DungeonView } from './DungeonView'
 import { LocationView } from './LocationView'
-
 import { useBorderColor } from '../hooks/useBorderColor'
-
 import { RegionView } from './RegionView'
 import { CityView } from './CityView'
 import { Switch, FormControlLabel, IconButton, Alert, Snackbar, Box, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography, InputLabel, FormControl, Select, Divider } from '@mui/material'
@@ -39,13 +37,11 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import SaveIcon from '@mui/icons-material/Save'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import { backupLocations, restoreFromBackup } from '../utils/backupUtils'
-import { useNavigate } from 'react-router-dom'
 import { useWorld } from '../contexts/WorldContext'
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap'
 import { v4 as uuidv4 } from 'uuid'
 import { Dungeon } from '../types/dungeon'
-
 
 interface WorldViewProps {
   regions: Region[]
@@ -53,13 +49,22 @@ interface WorldViewProps {
   onAddRegion: (name: string, description: string) => void
   onAddCity: (regionId: string, name: string, description: string) => void
   selectedRegion: Region | null
-  selectedLocation: City | Location | null
-  onLocationSelect: (location: City | Location | null) => void
+  selectedLocation: Location | null
+  onLocationSelect: (location: Location | null) => void
   onBack: () => void
   onHome: () => void
   lastAddedId: string | null
   selectedDungeon?: Dungeon | null
   onDungeonSelect?: (dungeonId: string | null) => void
+}
+
+interface RoadCreationState {
+  isCreating: boolean;
+  startLocation: Location | null;
+  currentPoint: { x: number; y: number } | null;
+  type: 'Major' | 'Minor' | 'Path';
+  waypoints: Array<{ id: string; x: number; y: number }>;
+  isWaypointMode: boolean;
 }
 
 export function WorldView({
@@ -76,23 +81,24 @@ export function WorldView({
   selectedDungeon: selectedDungeonProp,
   onDungeonSelect
 }: WorldViewProps) {
+  const navigate = useNavigate();
   const { selectedWorld } = useWorld();
   const borderColor = useBorderColor();
-  const mapContainerRef = useRef<HTMLDivElement>(null)
-  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 })
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [imageNaturalSize, setImageNaturalSize] = useState({ width: 0, height: 0 })
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageNaturalSize, setImageNaturalSize] = useState({ width: 0, height: 0 });
   const [visibleLocationTypes, setVisibleLocationTypes] = useState<Set<LocationType>>(
     new Set(['City', 'Large City', 'Village', 'Landmark', 'Ruins', 'Stronghold', 'Fort', 'Point of Interest', 'Shop'])
-  )
+  );
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
     mapX: number;
     mapY: number;
     locationToDelete?: Location;
-  } | null>(null)
-  const [newLocationDialog, setNewLocationDialog] = useState(false)
+  } | null>(null);
+  const [newLocationDialog, setNewLocationDialog] = useState(false);
   const [newLocation, setNewLocation] = useState<{
     name: string;
     description: string;
@@ -107,14 +113,14 @@ export function WorldView({
     x: 0,
     y: 0,
     region: undefined
-  })
+  });
   const [notification, setNotification] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
     open: false,
     message: '',
     severity: 'success'
-  })
-  const [imageError, setImageError] = useState(false)
-  const [isEditMode, setIsEditMode] = useState(false)
+  });
+  const [imageError, setImageError] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [draggedLocation, setDraggedLocation] = useState<{
     name: string;
     initialX: number;
@@ -136,14 +142,7 @@ export function WorldView({
     originalName: string;
   } | null>(null);
   const [roads, setRoads] = useState<Road[]>([]);
-  const [roadCreationState, setRoadCreationState] = useState<{
-    isCreating: boolean;
-    startLocation: Location | null;
-    currentPoint: { x: number; y: number } | null;
-    type: 'Major' | 'Minor' | 'Path';
-    waypoints: Array<{ id: string; x: number; y: number }>;
-    isWaypointMode: boolean; // New flag to indicate if we're in waypoint mode
-  }>({
+  const [roadCreationState, setRoadCreationState] = useState<RoadCreationState>({
     isCreating: false,
     startLocation: null,
     currentPoint: null,
@@ -187,10 +186,10 @@ export function WorldView({
     setIsDragging,
     setDragStart,
     setZoomValue
-  } = useMapControl()
+  } = useMapControl();
 
-  const [isAddingCity, setIsAddingCity] = useState(false)
-  const [isAddingRegion, setIsAddingRegion] = useState(false)
+  const [isAddingCity, setIsAddingCity] = useState(false);
+  const [isAddingRegion, setIsAddingRegion] = useState(false);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -463,22 +462,8 @@ export function WorldView({
     });
   };
 
-  const handleRegionCitySelect = (location: City | Location | null) => {
-    if (!location) {
-      onLocationSelect(null);
-      return;
-    }
-
-    // For both cities and locations, just select them directly
+  const handleRegionCitySelect = (location: Location | null) => {
     onLocationSelect(location);
-
-    // If we have a selected region, navigate to the location within that region
-    if (selectedRegion) {
-      // Check if it's a city by looking for the coordinates property
-      const isCity = 'coordinates' in location && Array.isArray(location.coordinates);
-      const path = isCity ? 'city' : 'location';
-      navigate(`/world/${selectedRegion.id}/${path}/${location.id}`);
-    }
   };
 
   const handleRegionSelect = (region: Region | null) => {
@@ -486,73 +471,7 @@ export function WorldView({
   };
 
   const handleLocationSelect = (location: Location) => {
-    console.log('[Debug] handleLocationSelect called with location:', location);
-
-    // Search through all regions, cities, and locations
-    let foundRegion: Region | null = null;
-    let foundLocation: City | Location | null = null;
-
-    // Search through regions
-    for (const region of regions) {
-      console.log('[Debug] Searching region:', region.name);
-      
-      // Search through cities in the region
-      if (region.cities) {
-        const matchingCity = region.cities.find(city => 
-          city.id === location.id || 
-          city.name.toLowerCase() === location.name.toLowerCase()
-        );
-        if (matchingCity) {
-          console.log('[Debug] Found matching city:', matchingCity.name);
-          foundRegion = region;
-          foundLocation = matchingCity;
-          break;
-        }
-      }
-
-      // Search through locations in the region
-      if (region.locations) {
-        const matchingLocation = region.locations.find(loc => 
-          loc.id === location.id || 
-          loc.name.toLowerCase() === location.name.toLowerCase()
-        );
-        if (matchingLocation) {
-          console.log('[Debug] Found matching location:', matchingLocation.name);
-          foundRegion = region;
-          foundLocation = matchingLocation;
-          break;
-        }
-      }
-    }
-
-    if (foundRegion && foundLocation) {
-      console.log('[Debug] Selecting region and location:', {
-        region: foundRegion.name,
-        location: foundLocation.name
-      });
-      
-      // First select the region
-      onRegionSelect(foundRegion);
-      
-      // Then select the location
-      onLocationSelect(foundLocation);
-      
-      // Expand the region in the explorer view
-      setExpandedRegions((prev) => {
-        const newState = Object.keys(prev).reduce((acc, key) => ({
-          ...acc,
-          [key]: false
-        }), {});
-        return {
-          ...newState,
-          [foundRegion!.id]: true
-        };
-      });
-    } else {
-      console.log('[Debug] No matching location found in explorer view for:', location.name);
-      // If no match is found, just select the location
-      onLocationSelect(location);
-    }
+    onLocationSelect(location);
   };
 
   const handleLocationDelete = async (location: Location) => {
@@ -890,192 +809,52 @@ export function WorldView({
     </div>
   )
 
-  const renderSeasonalInfo = (entity: Region | City) => (
-    <div className="mt-8">
-      <div className="flex items-center gap-2 mb-2">
-        <h4 className="text-xl font-semibold">Seasonal Effects</h4>
-      </div>
-      <div className={`bg-gray-800/40 rounded-xl border ${borderColor.borderSecondary} p-6`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(entity.seasons || []).map((season: any, index) => {
-            const name = (typeof season.name === 'string' ? season.name : season.season || '').toLowerCase();
-            let gradient = 'bg-gradient-to-br from-gray-900 via-gray-800 to-black';
-            let border = borderColor.borderSecondary;
-            let emoji = '✨';
-            let text = 'text-yellow-200';
-            if (name.includes('winter')) {
-              gradient = 'bg-gradient-to-br from-blue-900 via-blue-800 to-black';
-              border = 'border-blue-400';
-              emoji = '❄️';
-              text = 'text-blue-200';
-            } else if (name.includes('spring')) {
-              gradient = 'bg-gradient-to-br from-green-900 via-green-700 to-black';
-              border = 'border-green-400';
-              emoji = '🌱';
-              text = 'text-green-200';
-            } else if (name.includes('summer')) {
-              gradient = 'bg-gradient-to-br from-yellow-700 via-orange-800 to-black';
-              border = 'border-yellow-400';
-              emoji = '☀️';
-              text = 'text-yellow-200';
-            } else if (name.includes('autumn') || name.includes('fall')) {
-              gradient = 'bg-gradient-to-br from-orange-900 via-orange-700 to-black';
-              border = 'border-orange-400';
-              emoji = '🍂';
-              text = 'text-orange-200';
-            }
-            return (
-              <div
-                key={`${entity.id}-season-${name}-${index}`}
-                className={`${gradient} border ${border} shadow-lg rounded-xl p-6 flex flex-col gap-3 relative`}
-              >
-                <h5 className={`text-lg font-bold flex items-center gap-2 mb-2 ${text}`}>
-                  <span>{emoji}</span>
-                  {'name' in season ? season.name : season.season}
-                </h5>
-                <p className="text-sm text-gray-200 mb-2">{season.description}</p>
-                <div className="flex flex-col gap-2">
-                  <div>
-                    <h6 className="text-xs font-semibold text-blue-300 mb-1">Activities</h6>
-                    <ul className="list-disc list-inside text-sm text-blue-100 ml-4">
-                      {('activities' in season ? season.activities : []).map((activity: string, i: number) => (
-                        <li key={`${entity.id}-activity-${i}-${activity}`}>{activity}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h6 className="text-xs font-semibold text-pink-300 mb-1">Hazards</h6>
-                    <ul className="list-disc list-inside text-sm text-pink-100 ml-4">
-                      {('hazards' in season ? season.hazards : []).map((hazard: string, i: number) => (
-                        <li key={`${entity.id}-hazard-${i}-${hazard}`}>{hazard}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+  const renderSeasonalInfo = (entity: Region | Location) => (
+    <div className="mb-4">
+      <h3 className="text-lg font-semibold mb-2">Seasonal Effects</h3>
+      {entity.seasons?.map((season: { season: string; description: string; economicImpact: string; specialEvents: string[] }, index: number) => (
+        <div key={index} className="mb-2">
+          <h4 className="font-medium">{season.season}</h4>
+          <p>{season.description}</p>
+          <p>Economic Impact: {season.economicImpact}</p>
+          {season.specialEvents && season.specialEvents.length > 0 && (
+            <div>
+              <h5 className="font-medium">Special Events:</h5>
+              <ul>
+                {season.specialEvents.map((event: string, i: number) => (
+                  <li key={i}>{event}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-      </div>
+      ))}
     </div>
-  )
+  );
 
-  const renderMagicalItems = (entity: Region | City) => (
-    <div className="mt-8">
-      <div className="flex items-center gap-2 mb-2">
-        <h4 className="text-xl font-semibold">Magical Items</h4>
-      </div>
-      <div className={`bg-gray-800/40 rounded-xl border ${borderColor.borderSecondary} p-6`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(entity.magicalItems || []).map((item: any, index: number) => {
-            let rarityBorder = 'border-gray-400';
-            let rarityText = 'text-gray-400';
-            let rarityBg = 'bg-gray-700';
-            let rarityBadge = 'Common';
-            switch ((item.rarity || '').toLowerCase()) {
-              case 'common':
-                rarityBorder = 'border-gray-500';
-                rarityText = 'text-gray-500';
-                rarityBg = 'bg-gray-800';
-                rarityBadge = 'Common';
-                break;
-              case 'uncommon':
-                rarityBorder = 'border-green-400';
-                rarityText = 'text-green-400';
-                rarityBg = 'bg-green-900';
-                rarityBadge = 'Uncommon';
-                break;
-              case 'rare':
-                rarityBorder = 'border-blue-400';
-                rarityText = 'text-blue-400';
-                rarityBg = 'bg-blue-900';
-                rarityBadge = 'Rare';
-                break;
-              case 'very rare':
-                rarityBorder = 'border-purple-400';
-                rarityText = 'text-purple-400';
-                rarityBg = 'bg-purple-900';
-                rarityBadge = 'Very Rare';
-                break;
-              case 'legendary':
-                rarityBorder = 'border-yellow-400';
-                rarityText = 'text-yellow-400';
-                rarityBg = 'bg-yellow-900';
-                rarityBadge = 'Legendary';
-                break;
-              case 'artifact':
-                rarityBorder = 'border-pink-400';
-                rarityText = 'text-pink-400';
-                rarityBg = 'bg-pink-900';
-                rarityBadge = 'Artifact';
-                break;
-              default:
-                rarityBorder = 'border-gray-400';
-                rarityText = 'text-gray-400';
-                rarityBg = 'bg-gray-700';
-                rarityBadge = 'Common';
-            }
-            return (
-              <div key={`${entity.id}-item-${item.name}-${index}`} className={`relative flex flex-col md:flex-row shadow-lg rounded-xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black ${rarityBorder}`}> 
-                {/* Left accent bar */}
-                <div className={`w-2 md:w-3 ${rarityBg} ${rarityBorder} rounded-l-xl md:rounded-l-xl md:rounded-tr-none md:rounded-br-none`} />
-                {/* Main content */}
-                <div className="flex-1 p-6 flex flex-col gap-2">
-                  <div className="flex items-center gap-3 mb-2">
-                    <SparklesIcon className={`w-7 h-7 ${rarityText}`} />
-                    <h5 className={`text-2xl font-extrabold leading-tight flex items-center gap-2 ${rarityText}`}>{item.name}</h5>
-                    <span className={`ml-auto px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${rarityBg} ${rarityText} border ${rarityBorder}`}>{rarityBadge}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs text-gray-400">{item.type}</span>
-                    {'attunement' in item && item.attunement && (
-                      <span className="text-xs text-pink-300 ml-2">Requires Attunement</span>
-                    )}
-                    {'charges' in item && item.charges && (
-                      <span className="text-xs text-blue-300 ml-2">{item.charges} Charges</span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-200 mb-2 italic">{item.description}</p>
-                  <div className="flex flex-wrap gap-4 mb-2">
-                    {'value' in item && <span className="text-sm"><span className="text-gray-400 font-semibold">Value:</span> {item.value}</span>}
-                    {'source' in item && item.source && <span className="text-sm"><span className="text-gray-400 font-semibold">Source:</span> {item.source}</span>}
-                    {'weight' in item && item.weight && <span className="text-sm"><span className="text-gray-400 font-semibold">Weight:</span> {item.weight}</span>}
-                    {'duration' in item && item.duration && <span className="text-sm"><span className="text-gray-400 font-semibold">Duration:</span> {item.duration}</span>}
-                    {'range' in item && item.range && <span className="text-sm"><span className="text-gray-400 font-semibold">Range:</span> {item.range}</span>}
-                    {'activation' in item && item.activation && <span className="text-sm"><span className="text-gray-400 font-semibold">Activation:</span> {item.activation}</span>}
-                    {'requirements' in item && item.requirements && <span className="text-sm"><span className="text-gray-400 font-semibold">Requirements:</span> {item.requirements}</span>}
-                    {'cooldown' in item && item.cooldown && <span className="text-sm"><span className="text-gray-400 font-semibold">Cooldown:</span> {item.cooldown}</span>}
-                    {'uses' in item && item.uses && <span className="text-sm"><span className="text-gray-400 font-semibold">Uses:</span> {item.uses}</span>}
-                  </div>
-                  {/* Additional properties */}
-                  {'effects' in item && item.effects && (
-                    <div className="mt-2">
-                      <h6 className="text-xs font-bold text-gray-300 mb-1">Effects</h6>
-                      <ul className="list-disc list-inside text-sm text-gray-200 ml-4">
-                        {Array.isArray(item.effects) ? item.effects.map((effect: string, i: number) => (
-                          <li key={`${entity.id}-effect-${i}-${effect}`}>{effect}</li>
-                        )) : <li key={`${entity.id}-effect-${item.effects}`}>{item.effects}</li>}
-                      </ul>
-                    </div>
-                  )}
-                  {'properties' in item && item.properties && (
-                    <div className="mt-2">
-                      <h6 className="text-xs font-bold text-gray-300 mb-1">Properties</h6>
-                      <ul className="list-disc list-inside text-sm text-gray-200 ml-4">
-                        {Array.isArray(item.properties) ? item.properties.map((prop: string, i: number) => (
-                          <li key={`${entity.id}-prop-${i}-${prop}`}>{prop}</li>
-                        )) : <li key={`${entity.id}-prop-${item.properties}`}>{item.properties}</li>}
-                      </ul>
-                                </div>
-                              )}
-                </div>
-              </div>
-            );
-          })}
+  const renderMagicalItems = (entity: Region | Location) => (
+    <div className="mb-4">
+      <h3 className="text-lg font-semibold mb-2">Magical Items</h3>
+      {entity.magicalItems?.map((item: { name: string; description: string; type: string; rarity: string; effects: string[] }, index: number) => (
+        <div key={index} className="mb-2">
+          <h4 className="font-medium">{item.name}</h4>
+          <p>{item.description}</p>
+          <p>Type: {item.type}</p>
+          <p>Rarity: {item.rarity}</p>
+          {item.effects && item.effects.length > 0 && (
+            <div>
+              <h5 className="font-medium">Effects:</h5>
+              <ul>
+                {item.effects.map((effect: string, i: number) => (
+                  <li key={i}>{effect}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-      </div>
+      ))}
     </div>
-  )
+  );
 
   const toggleLocationType = (type: LocationType) => {
     setVisibleLocationTypes(prev => {
@@ -1125,8 +904,6 @@ export function WorldView({
     }
     return [0, 0];
   };
-
-  const navigate = useNavigate();
 
   // Prevent scrolling on mount
   useEffect(() => {
@@ -1237,12 +1014,11 @@ export function WorldView({
     setRoadCreationState({
       isCreating: true,
       startLocation: location,
-      currentPoint: location.coordinates || null,
+      currentPoint: null,
       type,
       waypoints: [],
       isWaypointMode: false
     });
-    setContextMenu(null);
   };
 
   const handleCancelRoadCreation = () => {
@@ -1256,18 +1032,16 @@ export function WorldView({
     });
   };
 
-  const handleCompleteRoadCreation = async (endLocation: Location) => {
-    if (roadCreationState.startLocation && roadCreationState.type) {
-      await handleRoadCreation(
-        roadCreationState.startLocation,
-        endLocation,
-        roadCreationState.type
-      );
+  const handleCompleteRoadCreation = async (location: Location) => {
+    if (roadCreationState.startLocation) {
+      await handleRoadCreation(roadCreationState.startLocation, location, roadCreationState.type);
       setRoadCreationState({
-        active: false,
+        isCreating: false,
         startLocation: null,
-        type: 'Major' as const,
-        waypoints: []
+        currentPoint: null,
+        type: 'Major',
+        waypoints: [],
+        isWaypointMode: false
       });
     }
   };
@@ -1596,33 +1370,34 @@ export function WorldView({
 
   // Update the location marker click handler to be more explicit about handling clicks
   const handleLocationClick = (location: Location, e: React.MouseEvent) => {
-    console.log('[Debug] Location click:', {
-      locationName: location.name,
-      isEditMode,
-      isDragging: !!draggedLocation,
-      isCreating: roadCreationState.isCreating
-    });
-
-    // Always prevent default and stop propagation for location marker clicks
-    e.preventDefault();
     e.stopPropagation();
 
-    // Handle road creation if active
-    if (roadCreationState.isCreating && roadCreationState.startLocation) {
-      if (location.id !== roadCreationState.startLocation.id) {
+    if (roadCreationState.isCreating) {
+      if (roadCreationState.startLocation) {
         handleCompleteRoadCreation(location);
+      } else {
+        handleStartRoadCreation(location, roadCreationState.type);
       }
       return;
     }
 
-    // In edit mode, don't navigate - only handle dragging
     if (isEditMode) {
+      handleMarkerContextMenu(e, location);
       return;
     }
 
-    // In non-edit mode, immediately handle the click for navigation
-    // and prevent any map interaction
-    handleLocationSelect(location);
+    // If it's a city, navigate to the city view
+    if (location.type === 'City' || location.type === 'Large City') {
+      const parentRegion = regions.find(region => 
+        region.locations?.some(l => l.id === location.id)
+      );
+      if (parentRegion) {
+        navigate(`/world/${parentRegion.id}/city/${location.id}`);
+      }
+    } else {
+      // For other locations, just select them
+      onLocationSelect(location);
+    }
   };
 
   const handleLocationContextMenu = (location: Location, e: React.MouseEvent) => {
@@ -1670,7 +1445,7 @@ export function WorldView({
         
         // Update locations to reference the new road
         setLocations(prev => prev.map(loc => {
-          if (loc.id === roadCreationState.startLocation!.id || loc.id === endLocation.id) {
+          if (loc.id === roadCreationState.startLocation!.id || loc.id === location.id) {
             return {
               ...loc,
               roads: [...(loc.roads || []), newRoad.id]
@@ -1678,9 +1453,6 @@ export function WorldView({
           }
           return loc;
         }));
-
-        // Save the changes
-        saveLocations();
 
         // Reset road creation state
         setRoadCreationState({
@@ -1759,65 +1531,54 @@ export function WorldView({
   };
 
   const handleRoadCreation = async (startLocation: Location, endLocation: Location, type: 'Major' | 'Minor' | 'Path') => {
-    if (!roadCreationState.waypoints) return;
-
+    // Create a new road
     const newRoad: Road = {
-      id: `road-${Date.now()}`,
+      id: uuidv4(),
       name: `${startLocation.name} to ${endLocation.name} ${type} Road`,
       type,
       points: [
-        { x: startLocation.coordinates!.x, y: startLocation.coordinates!.y },
+        { x: startLocation.coordinates?.x || 0, y: startLocation.coordinates?.y || 0 },
         ...roadCreationState.waypoints,
-        { x: endLocation.coordinates!.x, y: endLocation.coordinates!.y }
+        { x: endLocation.coordinates?.x || 0, y: endLocation.coordinates?.y || 0 }
       ],
       connectedLocations: [startLocation.id, endLocation.id],
-      waypoints: roadCreationState.waypoints.map((point, index) => ({
-        id: `waypoint-${index}`,
-        x: point.x,
-        y: point.y
-      }))
+      waypoints: roadCreationState.waypoints
     };
 
-    try {
-      // Update both locations with the new road
-      await updateLocation({
-        ...startLocation,
-        roads: [...(startLocation.roads || []), newRoad.id]
-      });
-      await updateLocation({
-        ...endLocation,
-        roads: [...(endLocation.roads || []), newRoad.id]
-      });
+    // Add the road to the list of roads
+    setRoads([...roads, newRoad]);
 
-      setNotification({
-        open: true,
-        message: 'Road created successfully',
-        severity: 'success'
-      });
-    } catch (error) {
-      console.error('Error creating road:', error);
-      setNotification({
-        open: true,
-        message: 'Error creating road',
-        severity: 'error'
-      });
-    }
+    // Update the locations with the new road
+    const updatedLocations = locations.map(location => {
+      if (location.id === startLocation.id || location.id === endLocation.id) {
+        return {
+          ...location,
+          roads: [...(location.roads || []), newRoad.id]
+        };
+      }
+      return location;
+    });
+
+    // Save the updated locations
+    setLocations(updatedLocations);
+    
+    // Show success notification
+    setNotification({
+      open: true,
+      message: 'Road created successfully. Click Save to confirm changes.',
+      severity: 'success'
+    });
   };
 
   const handleLocationDrag = async (location: Location, newX: number, newY: number) => {
-    try {
-      await updateLocation({
-        ...location,
-        coordinates: { x: newX, y: newY }
-      });
-    } catch (error) {
-      console.error('Error updating location position:', error);
-      setNotification({
-        open: true,
-        message: 'Error updating location position',
-        severity: 'error'
-      });
-    }
+    const updatedLocation = {
+      ...location,
+      coordinates: {
+        x: newX,
+        y: newY
+      }
+    };
+    await updateLocation(updatedLocation);
   };
 
   return (
@@ -2409,7 +2170,7 @@ export function WorldView({
           {selectedLocation && !selectedDungeonProp && (
             <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-md overflow-hidden">
               <div ref={cityModalRef} className="relative bg-gray-900/95 rounded-xl shadow-2xl w-full max-w-5xl mx-auto pt-0 pb-8 px-8 overflow-y-auto h-[80vh] modern-scrollbar">
-                {('coordinates' in selectedLocation && Array.isArray(selectedLocation.coordinates)) ? (
+                {(selectedLocation.type === 'City' || selectedLocation.type === 'Large City') ? (
                   <CityView
                     city={selectedLocation as City}
                     onDungeonSelect={handleDungeonSelect}

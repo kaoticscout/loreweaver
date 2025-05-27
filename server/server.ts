@@ -71,8 +71,31 @@ app.get('/api/worlds/:id', async (req, res) => {
 // Region routes
 app.get('/api/worlds/:worldId/regions', async (req, res) => {
   try {
-    const regions = await DatabaseService.getRegionsByWorldId(req.params.worldId);
-    res.json(regions);
+    const regions = await prisma.region.findMany({
+      where: { worldId: req.params.worldId },
+      include: {
+        locations: true
+      }
+    });
+    res.json(regions.map(region => ({
+      ...region,
+      locations: region.locations.map(location => ({
+        id: location.id,
+        name: location.name,
+        description: location.description,
+        type: location.type,
+        coordinates: location.coordinates,
+        population: location.population,
+        primaryRaces: location.primaryRaces,
+        notableFeatures: location.notableFeatures,
+        services: location.services,
+        localGovernment: location.localGovernment,
+        significance: location.significance,
+        history: location.history,
+        worldId: location.worldId,
+        regionId: location.regionId
+      }))
+    })));
   } catch (error) {
     console.error('Error fetching regions:', error);
     res.status(500).json({ error: 'Failed to fetch regions' });
@@ -238,6 +261,65 @@ app.get('/api/worlds/:worldId/enemies', async (req, res) => {
   } catch (error) {
     console.error('Error fetching enemies:', error);
     res.status(500).json({ error: 'Failed to fetch enemies' });
+  }
+});
+
+// Location routes
+app.get('/api/worlds/:worldId/locations', async (req, res) => {
+  try {
+    const locations = await prisma.location.findMany({
+      where: {
+        worldId: req.params.worldId
+      }
+    });
+    res.json(locations.map(location => ({
+      id: location.id,
+      name: location.name,
+      description: location.description,
+      type: location.type,
+      coordinates: location.coordinates,
+      population: location.population,
+      primaryRaces: location.primaryRaces,
+      notableFeatures: location.notableFeatures,
+      services: location.services,
+      localGovernment: location.localGovernment,
+      significance: location.significance,
+      history: location.history,
+      worldId: location.worldId
+    })));
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ error: 'Failed to fetch locations' });
+  }
+});
+
+app.post('/api/locations', async (req, res) => {
+  try {
+    const location = await DatabaseService.createLocation(req.body);
+    res.status(201).json(location);
+  } catch (error) {
+    console.error('Error creating location:', error);
+    res.status(500).json({ error: 'Failed to create location' });
+  }
+});
+
+app.patch('/api/locations/:id', async (req, res) => {
+  try {
+    const location = await DatabaseService.updateLocation(req.params.id, req.body);
+    res.json(location);
+  } catch (error) {
+    console.error('Error updating location:', error);
+    res.status(500).json({ error: 'Failed to update location' });
+  }
+});
+
+app.delete('/api/locations/:id', async (req, res) => {
+  try {
+    await DatabaseService.deleteLocation(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting location:', error);
+    res.status(500).json({ error: 'Failed to delete location' });
   }
 });
 

@@ -1,5 +1,5 @@
 import { Region } from '../types/region'
-import { City } from '../types/city'
+import { City } from '../types/location'
 import { InformationCircleIcon, BookOpenIcon, BanknotesIcon, SparklesIcon, XMarkIcon, MapPinIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
@@ -67,6 +67,25 @@ export function RegionView({
     containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [region]);
+
+  // Filter locations to only include cities and convert them to City type
+  const cities = (region.locations || [])
+    .filter(location => location.type === 'City' || location.type === 'Large City')
+    .map(location => ({
+      ...location,
+      basicInformation: {
+        population: location.population?.toString() || '0',
+        primaryRaces: location.primaryRaces || [],
+        deities: []
+      },
+      keyFigures: [],
+      pointsOfInterest: [],
+      restAreas: [],
+      shops: [],
+      dungeons: [],
+      biography: '',
+      notableFeatures: location.notableFeatures || []
+    })) as City[];
 
   return (
     <div ref={containerRef} className="space-y-6">
@@ -146,7 +165,7 @@ export function RegionView({
 
         {/* Cities Section */}
         <CitiesSection
-          cities={region.cities}
+          cities={cities}
           parentName={region.name}
           onCitySelect={(city) => onCitySelect(city)}
           onAddCity={onAddCity}

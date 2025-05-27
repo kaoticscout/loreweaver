@@ -1,20 +1,31 @@
 import { Location } from '../types/location';
-import { DatabaseService } from './database';
 
 export const locationService = {
   getLocations: async (worldId: string): Promise<Location[]> => {
     try {
-      const locations = await DatabaseService.getAllLocations();
-      return locations.filter(location => location.worldId === worldId);
+      const response = await fetch(`http://localhost:3001/api/worlds/${worldId}/locations`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch locations');
+      }
+      return await response.json();
     } catch (error) {
       console.error('Error fetching locations:', error);
-      return [];
+      throw error;
     }
   },
 
   addLocation: async (location: Location): Promise<void> => {
     try {
-      await DatabaseService.createLocation(location);
+      const response = await fetch(`http://localhost:3001/api/locations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(location),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add location');
+      }
     } catch (error) {
       console.error('Error adding location:', error);
       throw error;
@@ -23,7 +34,16 @@ export const locationService = {
 
   updateLocation: async (id: string, location: Partial<Location>): Promise<void> => {
     try {
-      await DatabaseService.updateLocation(id, location);
+      const response = await fetch(`http://localhost:3001/api/locations/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(location),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update location');
+      }
     } catch (error) {
       console.error('Error updating location:', error);
       throw error;
@@ -32,7 +52,12 @@ export const locationService = {
 
   deleteLocation: async (id: string): Promise<void> => {
     try {
-      await DatabaseService.deleteLocation(id);
+      const response = await fetch(`http://localhost:3001/api/locations/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete location');
+      }
     } catch (error) {
       console.error('Error deleting location:', error);
       throw error;

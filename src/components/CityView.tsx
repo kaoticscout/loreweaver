@@ -1,10 +1,10 @@
-import { City } from '../types/city'
+import { City, Location } from '../types/location'
 // NOTE: spotlightImages is an optional property on City for carousel support
 import { InformationCircleIcon, BookOpenIcon, BanknotesIcon, SparklesIcon, MapPinIcon, UserGroupIcon, BuildingStorefrontIcon, HomeIcon, XMarkIcon, ArrowLeftIcon, ArrowPathIcon, ArrowUpIcon, ArrowDownIcon, MagnifyingGlassIcon, FunnelIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { DungeonView } from './DungeonView'
 import { useState, useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
-import type { InventoryItem } from '../types/city'
+import type { InventoryItem } from '../types/location'
 import { useBorderColor } from '../hooks/useBorderColor'
 import { 
   LocationSection, 
@@ -242,37 +242,29 @@ export function CityView({
 }: CityViewProps) {
   const defaultColor = useBorderColor();
   const borderColor = borderColorProp || defaultColor;
-  const [selectedDungeon, setSelectedDungeon] = useState<City['dungeons'][0] | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  // Carousel state for environment images
-  const spotlightImages = city.images && city.images.length > 0 
-    ? city.images 
-    : [
-      '/art/environments/Saltmarsh_1920x1080_WallpaperTemplate.png',
-      '/art/environments/dnd_idrfm_wall1_1920.png',
-      '/art/environments/1920x1080-terrain-wa.png',
-    ];
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const maxCarousel = spotlightImages.length;
-  const handlePrev = () => setCarouselIndex((prev) => (prev - 1 + maxCarousel) % maxCarousel);
-  const handleNext = () => setCarouselIndex((prev) => (prev + 1) % maxCarousel);
+  const [selectedDungeon, setSelectedDungeon] = useState<City['dungeons'][0] | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleDungeonSelect = (dungeon: City['dungeons'][0]) => {
-    setSelectedDungeon(dungeon)
-    onDungeonSelect(dungeon)
+    setSelectedDungeon(dungeon);
+    onDungeonSelect(dungeon);
     // Reset scroll position immediately without animation
-    containerRef.current?.scrollTo({ top: 0, behavior: 'auto' })
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }
+    containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  };
+
+  const spotlightImages = [
+    city.banner,
+    ...(city.images || [])
+  ].filter((img): img is string => !!img);
 
   useEffect(() => {
     if (selectedDungeon) {
       // Reset scroll position immediately without animation
-      containerRef.current?.scrollTo({ top: 0, behavior: 'auto' })
-      window.scrollTo({ top: 0, behavior: 'auto' })
+      containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }
-  }, [selectedDungeon])
+  }, [selectedDungeon]);
 
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
@@ -286,13 +278,117 @@ export function CityView({
         onBack={() => setSelectedDungeon(null)}
         onClose={onClose}
       />
-    )
+    );
   }
+
+  // Ensure we have default values for all required fields
+  const cityWithDefaults: City = {
+    ...city,
+    coordinates: city.coordinates ? [city.coordinates[0], city.coordinates[1]] : undefined,
+    basicInformation: {
+      population: city.basicInformation?.population || '0',
+      primaryRaces: city.basicInformation?.primaryRaces || [],
+      deities: (city.basicInformation?.deities || []).map(deity => ({
+        name: deity.name,
+        titles: deity.titles || [],
+        alignment: deity.alignment || 'Neutral',
+        pantheon: deity.pantheon || 'Unknown',
+        symbol: deity.symbol || 'None',
+        domains: deity.domains || [],
+        worshippers: deity.worshippers || [],
+        lore: deity.lore || '',
+        image: deity.image
+      }))
+    },
+    economy: {
+      ...(city.economy || {}),
+      tradeGoods: (city.economy?.tradeGoods || []).map(good => {
+        if (typeof good === 'string') {
+          return {
+            name: good,
+            type: 'export',
+            value: '0',
+            tariff: '0',
+            description: ''
+          };
+        }
+        return good;
+      }),
+      tradePartners: (city.economy?.tradePartners || []).map(partner => {
+        if (typeof partner === 'string') {
+          return {
+            name: partner,
+            relationship: 'Neutral',
+            primaryGoods: [],
+            tradeAgreement: ''
+          };
+        }
+        return partner;
+      }),
+      transportationRoutes: (city.economy?.transportationRoutes || []).map(route => {
+        if (typeof route === 'string') {
+          return {
+            name: route,
+            type: 'Land',
+            description: '',
+            security: 'Normal',
+            frequency: 'Regular'
+          };
+        }
+        return route;
+      }),
+      economicPolicies: city.economy?.economicPolicies || [],
+      marketRegulations: city.economy?.marketRegulations || []
+    },
+    keyFigures: city.keyFigures || [],
+    seasons: (city.seasons || []).map(season => ({
+      name: season.name,
+      season: season.season,
+      description: season.description || '',
+      activities: season.activities || [],
+      hazards: season.hazards || [],
+      magicalEffects: season.magicalEffects || [],
+      economicImpact: season.economicImpact || '',
+      tradeModifiers: season.tradeModifiers || { exports: {}, imports: {} },
+      specialEvents: season.specialEvents || []
+    })),
+    magicalItems: (city.magicalItems || []).map(item => ({
+      ...item,
+      id: item.id || crypto.randomUUID(),
+      effects: item.effects || [],
+      requirements: item.requirements || [],
+      properties: item.properties || []
+    })),
+    dungeons: (city.dungeons || []).map(dungeon => ({
+      ...dungeon,
+      encounters: (dungeon.encounters || []).map(encounter => ({
+        ...encounter,
+        creatures: encounter.creatures || [],
+        treasure: encounter.treasure || {}
+      })),
+      rewards: dungeon.rewards || [],
+      hazards: dungeon.hazards || []
+    })),
+    pointsOfInterest: (city.pointsOfInterest || []).map(poi => ({
+      ...poi,
+      notableFeatures: poi.notableFeatures || []
+    })),
+    restAreas: (city.restAreas || []).map(area => ({
+      ...area,
+      amenities: area.amenities || []
+    })),
+    shops: (city.shops || []).map(shop => ({
+      ...shop,
+      inventory: shop.inventory || []
+    })),
+    biography: city.biography || '',
+    notableFeatures: city.notableFeatures || []
+  };
 
   return (
     <div ref={containerRef} className="space-y-6">
       <HeaderSection
-        title={city.name}
+        title={cityWithDefaults.name}
         type="City"
         onBack={onBack}
         onClose={onClose}
@@ -307,77 +403,70 @@ export function CityView({
         />
 
         <LocationSection
-          name={city.name}
-          description={city.description}
-          coordinates={city.coordinates}
-          notableFeatures={city.notableFeatures}
+          name={cityWithDefaults.name}
+          description={cityWithDefaults.description}
+          coordinates={cityWithDefaults.coordinates}
+          notableFeatures={cityWithDefaults.notableFeatures}
           borderColor={defaultColor}
         />
         <BasicInformationSection
-          entity={city}
+          entity={cityWithDefaults}
           borderColor={defaultColor}
         />
         <BiographySection
-          biography={city.biography}
+          biography={cityWithDefaults.biography}
           borderColor={defaultColor}
         />
         <DeitiesSection
-          deities={city.basicInformation.deities}
+          deities={cityWithDefaults.basicInformation.deities}
           borderColor={defaultColor}
         />
         <KeyFiguresSection
-          keyFigures={city.keyFigures}
+          keyFigures={cityWithDefaults.keyFigures}
           renderCharacterCard={renderCharacterCard}
           borderColor={defaultColor}
         />
         <PointsOfInterestSection
-          pointsOfInterest={city.pointsOfInterest}
+          pointsOfInterest={cityWithDefaults.pointsOfInterest}
           onAddPointOfInterest={onAddPointOfInterest}
           borderColor={defaultColor}
         />
         <RestAreasSection
-          restAreas={city.restAreas}
+          restAreas={cityWithDefaults.restAreas}
           onAddRestArea={onAddRestArea}
           borderColor={defaultColor}
         />
         <ShopsSection
-          shops={city.shops}
+          shops={cityWithDefaults.shops}
           borderColor={defaultColor}
         />
         <TradeEconomySection
-          tradeGoods={city.economy?.tradeGoods || []}
-          tradePartners={city.economy?.tradePartners || []}
-          transportationRoutes={city.economy?.transportationRoutes || []}
+          tradeGoods={cityWithDefaults.economy?.tradeGoods || []}
+          tradePartners={cityWithDefaults.economy?.tradePartners || []}
+          transportationRoutes={cityWithDefaults.economy?.transportationRoutes || []}
           borderColor={defaultColor}
         />
         <EconomicPoliciesSection
-          economicPolicies={city.economy?.economicPolicies || []}
-          marketRegulations={city.economy?.marketRegulations || []}
+          economicPolicies={cityWithDefaults.economy?.economicPolicies || []}
+          marketRegulations={cityWithDefaults.economy?.marketRegulations || []}
           borderColor={defaultColor}
         />
         <SeasonalEffectsSection
-          seasons={city.seasons}
+          seasons={cityWithDefaults.seasons}
           borderColor={defaultColor}
         />
         <MagicalItemsSection
-          magicalItems={city.magicalItems}
+          magicalItems={cityWithDefaults.magicalItems}
           borderColor={defaultColor}
         />
         <DungeonsSection
-          dungeons={city.dungeons}
-          cityName={city.name}
-          onDungeonSelect={onDungeonSelect}
+          dungeons={cityWithDefaults.dungeons}
+          cityName={cityWithDefaults.name}
+          onDungeonSelect={handleDungeonSelect}
           onAddDungeon={onAddDungeon}
-          borderColor={defaultColor}
-        />
-        <CitiesSection
-          cities={city.cities || []}
-          parentName={city.name}
-          onCitySelect={(city) => onCitySelect(city)}
-          onAddCity={onAddCity}
           borderColor={defaultColor}
         />
       </div>
     </div>
-  )
+  );
 } 

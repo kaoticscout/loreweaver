@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Region } from '../types/region';
-import { City, Dungeon } from '../types/city';
 import { Location } from '../types/location';
+import { Dungeon, DungeonEncounter, DungeonTreasure } from '../types/dungeon';
 import { WorldView } from './WorldView';
 
 interface WorldRouterProps {
@@ -10,14 +10,25 @@ interface WorldRouterProps {
   onAddRegion: (name: string, description: string) => void;
   onAddCity: (regionId: string, name: string, description: string) => void;
   lastAddedId: string | null;
+  onDungeonSelect?: (dungeonId: string | null) => void;
 }
 
-export default function WorldRouter({ regions, onAddRegion, onAddCity, lastAddedId }: WorldRouterProps) {
+export default function WorldRouter({ regions, onAddRegion, onAddCity, lastAddedId, onDungeonSelect }: WorldRouterProps) {
   const { regionId, cityId, locationId, dungeonId } = useParams();
   const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
-  const [selectedLocation, setSelectedLocation] = useState<City | Location | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [notification, setNotification] = useState<{ 
+    open: boolean; 
+    message: string; 
+    severity: 'success' | 'error' 
+  }>({ 
+    open: false, 
+    message: '', 
+    severity: 'success' 
+  });
 
   useEffect(() => {
     if (regionId) {
@@ -25,11 +36,34 @@ export default function WorldRouter({ regions, onAddRegion, onAddCity, lastAdded
       setSelectedRegion(region);
       if (region) {
         if (cityId) {
-          const city = region.cities.find((c) => c.id === cityId) || null;
+          const city = region.locations?.find((l) => l.id === cityId && (l.type === 'City' || l.type === 'Large City')) || null;
           setSelectedLocation(city);
           if (city && dungeonId) {
-            const dungeon = city.dungeons.find((d) => d.id === dungeonId) || null;
-            setSelectedDungeon(dungeon);
+            // Convert the location dungeon to the full Dungeon type
+            const locationDungeon = city.dungeons?.find((d) => d.id === dungeonId);
+            if (locationDungeon) {
+              const fullDungeon: Dungeon = {
+                id: locationDungeon.id,
+                name: locationDungeon.name,
+                description: locationDungeon.description,
+                level: locationDungeon.level,
+                difficulty: 'Medium', // Default value
+                challengeRating: 1, // Default value
+                location: {
+                  region: region.id,
+                  environment: locationDungeon.environment
+                },
+                inhabitants: [],
+                treasures: locationDungeon.treasures,
+                hazards: locationDungeon.traps,
+                history: '',
+                encounters: [],
+                treasure: []
+              };
+              setSelectedDungeon(fullDungeon);
+            } else {
+              setSelectedDungeon(null);
+            }
           } else {
             setSelectedDungeon(null);
           }
@@ -58,19 +92,18 @@ export default function WorldRouter({ regions, onAddRegion, onAddCity, lastAdded
     }
   };
 
-  const handleLocationSelect = (location: City | Location | null) => {
+  const handleLocationSelect = (location: Location | null) => {
     if (location) {
       const parentRegion = regions.find(region => 
-        region.cities.some(c => c.id === location.id) || 
         region.locations?.some(l => l.id === location.id)
       );
       if (parentRegion) {
-        // Check if it's a city by looking for the coordinates property
-        const isCity = 'coordinates' in location && Array.isArray(location.coordinates);
+        // Check if it's a city by looking at the type field
+        const isCity = location.type === 'City' || location.type === 'Large City';
         const path = isCity ? 'city' : 'location';
         navigate(`/world/${parentRegion.id}/${path}/${location.id}`);
       } else if (selectedRegion && selectedRegion.id) {
-        const isCity = 'coordinates' in location && Array.isArray(location.coordinates);
+        const isCity = location.type === 'City' || location.type === 'Large City';
         const path = isCity ? 'city' : 'location';
         navigate(`/world/${selectedRegion.id}/${path}/${location.id}`);
       }
@@ -97,6 +130,34 @@ export default function WorldRouter({ regions, onAddRegion, onAddCity, lastAdded
 
   const handleHome = () => {
     navigate('/world');
+  };
+
+  const handleLocationDrag = async (location: Location, newX: number, newY: number) => {
+    // Update the location in the current state
+    setLocations(prev => prev.map(loc => 
+      loc.id === location.id ? {
+        ...location,
+        coordinates: {
+          x: newX,
+          y: newY
+        }
+      } : loc
+    ));
+
+    setNotification({
+      open: true,
+      message: 'Location position updated. Click Save to confirm changes.',
+      severity: 'success'
+    });
+  };
+
+  const handleAddDungeon = (cityId: string) => {
+    // Handle adding a dungeon
+  };
+
+  const handleDungeonClose = () => {
+    handleLocationSelect(null);
+    handleRegionSelect(null);
   };
 
   return (

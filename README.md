@@ -18,7 +18,8 @@ A modern web application for exploring and learning about a digital world throug
    ```
 3. Create a `.env` file in the root directory and add your Mapbox token:
    ```
-   VITE_MAPBOX_TOKEN=your_mapbox_token_here
+   DATABASE_URL="postgresql://<<USER>>:<<PASSWORD>>@<<HOST_NAME>>/loreweaver2?schema=public"
+   VITE_API_URL=http://localhost:3001
    ```
    You can get a free Mapbox token by signing up at https://www.mapbox.com/
 

@@ -9,7 +9,10 @@ import { ArrowLeftIcon, XMarkIcon } from '@heroicons/react/24/solid'
 interface LocationSectionProps {
   name: string
   description: string
-  coordinates?: [number, number]
+  coordinates?: {
+    x: number;
+    y: number;
+  };
   notableFeatures: string[]
   borderColor: {
     borderSecondary: string
@@ -36,7 +39,7 @@ export function LocationSection({ name, description, coordinates, notableFeature
           {coordinates && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-400">Coordinates:</span>
-              <span className="text-sm text-gray-300">{coordinates.join(', ')}</span>
+              <span className="text-sm text-gray-300">{coordinates.x}, {coordinates.y}</span>
             </div>
           )}
           

@@ -15,7 +15,7 @@ export interface BaseLocation {
   name: string;
   description: string;
   type: LocationType;
-  coordinates?: [number, number];
+  coordinates?: { x: number; y: number };
   images?: string[];
   region?: string;
 }
@@ -70,7 +70,7 @@ export interface PointOfInterest extends BaseLocation {
   features: string[];
   visitingHours?: string;
   restrictions?: string[];
-  coordinates?: [number, number];
+  coordinates?: { x: number; y: number };
 }
 
 export interface Shop extends BaseLocation {
@@ -422,5 +422,5 @@ export interface PointOfInterest {
   name: string;
   description: string;
   type: 'Point of Interest';
-  coordinates?: [number, number];
+  coordinates?: { x: number; y: number };
 } 

@@ -42,6 +42,7 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap'
 import { v4 as uuidv4 } from 'uuid'
 import { Dungeon } from '../types/dungeon'
+import { getLocationIcon, getLocationSize, getLocationColor } from '../utils/locationIcons'
 
 interface WorldViewProps {
   regions: Region[]
@@ -65,6 +66,45 @@ interface RoadCreationState {
   type: 'Major' | 'Minor' | 'Path';
   waypoints: Array<{ id: string; x: number; y: number }>;
   isWaypointMode: boolean;
+}
+
+interface DraggedLocation {
+  name: string;
+  initialX: number;
+  initialY: number;
+  startX: number;
+  startY: number;
+}
+
+interface LocationWithImages extends Omit<Location, 'type'> {
+  type: LocationType;
+  images?: string[];
+  basicInformation?: {
+    population: string;
+    primaryRaces: string[];
+    deities: any[];
+  };
+  economy?: {
+    primaryIndustry?: string;
+    gdp?: string;
+    currency?: string;
+    tradeGoods?: string[];
+    tradePartners?: string[];
+    transportationRoutes?: string[];
+    economicPolicies?: string[];
+    marketRegulations?: string[];
+  };
+  cityHistory?: {
+    founding: string;
+    majorEvents: string[];
+    currentEra: string;
+  };
+  keyFigures?: any[];
+  dungeons?: any[];
+  pointsOfInterest?: any[];
+  restAreas?: any[];
+  shops?: any[];
+  biography?: string;
 }
 
 export function WorldView({
@@ -121,13 +161,7 @@ export function WorldView({
   });
   const [imageError, setImageError] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [draggedLocation, setDraggedLocation] = useState<{
-    name: string;
-    initialX: number;
-    initialY: number;
-    startX: number;
-    startY: number;
-  } | null>(null);
+  const [draggedLocation, setDraggedLocation] = useState<DraggedLocation | null>(null);
   const [isLegendExpanded, setIsLegendExpanded] = useState(true);
   const [editLocationDialog, setEditLocationDialog] = useState(false);
   const [expandedRegions, setExpandedRegions] = useState<Record<string, boolean>>({});
@@ -561,7 +595,7 @@ export function WorldView({
     }
   };
 
-  const handleMarkerMouseDown = (event: React.MouseEvent, location: Location) => {
+  const handleMarkerMouseDown = useCallback((event: React.MouseEvent, location: Location) => {
     event.stopPropagation();
     if (!isEditMode) return;
 
@@ -576,7 +610,7 @@ export function WorldView({
       startX: event.clientX,
       startY: event.clientY
     });
-  };
+  }, [isEditMode]);
 
   const handleMapMouseDown = useCallback((e: React.MouseEvent) => {
     // Check if the click originated from a location marker
@@ -630,42 +664,6 @@ export function WorldView({
   }, [draggedLocation, setIsDragging, setDragStart, roadCreationState.isCreating, roadCreationState.waypoints.length]);
 
   const handleMapMouseMove = useCallback((e: React.MouseEvent) => {
-    if (roadCreationState.isCreating && roadCreationState.startLocation) {
-      const rect = mapContainerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-
-      // Calculate the base scale of the image to fit the container
-      const baseScale = Math.min(
-        mapDimensions.width / imageNaturalSize.width,
-        mapDimensions.height / imageNaturalSize.height
-      );
-
-      // Calculate the scaled dimensions of the image
-      const scaledWidth = imageNaturalSize.width * baseScale;
-      const scaledHeight = imageNaturalSize.height * baseScale;
-
-      // Calculate the padding to center the image
-      const imageLeft = (mapDimensions.width - scaledWidth) / 2;
-      const imageTop = (mapDimensions.height - scaledHeight) / 2;
-
-      // Calculate the mouse position relative to the image origin
-      const mouseX = (e.clientX - rect.left - pan.x) / zoom;
-      const mouseY = (e.clientY - rect.top - pan.y) / zoom;
-
-      // Convert screen coordinates to image coordinates
-      const imageX = (mouseX - imageLeft) / baseScale;
-      const imageY = (mouseY - imageTop) / baseScale;
-
-      // Ensure coordinates are within image bounds
-      const newX = Math.max(0, Math.min(imageNaturalSize.width, imageX));
-      const newY = Math.max(0, Math.min(imageNaturalSize.height, imageY));
-
-      setRoadCreationState(prev => ({
-        ...prev,
-        currentPoint: { x: newX, y: newY }
-      }));
-    }
-
     if (draggedLocation) {
       e.stopPropagation();
       e.preventDefault();
@@ -713,8 +711,11 @@ export function WorldView({
           } : loc
         ));
       }
-    } else if (isDragging) {
-      // Handle map panning
+      return;
+    }
+
+    // Handle map panning
+    if (isDragging && !draggedLocation) {
       const dx = e.clientX - dragStart.x;
       const dy = e.clientY - dragStart.y;
       
@@ -725,54 +726,38 @@ export function WorldView({
       
       setDragStart({ x: e.clientX, y: e.clientY });
     }
-  }, [roadCreationState, draggedLocation, isDragging, dragStart, mapDimensions, imageNaturalSize, pan, zoom, locations, setLocations]);
+  }, [draggedLocation, isDragging, dragStart, mapDimensions, imageNaturalSize, pan, zoom, locations, setLocations]);
 
-  const handleMapMouseUp = useCallback((e: React.MouseEvent) => {
-    if (roadCreationState.isCreating && roadCreationState.startLocation) {
-      // If right-click on empty space, add a waypoint
-      if (e.button === 2) {
-        e.preventDefault();
-        const rect = mapContainerRef.current?.getBoundingClientRect();
-        if (!rect) return;
-
-        // Calculate the base scale of the image to fit the container
-        const baseScale = Math.min(
-          mapDimensions.width / imageNaturalSize.width,
-          mapDimensions.height / imageNaturalSize.height
-        );
-
-        // Calculate the scaled dimensions of the image
-        const scaledWidth = imageNaturalSize.width * baseScale;
-        const scaledHeight = imageNaturalSize.height * baseScale;
-
-        // Calculate the padding to center the image
-        const imageLeft = (mapDimensions.width - scaledWidth) / 2;
-        const imageTop = (mapDimensions.height - scaledHeight) / 2;
-
-        // Calculate the mouse position relative to the image origin
-        const mouseX = (e.clientX - rect.left - pan.x) / zoom;
-        const mouseY = (e.clientY - rect.top - pan.y) / zoom;
-
-        // Convert screen coordinates to image coordinates
-        const imageX = (mouseX - imageLeft) / baseScale;
-        const imageY = (mouseY - imageTop) / baseScale;
-
-        // Ensure coordinates are within image bounds
-        const newX = Math.max(0, Math.min(imageNaturalSize.width, imageX));
-        const newY = Math.max(0, Math.min(imageNaturalSize.height, imageY));
-
-        // Add the waypoint
-        setRoadCreationState(prev => ({
-          ...prev,
-          waypoints: [...prev.waypoints, { id: uuidv4(), x: newX, y: newY }]
-        }));
-        return;
+  const handleMapMouseUp = useCallback(async (e: React.MouseEvent) => {
+    if (draggedLocation) {
+      const location = locations.find(loc => loc.name === draggedLocation.name);
+      if (location?.coordinates) {
+        try {
+          await locationService.updateLocation(location.id, {
+            coordinates: location.coordinates
+          });
+          setNotification({
+            open: true,
+            message: 'Location position updated successfully',
+            severity: 'success'
+          });
+        } catch (error) {
+          console.error('Error updating location position:', error);
+          setNotification({
+            open: true,
+            message: 'Failed to update location position',
+            severity: 'error'
+          });
+        }
       }
+      setDraggedLocation(null);
+      setIsDragging(false);
+      return;
     }
 
     setIsDragging(false);
     setDraggedLocation(null);
-  }, [roadCreationState, mapDimensions, imageNaturalSize, pan, zoom]);
+  }, [draggedLocation, locations, setNotification, setIsDragging]);
 
   const handleDungeonSelect = (dungeon: Dungeon | null) => {
     if (onDungeonSelect) {
@@ -1571,14 +1556,28 @@ export function WorldView({
   };
 
   const handleLocationDrag = async (location: Location, newX: number, newY: number) => {
-    const updatedLocation = {
-      ...location,
+    if (!location.id) return;
+
+    const updatedLocation: Partial<Location> = {
       coordinates: {
         x: newX,
         y: newY
       }
     };
-    await updateLocation(updatedLocation);
+
+    try {
+      await locationService.updateLocation(location.id, updatedLocation);
+      await updateLocation({
+        ...location,
+        coordinates: {
+          x: newX,
+          y: newY
+        }
+      });
+    } catch (error) {
+      console.error('Error updating location:', error);
+      throw error;
+    }
   };
 
   return (
@@ -1967,6 +1966,8 @@ export function WorldView({
                         }}
                       >
                         {imageLoaded && locations.map((location) => {
+                          if (!location.coordinates) return null; // Skip locations without coordinates
+                          
                           const baseScale = Math.min(
                             mapDimensions.width / imageNaturalSize.width,
                             mapDimensions.height / imageNaturalSize.height
@@ -1979,8 +1980,8 @@ export function WorldView({
                           const imageTop = (mapDimensions.height - scaledHeight) / 2;
 
                           // Convert from image coordinates to screen coordinates
-                          const screenX = ((location.coordinates?.x ?? 0) * baseScale) + imageLeft;
-                          const screenY = ((location.coordinates?.y ?? 0) * baseScale) + imageTop;
+                          const screenX = (location.coordinates.x * baseScale) + imageLeft;
+                          const screenY = (location.coordinates.y * baseScale) + imageTop;
 
                           const isVisible = visibleLocationTypes.has(location.type);
                           const isDragging = draggedLocation?.name === location.name;
@@ -2054,22 +2055,6 @@ export function WorldView({
                               }}
                             >
                               {getLocationIcon(location.type)}
-                              {location.name === hoveredLocation && (
-                                <div 
-                                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 bg-black/90 text-white text-sm font-medium whitespace-nowrap rounded shadow-lg"
-                                  style={{
-                                    transform: 'translate(-50%, 0)',
-                                    transformOrigin: 'top center',
-                                    zIndex: 1000,
-                                    minWidth: 'max-content'
-                                  }}
-                                >
-                                  {location.name}
-                                  {roadCreationState.isCreating && location.id !== roadCreationState.startLocation?.id && (
-                                    <span className="block text-xs text-green-400">Click to complete road</span>
-                                  )}
-                                </div>
-                              )}
                             </div>
                           );
                         })}

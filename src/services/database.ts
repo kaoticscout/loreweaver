@@ -17,7 +17,10 @@ const toDBLocation = (location: Location): Prisma.LocationCreateInput => {
     name: location.name,
     description: location.description,
     type: location.type,
-    coordinates: location.coordinates as unknown as Prisma.InputJsonValue,
+    coordinates: location.coordinates ? {
+      x: Number(location.coordinates.x),
+      y: Number(location.coordinates.y)
+    } : undefined,
     population: location.population ?? null,
   };
 
@@ -44,21 +47,52 @@ const toDBLocation = (location: Location): Prisma.LocationCreateInput => {
   return dbLocation;
 };
 
-const fromDBLocation = (dbLocation: any): Location => ({
-  id: dbLocation.id,
-  name: dbLocation.name,
-  description: dbLocation.description,
-  type: dbLocation.type,
-  coordinates: dbLocation.coordinates as { x: number; y: number } | undefined,
-  population: dbLocation.population,
-  region: dbLocation.region,
-  ...(dbLocation.primaryRaces && { primaryRaces: dbLocation.primaryRaces }),
-  ...(dbLocation.notableFeatures && { notableFeatures: dbLocation.notableFeatures }),
-  ...(dbLocation.services && { services: dbLocation.services }),
-  ...(dbLocation.localGovernment && { localGovernment: dbLocation.localGovernment }),
-  ...(dbLocation.significance && { significance: dbLocation.significance }),
-  ...(dbLocation.history && { history: dbLocation.history }),
-});
+const fromDBLocation = (dbLocation: any): Location => {
+  let coordinates: { x: number; y: number } | undefined = undefined;
+  
+  if (dbLocation.coordinates) {
+    // Handle string format (from older data)
+    if (typeof dbLocation.coordinates === 'string') {
+      try {
+        const parsed = JSON.parse(dbLocation.coordinates);
+        if (parsed && typeof parsed === 'object' && 'x' in parsed && 'y' in parsed) {
+          coordinates = {
+            x: Number(parsed.x),
+            y: Number(parsed.y)
+          };
+        }
+      } catch (e) {
+        console.error('Failed to parse coordinates string:', dbLocation.coordinates);
+      }
+    }
+    // Handle object format
+    else if (typeof dbLocation.coordinates === 'object' && dbLocation.coordinates !== null) {
+      const coords = dbLocation.coordinates as any;
+      if ('x' in coords && 'y' in coords) {
+        coordinates = {
+          x: Number(coords.x),
+          y: Number(coords.y)
+        };
+      }
+    }
+  }
+
+  return {
+    id: dbLocation.id,
+    name: dbLocation.name,
+    description: dbLocation.description,
+    type: dbLocation.type,
+    coordinates,
+    population: dbLocation.population,
+    region: dbLocation.region,
+    ...(dbLocation.primaryRaces && { primaryRaces: dbLocation.primaryRaces }),
+    ...(dbLocation.notableFeatures && { notableFeatures: dbLocation.notableFeatures }),
+    ...(dbLocation.services && { services: dbLocation.services }),
+    ...(dbLocation.localGovernment && { localGovernment: dbLocation.localGovernment }),
+    ...(dbLocation.significance && { significance: dbLocation.significance }),
+    ...(dbLocation.history && { history: dbLocation.history }),
+  };
+};
 
 const fromDBWorld = (dbWorld: any): World => {
   console.log('Raw DB world data:', dbWorld);

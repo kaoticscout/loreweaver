@@ -329,7 +329,46 @@ app.get('/api/worlds/:worldId/locations', async (req, res) => {
         worldId: req.params.worldId
       }
     });
-    res.json(locations);
+    
+    // Transform locations to ensure coordinates are properly structured
+    const transformedLocations = locations.map(location => {
+      // Ensure coordinates are properly formatted
+      let coordinates: { x: number; y: number } | undefined = undefined;
+      
+      if (location.coordinates) {
+        // Handle string format (from older data)
+        if (typeof location.coordinates === 'string') {
+          try {
+            const parsed = JSON.parse(location.coordinates);
+            if (parsed && typeof parsed === 'object' && 'x' in parsed && 'y' in parsed) {
+              coordinates = {
+                x: Number(parsed.x),
+                y: Number(parsed.y)
+              };
+            }
+          } catch (e) {
+            console.error('Failed to parse coordinates string:', location.coordinates);
+          }
+        }
+        // Handle object format
+        else if (typeof location.coordinates === 'object' && location.coordinates !== null) {
+          const coords = location.coordinates as any;
+          if ('x' in coords && 'y' in coords) {
+            coordinates = {
+              x: Number(coords.x),
+              y: Number(coords.y)
+            };
+          }
+        }
+      }
+
+      return {
+        ...location,
+        coordinates
+      };
+    });
+    
+    res.json(transformedLocations);
   } catch (error) {
     console.error('Error fetching locations:', error);
     res.status(500).json({ error: 'Failed to fetch locations' });

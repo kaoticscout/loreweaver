@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Location, LocationType, City } from '../types/location';
+import { Location, LocationType } from '../types/location';
 import { locationService } from '../services/locationService';
 import { useWorld } from '../contexts/WorldContext';
 

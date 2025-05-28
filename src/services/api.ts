@@ -41,31 +41,67 @@ const api = axios.create({
 // Add token to requests if it exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token) {
+  if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
+// Handle response errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      // Handle authentication errors
+      if (error.response.status === 401 || error.response.status === 403) {
+        localStorage.removeItem('token');
+        // Optionally redirect to login
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const authApi = {
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/register', data);
-    return response.data;
+    try {
+      const response = await api.post<AuthResponse>('/auth/register', data);
+      return response.data;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    }
   },
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/login', credentials);
-    return response.data;
+    try {
+      const response = await api.post<AuthResponse>('/auth/login', credentials);
+      return response.data;
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   },
 
   async getProfile(): Promise<User> {
-    const response = await api.get<User>('/user/profile');
-    return response.data;
+    try {
+      const response = await api.get<User>('/user/profile');
+      return response.data;
+    } catch (error) {
+      console.error('Failed to get profile:', error);
+      throw error;
+    }
   },
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    const response = await api.patch<User>('/user/profile', data);
-    return response.data;
+    try {
+      const response = await api.patch<User>('/user/profile', data);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      throw error;
+    }
   },
 };
 

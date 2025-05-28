@@ -7,7 +7,9 @@ export const locationService = {
       if (!response.ok) {
         throw new Error('Failed to fetch locations');
       }
-      return await response.json();
+      const locations = await response.json();
+      // The coordinates are already parsed by the server
+      return locations;
     } catch (error) {
       console.error('Error fetching locations:', error);
       throw error;
@@ -21,7 +23,7 @@ export const locationService = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(location),
+        body: JSON.stringify(location), // Send coordinates as is
       });
       if (!response.ok) {
         throw new Error('Failed to add location');
@@ -39,7 +41,7 @@ export const locationService = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(location),
+        body: JSON.stringify(location), // Send coordinates as is
       });
       if (!response.ok) {
         throw new Error('Failed to update location');

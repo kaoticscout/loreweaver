@@ -38,6 +38,8 @@ import { useWorld } from '../contexts/WorldContext'
 import { useWorldProgress } from '../contexts/WorldProgressContext'
 import { WorldsAPI } from '../api/worlds'
 import type { World } from '../types/world'
+import { WorldAccessManager } from '../components/WorldAccessManager'
+import { useAuth } from '../contexts/AuthContext'
 
 // Mock data for enhanced features
 const mockReviews = [
@@ -110,6 +112,7 @@ const worldContent = {
 export function WorldPreviewPage() {
   const { worldId } = useParams()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [likedWorlds, setLikedWorlds] = useState<Set<string>>(new Set())
   const { setSelectedWorld } = useWorld()
   const { hasCreatedWorld, getCurrentChapter, setWorldProgress, worldProgress } = useWorldProgress()
@@ -118,32 +121,31 @@ export function WorldPreviewPage() {
   const [error, setError] = useState<string | null>(null)
   const [showPremiumPrompt, setShowPremiumPrompt] = useState(false)
 
+  const loadWorld = async () => {
+    if (!worldId) return;
+    
+    try {
+      setLoading(true);
+      const worldData = await WorldsAPI.getWorldById(worldId);
+      if (!worldData) {
+        setError('World not found');
+        return;
+      }
+      setWorld(worldData);
+      setError(null);
+    } catch (err) {
+      console.error('Error loading world:', err);
+      setError('Failed to load world data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Add useEffect to scroll to top and load world data
   useEffect(() => {
-    window.scrollTo(0, 0)
-    
-    const loadWorld = async () => {
-      if (!worldId) return;
-      
-      try {
-        setLoading(true)
-        const worldData = await WorldsAPI.getWorldById(worldId)
-        if (!worldData) {
-          setError('World not found')
-          return
-        }
-        setWorld(worldData)
-        setError(null)
-      } catch (err) {
-        console.error('Error loading world:', err)
-        setError('Failed to load world data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadWorld()
-  }, [worldId])
+    window.scrollTo(0, 0);
+    loadWorld();
+  }, [worldId]);
 
   if (loading) {
     return (
@@ -495,58 +497,62 @@ export function WorldPreviewPage() {
             </div>
 
             {/* Regions Preview */}
-            <div className="bg-white/5 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <MapIcon className="w-6 h-6 text-purple-400" />
-                Regions
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {world.regions.map(region => (
-                  <div key={region.id} className="bg-white/5 rounded-lg p-4">
-                    <h3 className="font-semibold mb-2">{region.name}</h3>
-                    <p className="text-sm text-gray-400 line-clamp-2">{region.description}</p>
-                  </div>
-                ))}
+            {world && world.regions && world.regions.length > 0 && (
+              <div className="bg-white/5 rounded-lg p-6">
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <MapIcon className="w-6 h-6 text-purple-400" />
+                  Regions
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {world.regions.map(region => (
+                    <div key={region.id} className="bg-white/5 rounded-lg p-4">
+                      <h3 className="font-semibold mb-2">{region.name}</h3>
+                      <p className="text-sm text-gray-400 line-clamp-2">{region.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Reviews */}
-            <div className="bg-white/5 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <ChatBubbleLeftIcon className="w-6 h-6 text-purple-400" />
-                Player Reviews
-              </h2>
-              <div className="space-y-6">
-                {mockReviews.map(review => (
-                  <div key={review.id} className="bg-white/5 rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
-                          {review.user.charAt(0)}
+            {mockReviews && mockReviews.length > 0 && (
+              <div className="bg-white/5 rounded-lg p-6">
+                <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+                  <ChatBubbleLeftIcon className="w-6 h-6 text-purple-400" />
+                  Player Reviews
+                </h2>
+                <div className="space-y-6">
+                  {mockReviews.map(review => (
+                    <div key={review.id} className="bg-white/5 rounded-lg p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                            {review.user.charAt(0)}
+                          </div>
+                          <span className="font-medium">{review.user}</span>
                         </div>
-                        <span className="font-medium">{review.user}</span>
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: review.rating }).map((_, i) => (
+                            <StarIconSolid key={i} className="w-4 h-4 text-yellow-400" />
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: review.rating }).map((_, i) => (
-                          <StarIconSolid key={i} className="w-4 h-4 text-yellow-400" />
-                        ))}
+                      <p className="text-gray-300 mb-3">{review.text}</p>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-400">{new Date(review.date).toLocaleDateString()}</span>
+                        <button className="flex items-center gap-1 text-gray-400 hover:text-purple-400 transition-colors">
+                          <HandRaisedIcon className="w-4 h-4" />
+                          <span>{review.helpful} Helpful</span>
+                        </button>
                       </div>
                     </div>
-                    <p className="text-gray-300 mb-3">{review.text}</p>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">{new Date(review.date).toLocaleDateString()}</span>
-                      <button className="flex items-center gap-1 text-gray-400 hover:text-purple-400 transition-colors">
-                        <HandRaisedIcon className="w-4 h-4" />
-                        <span>{review.helpful} Helpful</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Content Warnings */}
-            {world.contentWarnings && (
+            {world && world.contentWarnings && world.contentWarnings.length > 0 && (
               <div className="bg-white/5 rounded-lg p-6">
                 <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
                   <ShieldExclamationIcon className="w-6 h-6 text-purple-400" />
@@ -604,6 +610,19 @@ export function WorldPreviewPage() {
                 </button>
               </div>
             </div>
+
+            {/* World Access Section - Only show if user is the creator */}
+            {user && world && world.creatorId === user.id && (
+              <WorldAccessManager
+                worldId={world.id}
+                creatorId={world.creatorId}
+                sharedWith={world.sharedWith}
+                onAccessUpdated={() => {
+                  // Reload world data to get updated access information
+                  loadWorld();
+                }}
+              />
+            )}
 
             {/* Recommended Level */}
             <div className="bg-white/5 rounded-lg p-6">
@@ -668,28 +687,32 @@ export function WorldPreviewPage() {
               </div>
 
               {/* Languages */}
-              <div>
-                <h3 className="text-sm text-gray-400 mb-2">Available Languages</h3>
-                <div className="flex flex-wrap gap-2">
-                  {world.languages.map(lang => (
-                    <span key={lang} className="bg-white/10 px-3 py-1 rounded-full text-sm">
-                      {lang}
-                    </span>
-                  ))}
+              {world && world.languages && world.languages.length > 0 && (
+                <div>
+                  <h3 className="text-sm text-gray-400 mb-2">Available Languages</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {world.languages.map(lang => (
+                      <span key={lang} className="bg-white/10 px-3 py-1 rounded-full text-sm">
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Tags */}
-              <div>
-                <h3 className="text-sm text-gray-400 mb-2">Tags</h3>
-                <div className="flex flex-wrap gap-2">
-                  {world.tags.map(tag => (
-                    <span key={tag} className="bg-white/10 px-3 py-1 rounded-full text-sm">
-                      {tag}
-                    </span>
-                  ))}
+              {world && world.tags && world.tags.length > 0 && (
+                <div>
+                  <h3 className="text-sm text-gray-400 mb-2">Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {world.tags.map(tag => (
+                      <span key={tag} className="bg-white/10 px-3 py-1 rounded-full text-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Dates */}
               <div className="space-y-2">

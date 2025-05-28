@@ -3,7 +3,7 @@ import cors from 'cors';
 import { DatabaseService } from '../src/services/database';
 import { PrismaClient } from '@prisma/client';
 import { AuthService } from '../src/services/auth';
-import { authenticateToken, requireRole } from '../src/middleware/auth';
+import { authenticateToken, requireRole, checkWorldAccess } from '../src/middleware/auth';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -97,19 +97,30 @@ app.get('/api/worlds/featured', async (req, res) => {
   }
 });
 
-app.get('/api/worlds/:id', async (req, res) => {
+app.get('/api/worlds/:id', authenticateToken, checkWorldAccess('viewer'), async (req, res) => {
   try {
-    const world = await DatabaseService.getWorldById(req.params.id);
-    if (!world) {
-      console.log('World not found:', req.params.id);
-      res.status(404).json({ error: 'World not found' });
-      return;
-    }
-    console.log('Sending world to client:', world);
-    console.log('World rating:', world.rating);
+    const world = await prisma.world.findUnique({
+      where: { id: req.params.id },
+      include: {
+        createdBy: true,
+        sharedWith: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                username: true,
+                displayName: true,
+                avatar: true
+              }
+            }
+          }
+        }
+      }
+    });
     res.json(world);
   } catch (error) {
-    console.error('Error fetching world:', error);
+    console.error('Failed to fetch world:', error);
     res.status(500).json({ error: 'Failed to fetch world' });
   }
 });
@@ -318,21 +329,7 @@ app.get('/api/worlds/:worldId/locations', async (req, res) => {
         worldId: req.params.worldId
       }
     });
-    res.json(locations.map(location => ({
-      id: location.id,
-      name: location.name,
-      description: location.description,
-      type: location.type,
-      coordinates: location.coordinates,
-      population: location.population,
-      primaryRaces: location.primaryRaces,
-      notableFeatures: location.notableFeatures,
-      services: location.services,
-      localGovernment: location.localGovernment,
-      significance: location.significance,
-      history: location.history,
-      worldId: location.worldId
-    })));
+    res.json(locations);
   } catch (error) {
     console.error('Error fetching locations:', error);
     res.status(500).json({ error: 'Failed to fetch locations' });
@@ -341,7 +338,9 @@ app.get('/api/worlds/:worldId/locations', async (req, res) => {
 
 app.post('/api/locations', async (req, res) => {
   try {
-    const location = await DatabaseService.createLocation(req.body);
+    const location = await prisma.location.create({
+      data: req.body
+    });
     res.status(201).json(location);
   } catch (error) {
     console.error('Error creating location:', error);
@@ -351,7 +350,10 @@ app.post('/api/locations', async (req, res) => {
 
 app.patch('/api/locations/:id', async (req, res) => {
   try {
-    const location = await DatabaseService.updateLocation(req.params.id, req.body);
+    const location = await prisma.location.update({
+      where: { id: req.params.id },
+      data: req.body
+    });
     res.json(location);
   } catch (error) {
     console.error('Error updating location:', error);
@@ -361,7 +363,9 @@ app.patch('/api/locations/:id', async (req, res) => {
 
 app.delete('/api/locations/:id', async (req, res) => {
   try {
-    await DatabaseService.deleteLocation(req.params.id);
+    await prisma.location.delete({
+      where: { id: req.params.id }
+    });
     res.status(204).send();
   } catch (error) {
     console.error('Error deleting location:', error);
@@ -398,26 +402,8 @@ app.post('/api/worlds', authenticateToken, async (req, res) => {
   }
 });
 
-app.patch('/api/worlds/:id', authenticateToken, async (req, res) => {
+app.patch('/api/worlds/:id', authenticateToken, checkWorldAccess('editor'), async (req, res) => {
   try {
-    // Check if user owns the world or is admin
-    const world = await prisma.world.findUnique({
-      where: { id: req.params.id },
-      include: {
-        createdBy: true
-      }
-    });
-
-    if (!world) {
-      res.status(404).json({ error: 'World not found' });
-      return;
-    }
-
-    if (world.createdBy.id !== req.user!.id && req.user!.role !== 'admin') {
-      res.status(403).json({ error: 'Not authorized to modify this world' });
-      return;
-    }
-
     const updatedWorld = await prisma.world.update({
       where: { id: req.params.id },
       data: {
@@ -425,13 +411,228 @@ app.patch('/api/worlds/:id', authenticateToken, async (req, res) => {
         lastUpdated: new Date().toISOString()
       },
       include: {
-        createdBy: true
+        createdBy: true,
+        sharedWith: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                username: true,
+                displayName: true,
+                avatar: true
+              }
+            }
+          }
+        }
       }
     });
     res.json(updatedWorld);
   } catch (error) {
     console.error('Failed to update world:', error);
     res.status(500).json({ error: 'Failed to update world' });
+  }
+});
+
+// World sharing endpoint
+app.post('/api/worlds/:id/invite', authenticateToken, checkWorldAccess('editor'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email, role } = req.body;
+
+    if (!['viewer', 'editor'].includes(role)) {
+      res.status(400).json({ error: 'Invalid role. Must be either "viewer" or "editor"' });
+      return;
+    }
+
+    // Find the user by email
+    const invitedUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!invitedUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    // Check if the user already has access
+    const existingAccess = await prisma.worldAccess.findUnique({
+      where: {
+        worldId_userId: {
+          worldId: id,
+          userId: invitedUser.id
+        }
+      }
+    });
+
+    if (existingAccess) {
+      // Update existing access if role is different
+      if (existingAccess.role !== role) {
+        const updatedAccess = await prisma.worldAccess.update({
+          where: {
+            id: existingAccess.id
+          },
+          data: {
+            role,
+            updatedAt: new Date()
+          }
+        });
+        res.json(updatedAccess);
+      } else {
+        res.status(400).json({ error: 'User already has this access level' });
+      }
+      return;
+    }
+
+    // Create new access
+    const worldAccess = await prisma.worldAccess.create({
+      data: {
+        world: { connect: { id } },
+        user: { connect: { id: invitedUser.id } },
+        role
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            displayName: true,
+            avatar: true
+          }
+        }
+      }
+    });
+
+    // TODO: Send email notification to the invited user
+
+    res.json(worldAccess);
+  } catch (error) {
+    console.error('Failed to invite player:', error);
+    res.status(500).json({ error: 'Failed to invite player' });
+  }
+});
+
+// Update player access
+app.patch('/api/worlds/:id/access/:userId', authenticateToken, checkWorldAccess('creator'), async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+    const { role } = req.body;
+
+    if (!['viewer', 'editor'].includes(role)) {
+      res.status(400).json({ error: 'Invalid role. Must be either "viewer" or "editor"' });
+      return;
+    }
+
+    // Check if the access exists
+    const existingAccess = await prisma.worldAccess.findUnique({
+      where: {
+        worldId_userId: {
+          worldId: id,
+          userId
+        }
+      }
+    });
+
+    if (!existingAccess) {
+      res.status(404).json({ error: 'Access not found' });
+      return;
+    }
+
+    // Update access
+    const updatedAccess = await prisma.worldAccess.update({
+      where: {
+        id: existingAccess.id
+      },
+      data: {
+        role,
+        updatedAt: new Date()
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            displayName: true,
+            avatar: true
+          }
+        }
+      }
+    });
+
+    res.json(updatedAccess);
+  } catch (error) {
+    console.error('Failed to update player access:', error);
+    res.status(500).json({ error: 'Failed to update player access' });
+  }
+});
+
+// Remove player access
+app.delete('/api/worlds/:id/access/:userId', authenticateToken, checkWorldAccess('creator'), async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+
+    // Check if the access exists
+    const existingAccess = await prisma.worldAccess.findUnique({
+      where: {
+        worldId_userId: {
+          worldId: id,
+          userId
+        }
+      }
+    });
+
+    if (!existingAccess) {
+      res.status(404).json({ error: 'Access not found' });
+      return;
+    }
+
+    // Delete access
+    await prisma.worldAccess.delete({
+      where: {
+        id: existingAccess.id
+      }
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Failed to remove player access:', error);
+    res.status(500).json({ error: 'Failed to remove player access' });
+  }
+});
+
+// Admin endpoint to update all worlds' creator
+app.post('/api/admin/worlds/update-creator', authenticateToken, async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    // Update all worlds to have this user as creator
+    await prisma.world.updateMany({
+      data: {
+        creatorId: user.id,
+        creator: {
+          id: user.id,
+          name: user.displayName || user.username,
+          avatar: user.avatar || '/images/avatars/default.jpg'
+        }
+      }
+    });
+
+    res.json({ message: 'Successfully updated all worlds creator' });
+  } catch (error) {
+    console.error('Failed to update worlds creator:', error);
+    res.status(500).json({ error: 'Failed to update worlds creator' });
   }
 });
 

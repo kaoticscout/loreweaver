@@ -115,6 +115,8 @@ function App() {
     handleAddCity,
     lastAddedId
   } = useWorldManagement();
+  
+  const { selectedWorld } = useWorld();
 
   return (
     <AuthProvider>
@@ -126,11 +128,25 @@ function App() {
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/" element={<WorldSelectionPage />} />
-              <Route path="/world" element={<WorldSelectionPage />} />
-              <Route path="/world/:worldId/preview" element={<WorldPreviewPage />} />
               
               {/* Protected routes */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <WorldSelectionPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/world" element={
+                <ProtectedRoute>
+                  <WorldRouter regions={regions} onAddRegion={handleAddRegion} onAddCity={handleAddCity} lastAddedId={lastAddedId} />
+                </ProtectedRoute>
+              } />
+              <Route path="/world/:worldId/preview" element={
+                <ProtectedRoute>
+                  <WorldPreviewPage />
+                </ProtectedRoute>
+              } />
+              
+              {/* Other protected routes */}
               <Route path="/dashboard" element={
                 <ProtectedRoute>
                   <div>Dashboard (Protected)</div>
@@ -158,6 +174,160 @@ function App() {
                   <WorldRouter regions={regions} onAddRegion={handleAddRegion} onAddCity={handleAddCity} lastAddedId={lastAddedId} />
                 </ProtectedRoute>
               } />
+              <Route path="/world/:regionId/location/:locationId" element={
+                <ProtectedRoute>
+                  <WorldRouter regions={regions} onAddRegion={handleAddRegion} onAddCity={handleAddCity} lastAddedId={lastAddedId} />
+                </ProtectedRoute>
+              } />
+              <Route path="/world/:regionId/city/:cityId/dungeon/:dungeonId" element={
+                <ProtectedRoute>
+                  <WorldRouter regions={regions} onAddRegion={handleAddRegion} onAddCity={handleAddCity} lastAddedId={lastAddedId} />
+                </ProtectedRoute>
+              } />
+
+              {/* Feature routes */}
+              <Route path="/campaign" element={
+                <ProtectedRoute>
+                  <CampaignPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/items" element={
+                <ProtectedRoute>
+                  <ItemViewer />
+                </ProtectedRoute>
+              } />
+              <Route path="/quests" element={
+                <ProtectedRoute>
+                  <QuestsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/npcs" element={
+                <ProtectedRoute>
+                  <NPCsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/enemies" element={
+                <ProtectedRoute>
+                  {selectedWorld?.id === 'cyberpunk2077' ? <CyberpunkEnemiesPage /> : <EnemiesPage />}
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
+              } />
+              
+              {/* Utility Routes */}
+              <Route path="/utilities/name-generator" element={
+                <ProtectedRoute>
+                  <NameGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/encounter-builder" element={
+                <ProtectedRoute>
+                  <EncounterBuilderPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/dice-roller" element={
+                <ProtectedRoute>
+                  <DiceRollerPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/loot-generator" element={
+                <ProtectedRoute>
+                  <LootGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/weather-generator" element={
+                <ProtectedRoute>
+                  <WeatherGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/tavern-generator" element={
+                <ProtectedRoute>
+                  <TavernGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/dungeon-generator" element={
+                <ProtectedRoute>
+                  <DungeonGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/plot-hooks" element={
+                <ProtectedRoute>
+                  <PlotHookGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/timeline" element={
+                <ProtectedRoute>
+                  <TimelineGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/faction-generator" element={
+                <ProtectedRoute>
+                  <FactionGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/map-generator" element={
+                <ProtectedRoute>
+                  <MapGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/calendar-generator" element={
+                <ProtectedRoute>
+                  <CalendarGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/currency-generator" element={
+                <ProtectedRoute>
+                  <CurrencyGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/religion-generator" element={
+                <ProtectedRoute>
+                  <ReligionGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/language-generator" element={
+                <ProtectedRoute>
+                  <LanguageGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/magic-system-generator" element={
+                <ProtectedRoute>
+                  <MagicSystemGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/pantheon-generator" element={
+                <ProtectedRoute>
+                  <PantheonGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/prophecy-generator" element={
+                <ProtectedRoute>
+                  <ProphecyGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/treasure-hoard-generator" element={
+                <ProtectedRoute>
+                  <TreasureHoardGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/battle-map-generator" element={
+                <ProtectedRoute>
+                  <BattleMapGeneratorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/utilities/merchant-generator" element={
+                <ProtectedRoute>
+                  <MerchantGeneratorPage />
+                </ProtectedRoute>
+              } />
             </Routes>
           </main>
         </div>
@@ -167,131 +337,3 @@ function App() {
 }
 
 export default App;
-
-function AppContent() {
-  const navigate = useNavigate()
-  const [regions, setRegions] = useState<Region[]>([]);
-  const [lastAddedId, setLastAddedId] = useState<string | null>(null);
-  const { selectedWorld } = useWorld();
-  const { regionId, cityId, dungeonId } = useParams();
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
-  const [selectedLocation, setSelectedLocation] = useState<City | null>(null);
-  const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
-
-  return (
-    <div className="min-h-screen bg-[#1B0A20] text-white">
-      <Header />
-      <div className="pt-16">
-        <Routes>
-          <Route path="/" element={<WorldSelectionPage />} />
-          
-          {/* Protected Routes */}
-          <Route path="/campaign" element={
-            <ProtectedRoute>
-              <CampaignPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/world" element={
-            <ProtectedRoute>
-              <WorldRouter
-                regions={regions}
-                onAddRegion={handleAddRegion}
-                onAddCity={handleAddCity}
-                lastAddedId={lastAddedId}
-              />
-            </ProtectedRoute>
-          } />
-          <Route path="/world/:regionId" element={
-            <ProtectedRoute>
-              <WorldRouter
-                regions={regions}
-                onAddRegion={handleAddRegion}
-                onAddCity={handleAddCity}
-                lastAddedId={lastAddedId}
-              />
-            </ProtectedRoute>
-          } />
-          <Route path="/world/:regionId/city/:cityId" element={
-            <ProtectedRoute>
-              <WorldRouter
-                regions={regions}
-                onAddRegion={handleAddRegion}
-                onAddCity={handleAddCity}
-                lastAddedId={lastAddedId}
-              />
-            </ProtectedRoute>
-          } />
-          <Route path="/world/:regionId/location/:locationId" element={
-            <ProtectedRoute>
-              <WorldRouter
-                regions={regions}
-                onAddRegion={handleAddRegion}
-                onAddCity={handleAddCity}
-                lastAddedId={lastAddedId}
-              />
-            </ProtectedRoute>
-          } />
-          <Route path="/world/:regionId/city/:cityId/dungeon/:dungeonId" element={
-            <ProtectedRoute>
-              <WorldRouter
-                regions={regions}
-                onAddRegion={handleAddRegion}
-                onAddCity={handleAddCity}
-                lastAddedId={lastAddedId}
-              />
-            </ProtectedRoute>
-          } />
-          <Route path="/items" element={
-            <ProtectedRoute>
-              <ItemViewer />
-            </ProtectedRoute>
-          } />
-          <Route path="/quests" element={
-            <ProtectedRoute>
-              <QuestsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/npcs" element={
-            <ProtectedRoute>
-              <NPCsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/enemies" element={
-            <ProtectedRoute>
-              {selectedWorld?.id === 'cyberpunk2077' ? <CyberpunkEnemiesPage /> : <EnemiesPage />}
-            </ProtectedRoute>
-          } />
-          
-          {/* Utility Routes */}
-          <Route path="/utilities/name-generator" element={<NameGeneratorPage />} />
-          <Route path="/utilities/encounter-builder" element={<EncounterBuilderPage />} />
-          <Route path="/utilities/dice-roller" element={<DiceRollerPage />} />
-          <Route path="/utilities/loot-generator" element={<LootGeneratorPage />} />
-          <Route path="/utilities/weather-generator" element={<WeatherGeneratorPage />} />
-          <Route path="/utilities/tavern-generator" element={<TavernGeneratorPage />} />
-          <Route path="/utilities/dungeon-generator" element={<DungeonGeneratorPage />} />
-          <Route path="/utilities/plot-hooks" element={<PlotHookGeneratorPage />} />
-          <Route path="/utilities/timeline" element={<TimelineGeneratorPage />} />
-          <Route path="/utilities/faction-generator" element={<FactionGeneratorPage />} />
-          <Route path="/utilities/map-generator" element={<MapGeneratorPage />} />
-          
-          {/* New Utility Routes */}
-          <Route path="/utilities/calendar-generator" element={<CalendarGeneratorPage />} />
-          <Route path="/utilities/currency-generator" element={<CurrencyGeneratorPage />} />
-          <Route path="/utilities/religion-generator" element={<ReligionGeneratorPage />} />
-          <Route path="/utilities/language-generator" element={<LanguageGeneratorPage />} />
-          <Route path="/utilities/magic-system-generator" element={<MagicSystemGeneratorPage />} />
-          <Route path="/utilities/pantheon-generator" element={<PantheonGeneratorPage />} />
-          <Route path="/utilities/prophecy-generator" element={<ProphecyGeneratorPage />} />
-          <Route path="/utilities/treasure-hoard-generator" element={<TreasureHoardGeneratorPage />} />
-          <Route path="/utilities/battle-map-generator" element={<BattleMapGeneratorPage />} />
-          <Route path="/utilities/merchant-generator" element={<MerchantGeneratorPage />} />
-
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/premium" element={<PremiumPage />} />
-        </Routes>
-      </div>
-    </div>
-  );
-}

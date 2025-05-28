@@ -7,6 +7,18 @@ export interface WorldRating {
   votes: number
 }
 
+export interface WorldAccess {
+  id: string;
+  role: 'viewer' | 'editor';
+  user: {
+    id: string;
+    email: string;
+    username: string;
+    displayName: string | null;
+    avatar: string | null;
+  };
+}
+
 export interface SeasonalEffect {
   name: string;
   description: string;
@@ -65,6 +77,7 @@ export interface World {
     name: string
     avatar: string
   }
+  creatorId: string
   featured: boolean
   popularity: number
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
@@ -72,4 +85,5 @@ export interface World {
   estimatedPlayTime: string
   languages: string[]
   contentWarnings?: string[]
+  sharedWith: WorldAccess[]
 } 

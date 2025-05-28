@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Region } from '../types/region'
 import { City } from '../types/city'
 import { dungeonBanners } from '../../public/art/banners'
+import { RegionsAPI } from '../api/regions'
+import { useWorld } from '../contexts/WorldContext'
 
 export function useWorldManagement() {
   const [regions, setRegions] = useState<Region[]>([])
@@ -10,6 +12,33 @@ export function useWorldManagement() {
   const [newRegionData, setNewRegionData] = useState<Partial<Region>>({})
   const [newCityData, setNewCityData] = useState<Partial<City>>({})
   const [lastAddedId, setLastAddedId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { selectedWorld } = useWorld()
+
+  useEffect(() => {
+    const loadRegions = async () => {
+      if (!selectedWorld) {
+        setRegions([])
+        return
+      }
+
+      try {
+        setIsLoading(true)
+        setError(null)
+        const loadedRegions = await RegionsAPI.getRegionsByWorldId(selectedWorld.id)
+        setRegions(loadedRegions)
+      } catch (err) {
+        console.error('Failed to load regions:', err)
+        setError('Failed to load regions')
+        setRegions([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadRegions()
+  }, [selectedWorld])
 
   const handleAddRegion = (name: string, description: string) => {
     // Generate a new unique ID
@@ -21,6 +50,7 @@ export function useWorldManagement() {
     
     const newRegion: Region = {
       id: newId,
+      worldId: selectedWorld?.id || '',
       name,
       description,
       biography: '',
@@ -46,7 +76,11 @@ export function useWorldManagement() {
       seasons: [],
       magicalItems: [],
       cities: [],
-      locations: []
+      locations: [],
+      climate: '',
+      terrain: '',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
 
     // Add the new region directly to the regions array
@@ -66,39 +100,22 @@ export function useWorldManagement() {
       id: newId,
       name,
       description,
-      coordinates: [0, 0],
-      image: '🏰',
-      banner: randomBanner,
-      history: {
-        founding: '',
-        majorEvents: [],
-        currentEra: ''
-      },
-      notableFeatures: [],
-      keyFigures: [],
-      economy: {
-        primaryIndustry: '',
-        gdp: '',
-        currency: '',
-        tradeGoods: [],
-        tradePartners: [],
-        transportationRoutes: [],
-        marketRegulations: [],
-        economicPolicies: []
-      },
+      population: '0',
+      government: 'Unknown',
+      economy: 'Developing',
+      culture: 'Mixed',
+      history: '',
+      notableLocations: [],
+      threats: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
       seasons: [],
       magicalItems: [],
       dungeons: [],
       pointsOfInterest: [],
       restAreas: [],
       shops: [],
-      basicInformation: {
-        population: '0',
-        primaryRaces: [],
-        wealthClass: 'Unknown',
-        politicalStructure: 'Unknown',
-        deities: []
-      }
+      transportationRoutes: []
     }
 
     // Add the new city to the region
@@ -174,6 +191,8 @@ export function useWorldManagement() {
     setIsAddingCity,
     setNewRegionData,
     setNewCityData,
-    lastAddedId
+    lastAddedId,
+    isLoading,
+    error
   }
 } 

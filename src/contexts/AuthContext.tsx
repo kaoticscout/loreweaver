@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import * as React from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { User, AuthResponse, LoginCredentials, RegisterData, authApi } from '../services/api';
+import axios from 'axios';
 
 interface AuthContextType {
   user: User | null;
@@ -29,11 +31,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loadUser = async () => {
     try {
+      console.log('Loading user profile...');
+      const token = localStorage.getItem('token');
+      console.log('Current token:', token);
+      
       const user = await authApi.getProfile();
+      console.log('Loaded user:', user);
       setUser(user);
-    } catch (error) {
-      console.error('Failed to load user:', error);
-      localStorage.removeItem('token');
+    } catch (err) {
+      console.error('Failed to load user:', err);
+      // Only remove token if it's an auth error (401 or 403)
+      if (axios.isAxiosError(err) && err.response && (err.response.status === 401 || err.response.status === 403)) {
+        console.log('Removing invalid token');
+        localStorage.removeItem('token');
+      }
     } finally {
       setIsLoading(false);
     }

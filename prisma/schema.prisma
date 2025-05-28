@@ -111,10 +111,11 @@ model World {
   encounters          Encounter[] @relation("EncounterWorld")
   items               Item[]     @relation("ItemWorld")
   
-  // New relations
+  // Relations
   createdBy          User      @relation("CreatedWorlds", fields: [creatorId], references: [id])
   creatorId          String
   favoritedBy        User[]    @relation("FavoriteWorlds")
+  sharedWith         WorldAccess[]
 }
 
 model NPC {
@@ -248,8 +249,22 @@ model User {
   // Relations
   createdWorlds World[]   @relation("CreatedWorlds")
   favoriteWorlds World[]  @relation("FavoriteWorlds")
+  worldAccess   WorldAccess[]
   
   // Social features
   followers     User[]    @relation("UserFollows")
   following     User[]    @relation("UserFollows")
+}
+
+model WorldAccess {
+  id        String   @id @default(cuid())
+  world     World    @relation(fields: [worldId], references: [id])
+  worldId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  role      String   // 'viewer' or 'editor'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([worldId, userId])
 } 
